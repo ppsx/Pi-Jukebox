@@ -12,6 +12,17 @@ import sys, pygame
 from pygame.locals import *
 import time
 
+
+FONT_SIZE = 20
+BUTTON_HEIGHT = 42
+SPACE = 10
+TITLE_HEIGHT = int(FONT_SIZE * 1.3)
+FONT_SPACE = TITLE_HEIGHT
+BUTTON_TOP = TITLE_HEIGHT
+KEY_SPACE = 4
+KEY_HEIGHT = 42
+
+
 #: Switches between development/debugging on your desktop/laptop versus running on your Raspberry Pi
 RUN_ON_RASPBERRY_PI = os.uname()[4][:3] == 'arm'
 
@@ -24,7 +35,7 @@ if RUN_ON_RASPBERRY_PI:
 # Display settings
 pygame.init() 	# Pygame initialization
 #: The display dimensions, change this if you have a bigger touch screen.
-DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
+DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 480, 320
 PYGAME_EVENT_DELAY = 25
 
 if RUN_ON_RASPBERRY_PI:  # If started on Raspberry Pi
@@ -39,7 +50,7 @@ else:
 RESOURCES = os.path.dirname(__file__) + '/resources/'
 
 #: Standard font type
-FONT = pygame.font.Font(RESOURCES + 'DroidSans.ttf', 14)
+FONT = pygame.font.Font(RESOURCES + 'DroidSans.ttf', FONT_SIZE)
 
 
 """ Color definitions """

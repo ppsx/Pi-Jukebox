@@ -293,7 +293,7 @@ class ScreenModal(Screen):
         if self.outline_shown:
             pygame.draw.rect(self.screen, self.outline_color, window_rect, 1)
         # Window title bar
-        title_rect = Rect(self.window_x, self.window_y, self.window_width, 20)
+        title_rect = Rect(self.window_x, self.window_y, self.window_width, TITLE_HEIGHT)
         pygame.draw.rect(self.screen, self.title_color, title_rect)
         font_height = FONT.size("Tg")[1]
         font_width = FONT.size(self.title)[0]
