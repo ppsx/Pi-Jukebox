@@ -133,9 +133,9 @@ class ScreenSettingsPlayback(ScreenModal):
     """
     def __init__(self, screen_rect):
         ScreenModal.__init__(self, screen_rect, "Playback settings")
-        switch_width = 40
+        switch_width = 46
         label_top = FONT_SPACE + 3 * SPACE
-        switch_top = label_top - int(FONT_SIZE * 0.1)
+        switch_top = label_top - int(FONT_SIZE * 0.4)
         switch_left = 2 * SPACE
         switch_space = int((self.window_width - 4 * SPACE) / 3)
         label_length = switch_space - switch_width
@@ -162,7 +162,7 @@ class ScreenSettingsPlayback(ScreenModal):
         self.add_component(LabelText('lbl_consume', screen_rect, 2 * SPACE + switch_width, label_top, self.window_width - 2 * SPACE, FONT_SPACE, label))
 
         button_left = self.window_x + SPACE
-        button_top = self.window_y + switch_top + 5 * SPACE
+        button_top = self.window_y + switch_top + 6 * SPACE
         button_width = self.window_width - 2 * SPACE
 
         label = "Re-scan library"

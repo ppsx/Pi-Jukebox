@@ -52,11 +52,16 @@ class ScreenPlaylist(Screen):
         # Screen navigation buttons
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_playlist'))
         # Player specific buttons
-        self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - 51, 45))
-        self.add_component(ButtonIcon('btn_stop', self.screen, ICO_STOP, SCREEN_WIDTH - 51, 85))
-        self.add_component(ButtonIcon('btn_prev', self.screen, ICO_PREVIOUS, SCREEN_WIDTH - 51, 125))
-        self.add_component(ButtonIcon('btn_next', self.screen, ICO_NEXT, SCREEN_WIDTH - 51, 165))
-        self.add_component(ButtonIcon('btn_volume', self.screen, ICO_VOLUME, SCREEN_WIDTH - 51, 205))
+        button_top = BUTTON_TOP + SPACE
+        self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_stop', self.screen, ICO_STOP, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_prev', self.screen, ICO_PREVIOUS, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_next', self.screen, ICO_NEXT, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_volume', self.screen, ICO_VOLUME, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
         # Player specific labels
         self.add_component(LabelText('lbl_track_title', self.screen, 55, 5, SCREEN_WIDTH - 130, 18))
         self.add_component(LabelText('lbl_track_artist', self.screen, 55, 23, SCREEN_WIDTH - 130, 18))
@@ -168,11 +173,16 @@ class ScreenPlaying(Screen):
         # Screen navigation buttons
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_player'))
         # Player specific buttons
-        self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - 51, 5))
-        self.add_component(ButtonIcon('btn_stop', self.screen, ICO_STOP, SCREEN_WIDTH - 51, 45))
-        self.add_component(ButtonIcon('btn_prev', self.screen, ICO_PREVIOUS, SCREEN_WIDTH - 51, 85))
-        self.add_component(ButtonIcon('btn_next', self.screen, ICO_NEXT, SCREEN_WIDTH - 51, 125))
-        self.add_component(ButtonIcon('btn_volume', self.screen, ICO_VOLUME, SCREEN_WIDTH - 51, 165))
+        button_top = BUTTON_TOP + SPACE
+        self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_stop', self.screen, ICO_STOP, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_prev', self.screen, ICO_PREVIOUS, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_next', self.screen, ICO_NEXT, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_volume', self.screen, ICO_VOLUME, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
         # Cover art
         self.add_component(Picture('pic_cover_art', self.screen, 79, 40, 162, 162, mpd.get_cover_art()))
         # Player specific labels
@@ -295,19 +305,25 @@ class ScreenVolume(ScreenModal):
         self.title_color = FIFTIES_GREEN
         self.outline_color = FIFTIES_GREEN
 
-        self.add_component(ButtonIcon('btn_mute', screen_rect, ICO_VOLUME_MUTE, self.window_x + 5, self.window_y + 25))
-        self.components['btn_mute'].x_pos = self.window_x + self.window_width / 2 - self.components[
-                                                                                        'btn_mute'].width / 2
-        self.add_component(
-            ButtonIcon('btn_volume_down', self.screen, ICO_VOLUME_DOWN, self.window_x + 5, self.window_y + 25))
-        self.add_component(
-            ButtonIcon('btn_volume_up', self.screen, ICO_VOLUME_UP, self.window_width - 40, self.window_y + 25))
-        self.add_component(
-            Slider('slide_volume', self.screen, self.window_x + 8, self.window_y + 63, self.window_width - 18, 30))
+        button_top = self.window_y + BUTTON_TOP + SPACE
+        button_left = self.window_x + SPACE + 1
+
+        self.add_component(ButtonIcon('btn_mute', screen_rect, ICO_VOLUME_MUTE, self.window_x + 5, button_top))
+        self.components['btn_mute'].x_pos = self.window_x + self.window_width / 2 - self.components['btn_mute'].width / 2
+
+        self.add_component(ButtonIcon('btn_volume_down', screen_rect, ICO_VOLUME_DOWN, button_left, button_top))
+
+        self.add_component(ButtonIcon('btn_volume_up',screen_rect, ICO_VOLUME_UP, self.window_x + self.window_width - ICO_WIDTH - SPACE - 1, button_top))
+
+        button_top += ICO_HEIGHT + 2 * SPACE
+        self.add_component(Slider('slide_volume', screen_rect, button_left, button_top, self.window_width - 2 * (SPACE + 1), BUTTON_HEIGHT))
         self.components['slide_volume'].progress_percentage_set(mpd.volume)
-        self.add_component(
-            ButtonText('btn_back', self.screen, self.window_x + self.window_width / 2 - 23, self.window_y + 98, 46, 32,
-                       "Back"))
+
+        label = "Back"
+        button_top = self.window_height + self.window_y - SPACE - BUTTON_HEIGHT
+        button_width = self.window_width - 2 * SPACE
+        self.add_component(ButtonText('btn_back', screen_rect, button_left - 1, button_top, button_width, BUTTON_HEIGHT, label))
+        #self.add_component(ButtonText('btn_cancel', screen_rect, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_back'].button_color = FIFTIES_TEAL
 
     def on_click(self, x, y):

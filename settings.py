@@ -21,6 +21,10 @@ FONT_SPACE = TITLE_HEIGHT
 BUTTON_TOP = TITLE_HEIGHT
 KEY_SPACE = 4
 KEY_HEIGHT = 42
+ICO_SIZE = '42x42'
+ICO_WIDTH = 64
+ICO_HEIGHT = BUTTON_HEIGHT
+#ICO_SIZE = '48x32'
 
 
 #: Switches between development/debugging on your desktop/laptop versus running on your Raspberry Pi
@@ -91,8 +95,8 @@ GESTURE_DRAG_HORIZONTAL = 7
 
 """ Used icons """
 # Switch icons
-ICO_SWITCH_ON = RESOURCES + 'switch_on_48x32.png'
-ICO_SWITCH_OFF = RESOURCES + 'switch_off_48x32.png'
+ICO_SWITCH_ON = RESOURCES + 'switch_on_%s.png' % ICO_SIZE
+ICO_SWITCH_OFF = RESOURCES + 'switch_off_%s.png' % ICO_SIZE
 ICO_MODAL_CANCEL = RESOURCES + 'back_22x18.png'
 
 # General icons
@@ -113,16 +117,17 @@ ICO_SETTINGS_ACTIVE = RESOURCES + 'settings_active_48x32.png'
 ICO_BACK = RESOURCES + 'back_48x32.png'
 
 # Player icons
-ICO_PLAY = RESOURCES + 'play_48x32.png'
-ICO_PAUSE = RESOURCES + 'pause_48x32.png'
-ICO_STOP = RESOURCES + 'stop_48x32.png'
-ICO_NEXT = RESOURCES + 'next_48x32.png'
-ICO_PREVIOUS = RESOURCES + 'prev_48x32.png'
-ICO_VOLUME = RESOURCES + 'vol_48x32.png'
-ICO_VOLUME_UP = RESOURCES + 'vol_up_48x32.png'
-ICO_VOLUME_DOWN = RESOURCES + 'vol_down_48x32.png'
-ICO_VOLUME_MUTE = RESOURCES + 'vol_mute_48x32.png'
-ICO_VOLUME_MUTE_ACTIVE = RESOURCES + 'vol_mute_active_48x32.png'
+ICO_PLAY = RESOURCES + 'play_%s.png' % ICO_SIZE
+ICO_PAUSE = RESOURCES + 'pause_%s.png' % ICO_SIZE
+ICO_STOP = RESOURCES + 'stop_%s.png' % ICO_SIZE
+ICO_NEXT = RESOURCES + 'next_%s.png' % ICO_SIZE
+ICO_PREVIOUS = RESOURCES + 'prev_%s.png' % ICO_SIZE
+
+ICO_VOLUME = RESOURCES + 'vol_%s.png' % ICO_SIZE
+ICO_VOLUME_UP = RESOURCES + 'vol_up_%s.png' % ICO_SIZE
+ICO_VOLUME_DOWN = RESOURCES + 'vol_down_%s.png' % ICO_SIZE
+ICO_VOLUME_MUTE = RESOURCES + 'vol_mute_%s.png' % ICO_SIZE
+ICO_VOLUME_MUTE_ACTIVE = RESOURCES + 'vol_mute_active_%s.png' % ICO_SIZE
 
 # Library icons
 ICO_SEARCH = RESOURCES + 'search_48x32.png'
@@ -143,3 +148,10 @@ ICO_FOLDER_UP = RESOURCES + 'folder_up_48x32.png'
 # Radio icons
 ICO_STATION_ADD = RESOURCES + 'station_add_48x32.png'
 COVER_ART_RADIO = RESOURCES + 'radio_cover_art.png'
+
+# Special keyboard icons
+ICO_SHIFT = RESOURCES + 'shift_%s.png' % ICO_SIZE
+ICO_BACKSPACE = RESOURCES + 'backspace_%s.png' % ICO_SIZE
+ICO_ENTER = RESOURCES + 'enter_%s.png' % ICO_SIZE
+ICO_LETTERS = RESOURCES + 'letters_%s.png' % ICO_SIZE
+ICO_SYMBOLS = RESOURCES + 'symbols_%s.png' % ICO_SIZE

@@ -10,16 +10,6 @@ from gui_widgets import *
 from gui_screens import *
 
 
-""" Special button icons
-
-    :ivar
-"""
-ICO_SHIFT = RESOURCES + 'shift_48x32.png'
-ICO_BACKSPACE = RESOURCES + 'backspace_48x32.png'
-ICO_ENTER = RESOURCES + 'enter_48x32.png'
-ICO_LETTERS = RESOURCES + 'letters_48x32.png'
-ICO_SYMBOLS = RESOURCES + 'symbols_48x32.png'
-
 class KeyboardBase(ScreenModal):
     """ The base class of a keyboard, should not be instantiated.
 
@@ -62,7 +52,6 @@ class KeyboardLetters(KeyboardBase):
 
         self.shift_state = False
 
-        #y_row = 65
         y_row = 2 * (TITLE_HEIGHT + 2 * SPACE)
         y_row_increment = KEY_HEIGHT + KEY_SPACE
 
@@ -77,8 +66,8 @@ class KeyboardLetters(KeyboardBase):
         y_row += y_row_increment
         self.add_row_buttons(third_row, SPACE - 1 + KEY_HEIGHT + KEY_SPACE, y_row)
 
-        self.add_component(ButtonIcon('btn_shift', screen_rect, ICO_SHIFT, 3, y_row))
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, 271, y_row))
+        self.add_component(ButtonIcon('btn_shift', screen_rect, ICO_SHIFT, SPACE - 1, y_row))
+        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + (len(third_row) + 1) * (KEY_HEIGHT + KEY_SPACE), y_row))
 
         y_row += y_row_increment
         x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
@@ -89,8 +78,8 @@ class KeyboardLetters(KeyboardBase):
         x_button += space_height + KEY_SPACE
         self.add_component(ButtonText('btn_symbol_point', screen_rect, x_button, y_row, KEY_HEIGHT, KEY_HEIGHT, '.'))
 
-        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, 400, y_row))
-        self.add_component(ButtonIcon('btn_symbols', screen_rect, ICO_SYMBOLS, 4, y_row))
+        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_HEIGHT + KEY_SPACE, y_row))
+        self.add_component(ButtonIcon('btn_symbols', screen_rect, ICO_SYMBOLS, SPACE - 1, y_row))
 
     def __letters_shift(self):
         """ Sets button values to lower- or uppercase depending on the shift state. """
@@ -139,26 +128,32 @@ class KeyboardSymbols(KeyboardBase):
     def __init__(self, screen_rect, caption, text=""):
         KeyboardBase.__init__(self, screen_rect, caption, text)
 
-        y_row = 65
-        y_row_increment = 45
+        y_row = 2 * (TITLE_HEIGHT + 2 * SPACE)
+        y_row_increment = KEY_HEIGHT + KEY_SPACE
+
         first_row = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-        self.add_row_buttons(first_row, 0, y_row)
+        self.add_row_buttons(first_row, SPACE - 1, y_row)
 
         y_row += y_row_increment
-        second_row = ['-', '+', '=', '/', '(', ')', '%', '$', '#', '_']
-        self.add_row_buttons(second_row, 0, y_row)
+        second_row = ['-', '+', '=', '(', ')', '%', '$', '#', '_']
+        self.add_row_buttons(second_row, SPACE - 1 + int((KEY_HEIGHT + KEY_SPACE) / 2), y_row)
 
         y_row += y_row_increment
-        third_row = [':', ';', '.', ',', '?', '!', '\'', '*']
-        self.add_row_buttons(third_row, 5, y_row)
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, 271, y_row))
+        third_row = [':', ';', '.', ',', '?', '!', '\'', '*', '/']
+        self.add_row_buttons(third_row, SPACE - 1, y_row)
+        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + len(third_row) * (KEY_HEIGHT + KEY_SPACE), y_row))
 
         y_row += y_row_increment
-        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, 271, y_row))
-        self.add_component(ButtonIcon('btn_symbol_letters', screen_rect, ICO_LETTERS, 0, y_row))
-        self.add_component(ButtonText('btn_symbol_ampersand', screen_rect, 50, y_row, 32, 32, '&'))
-        self.add_component(ButtonText('btn_symbol_space', screen_rect, 82, y_row, 159, 32, ' '))
-        self.add_component(ButtonText('btn_symbol_at', screen_rect, 241, y_row, 32, 32, '@'))
+        x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
+        self.add_component(ButtonText('btn_symbol_ampersand', screen_rect, x_button, y_row, KEY_HEIGHT, KEY_HEIGHT, '&'))
+        x_button += KEY_HEIGHT + KEY_SPACE
+        space_height = 4 * (KEY_HEIGHT + KEY_SPACE) + KEY_HEIGHT
+        self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_height, KEY_HEIGHT, ' '))
+        x_button += space_height + KEY_SPACE
+        self.add_component(ButtonText('btn_symbol_at', screen_rect, x_button, y_row, KEY_HEIGHT, KEY_HEIGHT, '@'))
+
+        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_HEIGHT + KEY_SPACE, y_row))
+        self.add_component(ButtonIcon('btn_symbol_letters', screen_rect, ICO_SYMBOLS, SPACE - 1, y_row))
 
     def on_click(self, x, y):
         tag_name = super(KeyboardSymbols, self).on_click(x, y)
