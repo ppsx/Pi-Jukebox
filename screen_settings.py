@@ -29,7 +29,7 @@ class ScreenSettings(ScreenModal):
         ScreenModal.__init__(self, screen_rect, "Settings")
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
-        button_top = BUTTON_TOP + SPACE
+        button_top = TITLE_HEIGHT + SPACE
 
         label = "Quit Pi-Jukebox"
         self.add_component(ButtonText('btn_quit', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
@@ -85,7 +85,7 @@ class ScreenSettingsQuit(ScreenModal):
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
         button_left = self.window_x + SPACE
-        button_top = self.window_y + BUTTON_TOP + SPACE
+        button_top = self.window_y + TITLE_HEIGHT + SPACE
         button_width = self.window_width - 2 * SPACE
 
         label = "Quit"
@@ -133,7 +133,7 @@ class ScreenSettingsPlayback(ScreenModal):
     """
     def __init__(self, screen_rect):
         ScreenModal.__init__(self, screen_rect, "Playback settings")
-        switch_width = 46
+        switch_width = SWITCH_WIDTH + SPACE
         label_top = FONT_SPACE + 3 * SPACE
         switch_top = label_top - int(FONT_SIZE * 0.4)
         switch_left = 2 * SPACE
@@ -218,7 +218,7 @@ class ScreenSettingsMPD(ScreenModal):
         ScreenModal.__init__(self, screen_rect, "MPD settings")
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
-        button_top = BUTTON_TOP + SPACE
+        button_top = TITLE_HEIGHT + SPACE
 
         label = "Change host: " + config_file.setting_get('MPD Settings', 'host')
         self.add_component(ButtonText('btn_host', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))

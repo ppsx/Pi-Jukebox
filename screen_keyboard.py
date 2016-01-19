@@ -31,9 +31,9 @@ class KeyboardBase(ScreenModal):
         """ Adds a list of symbol keys starting at x on y. """
         for letter in list_symbols:
             btn_name = 'btn_symbol_' + letter
-            btn = ButtonText(btn_name, self.screen, x, y, KEY_HEIGHT, KEY_HEIGHT, letter)
+            btn = ButtonText(btn_name, self.screen, x, y, KEY_WIDTH_STD, KEY_HEIGHT, letter)
             self.add_component(btn)
-            x += KEY_HEIGHT + KEY_SPACE
+            x += KEY_WIDTH_STD + KEY_SPACE
 
     def set_text(self, text):
         """ Sets the edit box's text.
@@ -60,25 +60,25 @@ class KeyboardLetters(KeyboardBase):
 
         second_row = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l']
         y_row += y_row_increment
-        self.add_row_buttons(second_row, SPACE - 1 + int((KEY_HEIGHT + KEY_SPACE) / 2), y_row)
+        self.add_row_buttons(second_row, SPACE - 1 + int((KEY_WIDTH_STD + KEY_SPACE) / 2), y_row)
 
         third_row = ['z', 'x', 'c', 'v', 'b', 'n', 'm', '/']
         y_row += y_row_increment
-        self.add_row_buttons(third_row, SPACE - 1 + KEY_HEIGHT + KEY_SPACE, y_row)
+        self.add_row_buttons(third_row, SPACE - 1 + KEY_WIDTH_STD + KEY_SPACE, y_row)
 
         self.add_component(ButtonIcon('btn_shift', screen_rect, ICO_SHIFT, SPACE - 1, y_row))
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + (len(third_row) + 1) * (KEY_HEIGHT + KEY_SPACE), y_row))
+        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + (len(third_row) + 1) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
         x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
-        self.add_component(ButtonText('btn_symbol_comma', screen_rect, x_button, y_row, KEY_HEIGHT, KEY_HEIGHT, ','))
+        self.add_component(ButtonText('btn_symbol_comma', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, ','))
         x_button += KEY_HEIGHT + KEY_SPACE
-        space_height = 4 * (KEY_HEIGHT + KEY_SPACE) + KEY_HEIGHT
-        self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_height, KEY_HEIGHT, ' '))
-        x_button += space_height + KEY_SPACE
-        self.add_component(ButtonText('btn_symbol_point', screen_rect, x_button, y_row, KEY_HEIGHT, KEY_HEIGHT, '.'))
+        space_width = 4 * (KEY_HEIGHT + KEY_SPACE) + KEY_HEIGHT
+        self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_width, KEY_HEIGHT, ' '))
+        x_button += space_width + KEY_SPACE
+        self.add_component(ButtonText('btn_symbol_point', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '.'))
 
-        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_HEIGHT + KEY_SPACE, y_row))
+        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
         self.add_component(ButtonIcon('btn_symbols', screen_rect, ICO_SYMBOLS, SPACE - 1, y_row))
 
     def __letters_shift(self):
@@ -136,24 +136,24 @@ class KeyboardSymbols(KeyboardBase):
 
         y_row += y_row_increment
         second_row = ['-', '+', '=', '(', ')', '%', '$', '#', '_']
-        self.add_row_buttons(second_row, SPACE - 1 + int((KEY_HEIGHT + KEY_SPACE) / 2), y_row)
+        self.add_row_buttons(second_row, SPACE - 1 + int((KEY_WIDTH_STD + KEY_SPACE) / 2), y_row)
 
         y_row += y_row_increment
         third_row = [':', ';', '.', ',', '?', '!', '\'', '*', '/']
         self.add_row_buttons(third_row, SPACE - 1, y_row)
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + len(third_row) * (KEY_HEIGHT + KEY_SPACE), y_row))
+        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + len(third_row) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
-        x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
-        self.add_component(ButtonText('btn_symbol_ampersand', screen_rect, x_button, y_row, KEY_HEIGHT, KEY_HEIGHT, '&'))
-        x_button += KEY_HEIGHT + KEY_SPACE
-        space_height = 4 * (KEY_HEIGHT + KEY_SPACE) + KEY_HEIGHT
-        self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_height, KEY_HEIGHT, ' '))
-        x_button += space_height + KEY_SPACE
-        self.add_component(ButtonText('btn_symbol_at', screen_rect, x_button, y_row, KEY_HEIGHT, KEY_HEIGHT, '@'))
+        x_button = SPACE - 1 + int(1.5 * (KEY_WIDTH_STD + KEY_SPACE))
+        self.add_component(ButtonText('btn_symbol_ampersand', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '&'))
+        x_button += KEY_WIDTH_STD + KEY_SPACE
+        space_width = 4 * (KEY_WIDTH_STD + KEY_SPACE) + KEY_WIDTH_STD
+        self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_width, KEY_HEIGHT, ' '))
+        x_button += space_width + KEY_SPACE
+        self.add_component(ButtonText('btn_symbol_at', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '@'))
 
-        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_HEIGHT + KEY_SPACE, y_row))
-        self.add_component(ButtonIcon('btn_symbol_letters', screen_rect, ICO_SYMBOLS, SPACE - 1, y_row))
+        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
+        self.add_component(ButtonIcon('btn_symbol_letters', screen_rect, ICO_LETTERS, SPACE - 1, y_row))
 
     def on_click(self, x, y):
         tag_name = super(KeyboardSymbols, self).on_click(x, y)
@@ -219,4 +219,3 @@ class Keyboard():
             return self.text  # When the user pressed enter the entered text value is returned
         elif value == 'cancel':
             return self.text_original  # When the user chose to cancel the original text value is returned
-

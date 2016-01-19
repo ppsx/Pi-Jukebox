@@ -28,11 +28,6 @@ GESTURE_LONG_PRESS = 5
 GESTURE_DRAG_VERTICAL = 6
 GESTURE_DRAG_HORIZONTAL = 7
 
-# Standard icons
-ICO_INFO = RESOURCES + 'icon_info.png'
-ICO_WARNING = RESOURCES + 'icon_warning.png'
-ICO_ERROR = RESOURCES + 'icon_warning.png'
-
 
 class GestureDetector(object):
     """ Class for detecint mouse gestures
@@ -341,26 +336,23 @@ class ScreenMessage(ScreenModal):
     def __init__(self, screen_rect, caption, text, message_type=None):
         ScreenModal.__init__(self, screen_rect, caption)
         if message_type == 'information':
-            self.add_component(
-                Picture('pic_icon', self.screen, self.window_x + 5, self.window_y + 30, 48, 48, ICO_INFO))
+            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_INFO))
             self.title_color = FIFTIES_GREEN
         elif message_type == 'warning':
-            self.add_component(
-                Picture('pic_icon', self.screen, self.window_x + 5, self.window_y + 30, 48, 48, ICO_WARNING))
+            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
             self.title_color = FIFTIES_YELLOW
         elif message_type == 'error':
-            self.add_component(
-                Picture('pic_icon', self.screen, self.window_x + 5, self.window_y + 30, 48, 48, ICO_ERROR))
+            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ERROR))
             self.title_color = FIFTIES_ORANGE
         else:
             self.title_color = FIFTIES_TEAL
-        x = self.window_x + 55
-        y = self.window_y + 30
-        width = self.window_width - x - 5
-        height = self.window_height - y - 32
+        x = self.window_x + 2 * SPACE + ICO_INFO_WIDTH
+        y = self.window_y + TITLE_HEIGHT + SPACE
+        width = self.window_width - x - SPACE
+        height = self.window_height - y - 2 * SPACE - BUTTON_HEIGHT
         self.add_component(Memo('memo_text', self.screen, x, y, width, height, text))
-        self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - 60,
-                                      self.window_y + self.window_height - 37, 55, 32, "OK"))
+        self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - SPACE - ICO_WIDTH,
+                                      self.window_y + self.window_height - SPACE - BUTTON_HEIGHT, ICO_WIDTH, BUTTON_HEIGHT, "Ok"))
         self.components['btn_ok'].button_color = FIFTIES_YELLOW
 
     def on_click(self, x, y):
@@ -379,22 +371,26 @@ class ScreenYesNo(ScreenModal):
 
     def __init__(self, screen_rect, caption, text):
         ScreenModal.__init__(self, screen_rect, caption)
-        self.window_x = 70
+        self.window_x = 80
         self.window_y = 60
         self.window_width -= 2 * self.window_x
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
-        self.add_component(Picture('pic_icon', self.screen, self.window_x + 5, self.window_y + 30, 48, 48, ICO_WARNING))
+        self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
         self.title_color = FIFTIES_ORANGE
-        width = self.window_width - 58
-        height = self.window_height - self.window_y - 32
-        self.add_component(Memo('memo_text', self.screen, self.window_x + 55, self.window_y + 32, width, height, text))
-        self.add_component(ButtonText('btn_yes', self.screen, self.window_x + self.window_width - 60,
-                                      self.window_y + self.window_height - 37, 55, 32, "Yes"))
-        self.components['btn_yes'].button_color = FIFTIES_ORANGE
-        self.add_component(
-            ButtonText('btn_no', self.screen, self.window_x + 5, self.window_y + self.window_height - 37, 55, 32, "No"))
+
+        x = self.window_x + 2 * SPACE + ICO_INFO_WIDTH
+        y = self.window_y + TITLE_HEIGHT + SPACE
+        width = self.window_width - ICO_INFO_WIDTH - 3 * SPACE
+        height = self.window_height - TITLE_HEIGHT - BUTTON_HEIGHT - 3 * SPACE
+        self.add_component(Memo('memo_text', self.screen, x, y, width, height, text))
+
+        y = self.window_y + self.window_height - SPACE - BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_no', self.screen, self.window_x + SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT, "No"))
         self.components['btn_no'].button_color = FIFTIES_ORANGE
+
+        self.add_component(ButtonText('btn_yes', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT, "Yes"))
+        self.components['btn_yes'].button_color = FIFTIES_ORANGE
 
     def on_click(self, x, y):
         tag_name = super(ScreenModal, self).on_click(x, y)

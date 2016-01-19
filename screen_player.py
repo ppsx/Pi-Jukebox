@@ -49,8 +49,10 @@ class ScreenPlaylist(Screen):
     """
     def __init__(self, screen_rect):
         Screen.__init__(self, screen_rect)
+
         # Screen navigation buttons
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_playlist'))
+
         # Player specific buttons
         button_top = BUTTON_TOP + SPACE
         self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
@@ -62,13 +64,16 @@ class ScreenPlaylist(Screen):
         self.add_component(ButtonIcon('btn_next', self.screen, ICO_NEXT, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
         self.add_component(ButtonIcon('btn_volume', self.screen, ICO_VOLUME, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
+
         # Player specific labels
         self.add_component(LabelText('lbl_track_title', self.screen, 55, 5, SCREEN_WIDTH - 130, 18))
         self.add_component(LabelText('lbl_track_artist', self.screen, 55, 23, SCREEN_WIDTH - 130, 18))
         self.add_component(LabelText('lbl_time', self.screen, SCREEN_WIDTH - 67, 5, 67, 18))
         self.add_component(LabelText('lbl_volume', self.screen, SCREEN_WIDTH - 70, 23, 70, 18))
+
         # Splits labels from playlist
         self.add_component(Rectangle('rct_split', self.screen, 55, 43, 208, 1))
+
         # Playlist
         self.add_component(Playlist(self.screen))
         self.components['list_playing'].active_item_index = mpd.playlist_current_playing_index_get()
@@ -170,8 +175,10 @@ class ScreenPlaying(Screen):
     """
     def __init__(self, screen_rect):
         Screen.__init__(self, screen_rect)
+
         # Screen navigation buttons
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_player'))
+
         # Player specific buttons
         button_top = BUTTON_TOP + SPACE
         self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
@@ -183,8 +190,7 @@ class ScreenPlaying(Screen):
         self.add_component(ButtonIcon('btn_next', self.screen, ICO_NEXT, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
         self.add_component(ButtonIcon('btn_volume', self.screen, ICO_VOLUME, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
-        # Cover art
-        self.add_component(Picture('pic_cover_art', self.screen, 79, 40, 162, 162, mpd.get_cover_art()))
+
         # Player specific labels
         self.add_component(LabelText('lbl_track_artist', self.screen, 54, 3, 215, 18))
         self.components['lbl_track_artist'].set_alignment(HOR_MID, VERT_MID)
@@ -197,6 +203,9 @@ class ScreenPlaying(Screen):
         self.add_component(LabelText('lbl_time_total', self.screen, SCREEN_WIDTH - 51, 221, 48, 18))
         self.components['lbl_time_total'].set_alignment(HOR_MID, VERT_MID)
         self.add_component(Slider2('slide_time', self.screen, 55, SCREEN_HEIGHT - 35, 212, 3))
+
+        # Cover art
+        self.add_component(Picture('pic_cover_art', self.screen, 2 * SPACE + ICO_WIDTH, 40, 162, 162, mpd.get_cover_art()))
 
     def show(self):
         """ Displays the screen. """

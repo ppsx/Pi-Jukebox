@@ -1,0 +1,8 @@
+[MPD Settings]
+host = localhost
+port = 6600
+music directory = /var/lib/mpd/music/
+
+[Radio stations]
+Radio Swiss Jazz = http://stream.srg-ssr.ch/m/rsj/mp3_128
+

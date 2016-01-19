@@ -14,14 +14,20 @@ from screen_settings import *
 
 class ScreenNavigation(WidgetContainer):
     def __init__(self, tag_name, screen_rect, button_active):
-        WidgetContainer.__init__(self, tag_name, screen_rect, 0, 0, 53, 240)
+        WidgetContainer.__init__(self, tag_name, screen_rect, 0, 0, ICO_WIDTH + SPACE, SCREEN_HEIGHT)
         self.__radio_mode = False
-        self.add_component(ButtonIcon('btn_player', self.screen, ICO_PLAYER_FILE_ACTIVE, 3, 5))
-        self.add_component(ButtonIcon('btn_playlist', self.screen, ICO_PLAYLIST, 3, 45))
-        self.add_component(ButtonIcon('btn_library', self.screen, ICO_LIBRARY, 3, 85))
-        self.add_component(ButtonIcon('btn_directory', self.screen, ICO_DIRECTORY, 3, 125))
-        self.add_component(ButtonIcon('btn_radio', self.screen, ICO_RADIO, 3, 165))
-        self.add_component(ButtonIcon('btn_settings', self.screen, ICO_SETTINGS, 3, 205))
+        button_top = SPACE
+        self.add_component(ButtonIcon('btn_player', self.screen, ICO_PLAYER_FILE_ACTIVE, SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_playlist', self.screen, ICO_PLAYLIST, SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_library', self.screen, ICO_LIBRARY, SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_directory', self.screen, ICO_DIRECTORY, SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_radio', self.screen, ICO_RADIO, SPACE, button_top))
+        button_top += ICO_HEIGHT + SPACE
+        self.add_component(ButtonIcon('btn_settings', self.screen, ICO_SETTINGS, SPACE, button_top))
         self.button_active_set(button_active)
 
     def on_click(self, x, y):

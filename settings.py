@@ -14,18 +14,32 @@ import time
 
 
 FONT_SIZE = 20
-BUTTON_HEIGHT = 42
+
 SPACE = 10
+
 TITLE_HEIGHT = int(FONT_SIZE * 1.3)
 FONT_SPACE = TITLE_HEIGHT
 BUTTON_TOP = TITLE_HEIGHT
-KEY_SPACE = 4
-KEY_HEIGHT = 42
-ICO_SIZE = '42x42'
-ICO_WIDTH = 64
-ICO_HEIGHT = BUTTON_HEIGHT
-#ICO_SIZE = '48x32'
 
+KEY_SPACE = 4
+KEY_WIDTH_STD = 42
+KEY_WIDTH_BIG = 64
+KEY_WIDTH_HUGE = 96
+KEY_HEIGHT = 42
+KEY_SIZE_STD = '%dx%d' % (KEY_WIDTH_STD, KEY_HEIGHT)
+KEY_SIZE_BIG = '%dx%d' % (KEY_WIDTH_BIG, KEY_HEIGHT)
+
+BUTTON_HEIGHT = 42
+
+#ICO_SIZE = '48x32'
+ICO_WIDTH = 64
+ICO_HEIGHT = 42
+ICO_SIZE = '%dx%d' % (ICO_WIDTH, ICO_HEIGHT)
+ICO_INFO_WIDTH = 48
+
+SWITCH_WIDTH = 42
+SWITCH_HEIGHT = 42
+SWITCH_SIZE = '%dx%d' % (SWITCH_WIDTH, SWITCH_HEIGHT)
 
 #: Switches between development/debugging on your desktop/laptop versus running on your Raspberry Pi
 RUN_ON_RASPBERRY_PI = os.uname()[4][:3] == 'arm'
@@ -95,26 +109,26 @@ GESTURE_DRAG_HORIZONTAL = 7
 
 """ Used icons """
 # Switch icons
-ICO_SWITCH_ON = RESOURCES + 'switch_on_%s.png' % ICO_SIZE
-ICO_SWITCH_OFF = RESOURCES + 'switch_off_%s.png' % ICO_SIZE
-ICO_MODAL_CANCEL = RESOURCES + 'back_22x18.png'
+ICO_SWITCH_ON = RESOURCES + 'switch_on_%s.png' % SWITCH_SIZE
+ICO_SWITCH_OFF = RESOURCES + 'switch_off_%s.png' % SWITCH_SIZE
+#ICO_MODAL_CANCEL = RESOURCES + 'back_22x18.png'
 
 # General icons
-ICO_PLAYER_FILE = RESOURCES + 'playing_file_48x32.png'
-ICO_PLAYER_FILE_ACTIVE = RESOURCES + 'playing_file_active_48x32.png'
-ICO_PLAYER_RADIO = RESOURCES + 'playing_radio_48x32.png'
-ICO_PLAYER_RADIO_ACTIVE = RESOURCES + 'playing_radio_active_48x32.png'
-ICO_PLAYLIST = RESOURCES + 'playlist_48x32.png'
-ICO_PLAYLIST_ACTIVE = RESOURCES + 'playlist_active_48x32.png'
-ICO_LIBRARY = RESOURCES + 'library_48x32.png'
-ICO_LIBRARY_ACTIVE = RESOURCES + 'library_active_48x32.png'
-ICO_DIRECTORY = RESOURCES + 'directory_48x32.png'
-ICO_DIRECTORY_ACTIVE = RESOURCES + 'directory_active_48x32.png'
-ICO_RADIO = RESOURCES + 'radio_48x32.png'
-ICO_RADIO_ACTIVE = RESOURCES + 'radio_active_48x32.png'
-ICO_SETTINGS = RESOURCES + 'settings_48x32.png'
-ICO_SETTINGS_ACTIVE = RESOURCES + 'settings_active_48x32.png'
-ICO_BACK = RESOURCES + 'back_48x32.png'
+ICO_PLAYER_FILE = RESOURCES + 'playing_file_%s.png' % ICO_SIZE
+ICO_PLAYER_FILE_ACTIVE = RESOURCES + 'playing_file_active_%s.png' % ICO_SIZE
+ICO_PLAYER_RADIO = RESOURCES + 'playing_radio_%s.png' % ICO_SIZE
+ICO_PLAYER_RADIO_ACTIVE = RESOURCES + 'playing_radio_active_%s.png' % ICO_SIZE
+ICO_PLAYLIST = RESOURCES + 'playlist_%s.png' % ICO_SIZE
+ICO_PLAYLIST_ACTIVE = RESOURCES + 'playlist_active_%s.png' % ICO_SIZE
+ICO_LIBRARY = RESOURCES + 'library_%s.png' % ICO_SIZE
+ICO_LIBRARY_ACTIVE = RESOURCES + 'library_active_%s.png' % ICO_SIZE
+ICO_DIRECTORY = RESOURCES + 'directory_%s.png' % ICO_SIZE
+ICO_DIRECTORY_ACTIVE = RESOURCES + 'directory_active_%s.png' % ICO_SIZE
+ICO_RADIO = RESOURCES + 'radio_%s.png' % ICO_SIZE
+ICO_RADIO_ACTIVE = RESOURCES + 'radio_active_%s.png' % ICO_SIZE
+ICO_SETTINGS = RESOURCES + 'settings_%s.png' % ICO_SIZE
+#ICO_SETTINGS_ACTIVE = RESOURCES + 'settings_active_%s.png' % ICO_SIZE
+#ICO_BACK = RESOURCES + 'back_48x32.png'
 
 # Player icons
 ICO_PLAY = RESOURCES + 'play_%s.png' % ICO_SIZE
@@ -131,27 +145,32 @@ ICO_VOLUME_MUTE_ACTIVE = RESOURCES + 'vol_mute_active_%s.png' % ICO_SIZE
 
 # Library icons
 ICO_SEARCH = RESOURCES + 'search_48x32.png'
-ICO_SEARCH_ACTIVE = RESOURCES + 'search_active_48x32.png'
-ICO_SEARCH_ARTIST = RESOURCES + 'artists_48x32.png'
-ICO_SEARCH_ARTIST_ACTIVE = RESOURCES + 'artists_active_48x32.png'
-ICO_SEARCH_ALBUM = RESOURCES + 'albums_48x32.png'
-ICO_SEARCH_ALBUM_ACTIVE = RESOURCES + 'albums_active_48x32.png'
-ICO_SEARCH_SONG = RESOURCES + 'songs_48x32.png'
-ICO_SEARCH_SONG_ACTIVE = RESOURCES + 'songs_active_48x32.png'
-ICO_PLAYLISTS = RESOURCES + 'playlists_48x32.png'
-ICO_PLAYLISTS_ACTIVE = RESOURCES + 'playlists_active_48x32.png'
+#ICO_SEARCH_ACTIVE = RESOURCES + 'search_active_48x32.png'
+ICO_SEARCH_ARTIST = RESOURCES + 'artists_%s.png' % ICO_SIZE
+ICO_SEARCH_ARTIST_ACTIVE = RESOURCES + 'artists_active_%s.png' % ICO_SIZE
+ICO_SEARCH_ALBUM = RESOURCES + 'albums_%s.png' % ICO_SIZE
+ICO_SEARCH_ALBUM_ACTIVE = RESOURCES + 'albums_active_%s.png' % ICO_SIZE
+ICO_SEARCH_SONG = RESOURCES + 'songs_%s.png' % ICO_SIZE
+ICO_SEARCH_SONG_ACTIVE = RESOURCES + 'songs_active_%s.png' % ICO_SIZE
+ICO_PLAYLISTS = RESOURCES + 'playlists_%s.png' % ICO_SIZE
+ICO_PLAYLISTS_ACTIVE = RESOURCES + 'playlists_active_%s.png' % ICO_SIZE
 
 # Directory icons
-ICO_FOLDER_ROOT = RESOURCES + 'folder_root_48x32.png'
-ICO_FOLDER_UP = RESOURCES + 'folder_up_48x32.png'
+ICO_FOLDER_ROOT = RESOURCES + 'folder_root_%s.png' % ICO_SIZE
+ICO_FOLDER_UP = RESOURCES + 'folder_up_%s.png' % ICO_SIZE
 
 # Radio icons
-ICO_STATION_ADD = RESOURCES + 'station_add_48x32.png'
+ICO_STATION_ADD = RESOURCES + 'station_add_%s.png' % ICO_SIZE
 COVER_ART_RADIO = RESOURCES + 'radio_cover_art.png'
 
 # Special keyboard icons
-ICO_SHIFT = RESOURCES + 'shift_%s.png' % ICO_SIZE
-ICO_BACKSPACE = RESOURCES + 'backspace_%s.png' % ICO_SIZE
-ICO_ENTER = RESOURCES + 'enter_%s.png' % ICO_SIZE
-ICO_LETTERS = RESOURCES + 'letters_%s.png' % ICO_SIZE
-ICO_SYMBOLS = RESOURCES + 'symbols_%s.png' % ICO_SIZE
+ICO_SHIFT = RESOURCES + 'shift_%s.png' % KEY_SIZE_STD
+ICO_BACKSPACE = RESOURCES + 'backspace_%s.png' % KEY_SIZE_STD
+ICO_ENTER = RESOURCES + 'enter_%s.png' % KEY_SIZE_BIG
+ICO_LETTERS = RESOURCES + 'letters_%s.png' % KEY_SIZE_BIG
+ICO_SYMBOLS = RESOURCES + 'symbols_%s.png' % KEY_SIZE_BIG
+
+# Standard info icons
+ICO_INFO = RESOURCES + 'icon_info.png'
+ICO_WARNING = RESOURCES + 'icon_warning.png'
+ICO_ERROR = RESOURCES + 'icon_warning.png'

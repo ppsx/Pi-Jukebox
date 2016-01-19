@@ -27,7 +27,7 @@ class RadioBrowser(ItemList):
         :param screen_rect: The screen rect where the directory browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_stations', screen_rect, 55, 42, 210, 194)
+        ItemList.__init__(self, 'list_stations', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - 2 * SPACE - ICO_WIDTH, 194)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = FIFTIES_YELLOW
@@ -66,7 +66,7 @@ class RadioBrowser(ItemList):
 
 
 class ScreenRadio(Screen):
-    """ The screen where the user can browse and add radio stattion and add those to playlists.
+    """ The screen where the user can browse and add radio station and add those to playlists.
 
         :param screen_rect: The display's rect where the library browser is drawn on.
     """
@@ -76,7 +76,7 @@ class ScreenRadio(Screen):
         # Screen navigation buttons
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_radio'))
         # Radio station buttons
-        self.add_component(ButtonIcon('btn_station_add', self.screen, ICO_STATION_ADD, 55, 5))
+        self.add_component(ButtonIcon('btn_station_add', self.screen, ICO_STATION_ADD, 2 * SPACE + ICO_WIDTH, SPACE))
         # Lists
         self.add_component(RadioBrowser(self.screen))
 
@@ -143,17 +143,25 @@ class ScreenSelected(ScreenModal):
 
     def initialize(self):
         """ Set-up screen controls. """
-        button_left = self.window_x + 10
+        button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
-        button_top = 30
-        self.add_component(ButtonText('btn_tune_in', self.screen, button_left, button_top, button_width, 32, "Tune in"))
+        button_top = TITLE_HEIGHT + SPACE
+
+        label = "Tune in"
+        self.add_component(ButtonText('btn_tune_in', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_tune_in'].button_color = FIFTIES_TEAL
-        button_top += 42
-        self.add_component(ButtonText('btn_edit', self.screen, button_left, button_top, button_width, 32, "Edit"))
-        button_top += 42
-        self.add_component(ButtonText('btn_remove', self.screen, button_left, button_top, button_width, 32, "Remove"))
-        button_top += 42
-        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, 32, "Cancel"))
+
+        label = "Edit"
+        button_top += SPACE + BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_edit', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+
+        label = "Remove"
+        button_top += SPACE + BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_remove', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+
+        label = "Back"
+        button_top = self.window_height - SPACE - BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
 
     def action(self, tag_name):
         """ Action that should be performed on a click. """
@@ -190,8 +198,7 @@ class ScreenStation(ScreenModal):
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
         self.station_name = station_name
-        btn_name_label = ""
-        btn_URL_label = ""
+
         if station_name == "":
             ScreenModal.__init__(self, screen_rect, "Add a radio station")
             self.station_URL = ""
@@ -202,19 +209,20 @@ class ScreenStation(ScreenModal):
             self.station_URL = config_file.setting_get('Radio stations', self.station_name)
             btn_name_label = "Change name " + self.station_name
             btn_URL_label = "Change station URL"
-        button_left = self.window_x + 10
+
+        button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
-        button_top = 30
-        self.add_component(
-            ButtonText('btn_name', self.screen, button_left, button_top, button_width, 32, btn_name_label))
-        button_top += 42
-        self.add_component(ButtonText('btn_URL', self.screen, button_left, button_top, button_width, 32, btn_URL_label))
-        button_top += 42
-        self.add_component(
-            ButtonText('btn_cancel', self.screen, self.window_x + 5, self.window_y + self.window_height - 37, 55, 32,
-                       "Cancel"))
-        self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - 60,
-                                      self.window_y + self.window_height - 37, 55, 32, "Ok"))
+        button_top = TITLE_HEIGHT + SPACE
+        self.add_component(ButtonText('btn_name', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, btn_name_label))
+        button_top += SPACE + BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_URL', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, btn_URL_label))
+
+        label = "Cancel"
+        button_top = self.window_height - SPACE - BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
+
+        label = "Ok"
+        self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
 
     def update(self):
         """ Set-up screen controls. """
