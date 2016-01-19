@@ -23,12 +23,12 @@ class Playlist(ItemList):
         :param screen_rect: The display's rect where the library browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_playing', screen_rect, 52, 46, 216, 189)
+        ItemList.__init__(self, 'list_playing', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - 2 * ICO_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_height = 27
         self.item_active_color = FIFTIES_ORANGE
         self.outline_color = FIFTIES_CHARCOAL
         self.font_color = FIFTIES_YELLOW
-        self.outline_visible = False
+        self.outline_visible = True #@@@
 
     def show_playlist(self):
         """ Display the playlist. """
@@ -54,7 +54,7 @@ class ScreenPlaylist(Screen):
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_playlist'))
 
         # Player specific buttons
-        button_top = BUTTON_TOP + SPACE
+        button_top = 2 * SPACE + BUTTON_HEIGHT
         self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
         self.add_component(ButtonIcon('btn_stop', self.screen, ICO_STOP, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
@@ -180,7 +180,7 @@ class ScreenPlaying(Screen):
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_player'))
 
         # Player specific buttons
-        button_top = BUTTON_TOP + SPACE
+        button_top = 2 * SPACE + BUTTON_HEIGHT
         self.add_component(ButtonIcon('btn_play', self.screen, ICO_PLAY, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
         self.add_component(ButtonIcon('btn_stop', self.screen, ICO_STOP, SCREEN_WIDTH - ICO_WIDTH - SPACE, button_top))

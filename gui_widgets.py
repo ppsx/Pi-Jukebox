@@ -555,8 +555,8 @@ class ItemList(Widget):
         self.list = []
         self.outline_visible = True
 
-        self.item_height = 25
-        self.item_indent = 2
+        self.item_height = TITLE_HEIGHT
+        self.item_indent = SPACE
         self.item_alignment_horizontal = HOR_LEFT
         self.item_alignment_vertical = VERT_MID
         self.item_outline_visible = False
@@ -591,7 +591,7 @@ class ItemList(Widget):
         """ Draws a 'progress' indicator on the list. """
         no_pages = self.pages_count()
         if self.pages_count() > 1:
-            indicator_width = 3
+            indicator_width = LIST_INDICATOR_WIDTH
             indicator_height = self.height / self.pages_count()
             indicator_x = self.x_pos + self.width - indicator_width
             indicator_y = self.y_pos + self.page_showing_index * indicator_height

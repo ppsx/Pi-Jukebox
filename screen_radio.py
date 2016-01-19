@@ -27,8 +27,8 @@ class RadioBrowser(ItemList):
         :param screen_rect: The screen rect where the directory browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_stations', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - 2 * SPACE - ICO_WIDTH, 194)
-        self.outline_visible = False
+        ItemList.__init__(self, 'list_stations', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - 4 * SPACE - ICO_WIDTH - LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        self.outline_visible = True #@@@
         self.item_outline_visible = True
         self.font_color = FIFTIES_YELLOW
         self.item_active_color = FIFTIES_ORANGE

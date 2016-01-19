@@ -17,7 +17,7 @@ FONT_SIZE = 20
 
 SPACE = 10
 
-TITLE_HEIGHT = int(FONT_SIZE * 1.3)
+TITLE_HEIGHT = int(FONT_SIZE * 1.4)
 FONT_SPACE = TITLE_HEIGHT
 BUTTON_TOP = TITLE_HEIGHT
 
@@ -40,6 +40,9 @@ ICO_INFO_WIDTH = 48
 SWITCH_WIDTH = 42
 SWITCH_HEIGHT = 42
 SWITCH_SIZE = '%dx%d' % (SWITCH_WIDTH, SWITCH_HEIGHT)
+
+LIST_WIDTH = 42
+LIST_INDICATOR_WIDTH = 6
 
 #: Switches between development/debugging on your desktop/laptop versus running on your Raspberry Pi
 RUN_ON_RASPBERRY_PI = os.uname()[4][:3] == 'arm'
@@ -68,8 +71,7 @@ else:
 RESOURCES = os.path.dirname(__file__) + '/resources/'
 
 #: Standard font type
-FONT = pygame.font.Font(RESOURCES + 'DroidSans.ttf', FONT_SIZE)
-
+FONT = pygame.font.Font(RESOURCES + 'LiberationSans-Regular.ttf', FONT_SIZE)
 
 """ Color definitions """
 BLUE = 0, 148, 255
@@ -144,7 +146,7 @@ ICO_VOLUME_MUTE = RESOURCES + 'vol_mute_%s.png' % ICO_SIZE
 ICO_VOLUME_MUTE_ACTIVE = RESOURCES + 'vol_mute_active_%s.png' % ICO_SIZE
 
 # Library icons
-ICO_SEARCH = RESOURCES + 'search_48x32.png'
+ICO_SEARCH = RESOURCES + 'search_%s.png' % ICO_SIZE
 #ICO_SEARCH_ACTIVE = RESOURCES + 'search_active_48x32.png'
 ICO_SEARCH_ARTIST = RESOURCES + 'artists_%s.png' % ICO_SIZE
 ICO_SEARCH_ARTIST_ACTIVE = RESOURCES + 'artists_active_%s.png' % ICO_SIZE

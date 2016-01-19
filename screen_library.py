@@ -26,9 +26,9 @@ class LetterBrowser(ItemList):
         :param screen_rect: The screen rect where the library browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_letters', screen_rect, 268, 40, 52, 195)
+        ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT, LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_outline_visible = True
-        self.outline_visible = False
+        self.outline_visible = True #@@@
         self.font_color = FIFTIES_GREEN
         self.set_item_alignment(HOR_MID, VERT_MID)
         self.list = []
@@ -40,8 +40,8 @@ class LibraryBrowser(ItemList):
         :param screen_rect: The screen rect where the library browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_library', screen_rect, 55, 42, 210, 194)
-        self.outline_visible = False
+        ItemList.__init__(self, 'list_library', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        self.outline_visible = True #@@@
         self.item_outline_visible = True
         self.font_color = FIFTIES_YELLOW
         self.set_item_alignment(HOR_LEFT, VERT_MID)
@@ -126,12 +126,18 @@ class ScreenLibrary(Screen):
         self.first_time_showing = True
         # Screen navigation buttons
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_library'))
+
         # Library buttons
-        self.add_component(ButtonIcon('btn_artists', self.screen, ICO_SEARCH_ARTIST, 55, 5))
-        self.add_component(ButtonIcon('btn_albums', self.screen, ICO_SEARCH_ALBUM, 107, 5))
-        self.add_component(ButtonIcon('btn_songs', self.screen, ICO_SEARCH_SONG, 159, 5))
-        self.add_component(ButtonIcon('btn_playlists', self.screen, ICO_PLAYLISTS, 211, 5))
-        self.add_component(ButtonIcon('btn_search', self.screen, ICO_SEARCH, 263, 5))
+        button_left = ICO_WIDTH + 2 * SPACE
+        self.add_component(ButtonIcon('btn_artists', self.screen, ICO_SEARCH_ARTIST, button_left, SPACE))
+        button_left += ICO_WIDTH + SPACE
+        self.add_component(ButtonIcon('btn_albums', self.screen, ICO_SEARCH_ALBUM, button_left, SPACE))
+        button_left += ICO_WIDTH + SPACE
+        self.add_component(ButtonIcon('btn_songs', self.screen, ICO_SEARCH_SONG, button_left, SPACE))
+        button_left += ICO_WIDTH + SPACE
+        self.add_component(ButtonIcon('btn_playlists', self.screen, ICO_PLAYLISTS, button_left, SPACE))
+        button_left += ICO_WIDTH + SPACE
+        self.add_component(ButtonIcon('btn_search', self.screen, ICO_SEARCH, button_left, SPACE))
         # Lists
         self.add_component(LibraryBrowser(self.screen))
         self.add_component(LetterBrowser(self.screen))
@@ -284,16 +290,24 @@ class ScreenSearch(ScreenModal):
 
     def initialize(self):
         """ Set-up screen controls. """
-        button_left = self.window_x + 10
+        button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
+
         label = "Artists"
-        self.add_component(ButtonText('btn_artists', self.screen, button_left, 50, button_width, 32, label))
+        button_top = TITLE_HEIGHT + SPACE
+        self.add_component(ButtonText('btn_artists', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+
         label = "Albums"
-        self.add_component(ButtonText('btn_albums', self.screen, button_left, 92, button_width, 32, label))
+        button_top += SPACE + BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_albums', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+
         label = "Songs"
-        self.add_component(ButtonText('btn_songs', self.screen, button_left, 134, button_width, 32, label))
+        button_top += SPACE + BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+
         label = "Cancel"
-        self.add_component(ButtonText('btn_cancel', self.screen, button_left, 176, button_width, 32, label))
+        button_top = self.window_height - SPACE - BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
 
     def action(self, tag_name):
         """ Action that should be performed on a click.
@@ -337,31 +351,41 @@ class ScreenSelected(ScreenModal):
 
     def initialize(self):
         """ Set-up screen controls. """
-        button_left = self.window_x + 10
+        button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
 
         label = "Add to playlist"
-        self.add_component(ButtonText('btn_add', self.screen, button_left, 30, button_width, 32, label))
+        button_top = TITLE_HEIGHT + SPACE
+        self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_add'].button_color = FIFTIES_TEAL
+
         label = "Add to playlist and play"
-        self.add_component(ButtonText('btn_add_play', self.screen, button_left, 72, button_width, 32, label))
+        button_top += SPACE + BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_add_play'].button_color = FIFTIES_TEAL
+
         label = "Replace playlist and play"
-        self.add_component(ButtonText('btn_replace', self.screen, button_left, 114, button_width, 32, label))
+        button_top += SPACE + BUTTON_HEIGHT
+        self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_replace'].button_color = FIFTIES_TEAL
+
         if self.type == 'artists':
             label = "Albums of " + self.title
-            self.add_component(
-                ButtonText('btn_artist_get_albums', self.screen, button_left, 156, button_width, 32, label))
+            button_top += SPACE + BUTTON_HEIGHT
+            button_width_2 = int((button_width - SPACE) / 2)
+            self.add_component(ButtonText('btn_artist_get_albums', self.screen, button_left, button_top, button_width_2, BUTTON_HEIGHT, label))
+
             label = "Songs of " + self.title
-            self.add_component(
-                ButtonText('btn_artist_get_songs', self.screen, button_left, 198, button_width, 32, label))
+            #button_top += SPACE + BUTTON_HEIGHT
+            self.add_component(ButtonText('btn_artist_get_songs', self.screen, button_left + button_width_2 + SPACE, button_top, button_width_2, BUTTON_HEIGHT, label))
         elif self.type == 'albums':
             label = "Songs of " + self.title
-            self.add_component(
-                ButtonText('btn_album_get_songs', self.screen, button_left, 156, button_width, 32, label))
-        #label = "Cancel"
-        #self.add_component(ButtonText("btn_cancel", self.screen, button_left, 134, button_width, label))
+            button_top += SPACE + BUTTON_HEIGHT
+            self.add_component(ButtonText('btn_album_get_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+
+        label = "Cancel"
+        button_top = self.window_height - SPACE - BUTTON_HEIGHT
+        self.add_component(ButtonText("btn_cancel", self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
 
     def action(self, tag_name):
         """ Action that should be performed on a click. """
