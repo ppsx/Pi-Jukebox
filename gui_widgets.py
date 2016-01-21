@@ -664,7 +664,7 @@ class ItemList(Widget):
 
     def item_selected_get(self):
         """ :return: selected item's text """
-        return self.list[self.item_selected_index]
+        return self.list[self.item_selected_index] if self.item_selected_index >= 0 else None
 
     def on_click(self, x_pos, y_pos):
         """ Relays click action to a list item.

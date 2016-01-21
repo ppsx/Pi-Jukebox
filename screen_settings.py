@@ -134,7 +134,7 @@ class ScreenSettingsPlayback(ScreenModal):
     def __init__(self, screen_rect):
         ScreenModal.__init__(self, screen_rect, "Playback settings")
         switch_width = SWITCH_WIDTH + SPACE
-        label_top = FONT_SPACE + 3 * SPACE
+        label_top = FONT_SPACE + int(2.5 * SPACE)
         switch_top = label_top - int(FONT_SIZE * 0.4)
         switch_left = 2 * SPACE
         switch_space = int((self.window_width - 4 * SPACE) / 3)

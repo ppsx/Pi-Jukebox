@@ -133,11 +133,11 @@ ICO_SETTINGS = RESOURCES + 'settings_%s.png' % ICO_SIZE
 #ICO_BACK = RESOURCES + 'back_48x32.png'
 
 # Player icons
-ICO_PLAY = RESOURCES + 'play_%s.png' % ICO_SIZE
-ICO_PAUSE = RESOURCES + 'pause_%s.png' % ICO_SIZE
-ICO_STOP = RESOURCES + 'stop_%s.png' % ICO_SIZE
-ICO_NEXT = RESOURCES + 'next_%s.png' % ICO_SIZE
-ICO_PREVIOUS = RESOURCES + 'prev_%s.png' % ICO_SIZE
+ICO_PLAY = RESOURCES + 'play_%s_alt.png' % ICO_SIZE
+ICO_PAUSE = RESOURCES + 'pause_%s_alt.png' % ICO_SIZE
+ICO_STOP = RESOURCES + 'stop_%s_alt.png' % ICO_SIZE
+ICO_NEXT = RESOURCES + 'next_%s_alt.png' % ICO_SIZE
+ICO_PREVIOUS = RESOURCES + 'prev_%s_alt.png' % ICO_SIZE
 
 ICO_VOLUME = RESOURCES + 'vol_%s.png' % ICO_SIZE
 ICO_VOLUME_UP = RESOURCES + 'vol_up_%s.png' % ICO_SIZE
@@ -176,3 +176,5 @@ ICO_SYMBOLS = RESOURCES + 'symbols_%s.png' % KEY_SIZE_BIG
 ICO_INFO = RESOURCES + 'icon_info.png'
 ICO_WARNING = RESOURCES + 'icon_warning.png'
 ICO_ERROR = RESOURCES + 'icon_warning.png'
+
+DEFAULT_COVER = RESOURCES + 'default_cover_art.png'

@@ -223,12 +223,13 @@ class ScreenLibrary(Screen):
     def playlist_action(self):
         """ Displays screen for follow-up actions when an item was selected from the library. """
         selected = self.components['list_library'].item_selected_get()
-        select_screen = ScreenSelected(self.screen, self.currently_showing, selected)
-        select_screen.show()
-        if isinstance(select_screen.return_object, list):
-            self.components['list_library'].list = select_screen.return_object
-            self.components['list_library'].draw()
-            self.set_currently_showing(select_screen.return_type)
+        if selected:
+            select_screen = ScreenSelected(self.screen, self.currently_showing, selected)
+            select_screen.show()
+            if isinstance(select_screen.return_object, list):
+                self.components['list_library'].list = select_screen.return_object
+                self.components['list_library'].draw()
+                self.set_currently_showing(select_screen.return_type)
         self.letter_list_update()
         self.show()
 

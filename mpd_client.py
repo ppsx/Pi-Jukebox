@@ -12,13 +12,13 @@ import glob
 import mpd
 from collections import deque
 from mutagen import File
+from settings import DEFAULT_COVER
 
 
 MPD_TYPE_ARTIST = 'artist'
 MPD_TYPE_ALBUM = 'album'
 MPD_TYPE_SONGS = 'title'
 
-DEFAULT_COVER = 'default_cover_art.png'
 TEMP_PLAYLIST_NAME = '_pi-jukebox_temp'
 
 reload(sys)
