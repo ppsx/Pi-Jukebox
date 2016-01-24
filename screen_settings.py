@@ -133,7 +133,7 @@ class ScreenSettingsPlayback(ScreenModal):
     """
     def __init__(self, screen_rect):
         ScreenModal.__init__(self, screen_rect, "Playback settings")
-        switch_width = SWITCH_WIDTH + SPACE
+        switch_width = SWITCH_WIDTH + int(SPACE / 2)
         label_top = FONT_SPACE + int(2.5 * SPACE)
         switch_top = label_top - int(FONT_SIZE * 0.4) + 6
         switch_left = 2 * SPACE

@@ -160,19 +160,19 @@ ICO_FOLDER_UP = RESOURCES + 'folder-up.png'
 
 # Radio icons
 ICO_STATION_ADD = RESOURCES + 'station-add.png'
+ICO_SYMBOLS = RESOURCES + 'symbols_%s.png' % KEY_SIZE_BIG
+
+# Standard info icons
+ICO_INFO = RESOURCES + 'icon-info.png'
+ICO_WARNING = RESOURCES + 'icon-warning.png'
+ICO_ERROR = RESOURCES + 'icon-warning.png'
+
+# default covers
+DEFAULT_COVER = RESOURCES + 'cover-files.png'
+COVER_ART_RADIO = RESOURCES + 'cover-radio.png'
 
 # Special keyboard icons
 ICO_SHIFT = RESOURCES + 'shift_%s.png' % KEY_SIZE_STD
 ICO_BACKSPACE = RESOURCES + 'backspace_%s.png' % KEY_SIZE_STD
 ICO_ENTER = RESOURCES + 'enter_%s.png' % KEY_SIZE_BIG
 ICO_LETTERS = RESOURCES + 'letters_%s.png' % KEY_SIZE_BIG
-ICO_SYMBOLS = RESOURCES + 'symbols_%s.png' % KEY_SIZE_BIG
-
-# Standard info icons
-ICO_INFO = RESOURCES + 'icon_info.png'
-ICO_WARNING = RESOURCES + 'icon_warning.png'
-ICO_ERROR = RESOURCES + 'icon_warning.png'
-
-# default covers
-DEFAULT_COVER = RESOURCES + 'cover-files.png'
-COVER_ART_RADIO = RESOURCES + 'cover-radio.png'

@@ -224,7 +224,7 @@ class ScreenPlaying(Screen):
         self.add_component(Slider2('slide_time', self.screen, label_left, SCREEN_HEIGHT - SPACE - ICO_HEIGHT + 2, label_width, LIST_INDICATOR_WIDTH))
 
         # Cover art
-        self.add_component(Picture('pic_cover_art', self.screen, label_left, ICO_HEIGHT + 2 * SPACE, label_width, 4 * ICO_HEIGHT + 3 * SPACE, mpd.get_cover_art()))
+        self.add_component(Picture('pic_cover_art', self.screen, label_left, ICO_HEIGHT + 2 * SPACE, label_width, 4 * ICO_HEIGHT + 3 * SPACE, mpd.get_cover_art(), center = True))
 
     def show(self):
         """ Displays the screen. """
