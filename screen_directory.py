@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 =======================================================
 **screen_directory.py**: MPD Directory browsing screen

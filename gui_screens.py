@@ -239,14 +239,14 @@ class ScreenModal(Screen):
 
     def __init__(self, screen_rect, title):
         Screen.__init__(self, screen_rect)
-        self.title = title
+        self.title = unicode(title)
         self.window_x = 0
         self.window_y = 0
         self.window_width = SCREEN_WIDTH
         self.window_height = SCREEN_HEIGHT
         self.return_object = None
         self.close_screen = False
-        self.title_color = FIFTIES_ORANGE
+        self.title_color = RED #FIFTIES_ORANGE
         self.outline_shown = False
         self.outline_color = FIFTIES_ORANGE
         self.gesture_detect = GestureDetector()

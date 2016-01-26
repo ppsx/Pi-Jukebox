@@ -266,7 +266,7 @@ class LabelText(Widget):
     """
     def __init__(self, tag_name, screen_rect, x, y, width, height, text=""):
         Widget.__init__(self, tag_name, screen_rect, x, y, width, height)
-        self.caption = text
+        self.caption = unicode(text)
         self.alignment_horizontal = HOR_LEFT
         self.alignment_vertical = VERT_MID
         self.indent_horizontal = 0
@@ -316,8 +316,7 @@ class LabelText(Widget):
             pygame.draw.rect(self.screen, self.outline_color, self.rect,1)
         # Determining caption width and height
         i = 1
-        while self.font.size(self.caption[:i])[0] < self.rect.width and i < len(
-                self.caption):  # Determine maximum width of line
+        while self.font.size(self.caption[:i])[0] < self.rect.width and i < len(self.caption):  # Determine maximum width of line
             i += 1
         caption_width = self.font.size(self.caption[:i])[0]
         caption_height = self.font.size(self.caption[:i])[1]
