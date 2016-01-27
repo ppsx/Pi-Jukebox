@@ -239,16 +239,17 @@ class ScreenModal(Screen):
 
     def __init__(self, screen_rect, title):
         Screen.__init__(self, screen_rect)
-        self.title = unicode(title)
+        self.title = title.decode('utf-8')
         self.window_x = 0
         self.window_y = 0
         self.window_width = SCREEN_WIDTH
         self.window_height = SCREEN_HEIGHT
         self.return_object = None
         self.close_screen = False
-        self.title_color = RED #FIFTIES_ORANGE
+        self.title_color = C_RED
+        self.title_font_color = C_GREY_DARK
         self.outline_shown = False
-        self.outline_color = FIFTIES_ORANGE
+        self.outline_color = C_RED
         self.gesture_detect = GestureDetector()
 
     def show(self):
@@ -292,7 +293,7 @@ class ScreenModal(Screen):
         pygame.draw.rect(self.screen, self.title_color, title_rect)
         font_height = FONT.size("Tg")[1]
         font_width = FONT.size(self.title)[0]
-        image = FONT.render(self.title, True, BLACK)
+        image = FONT.render(self.title, True, self.title_font_color)
         self.screen.blit(image, (title_rect.centerx - font_width / 2, title_rect.centery - font_height / 2))
 
     def event_loop(self):
@@ -337,15 +338,19 @@ class ScreenMessage(ScreenModal):
         ScreenModal.__init__(self, screen_rect, caption)
         if message_type == 'information':
             self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_INFO))
-            self.title_color = FIFTIES_GREEN
+            self.title_color = C_GREEN
+            self.outline_color = C_GREEN
         elif message_type == 'warning':
             self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
-            self.title_color = FIFTIES_YELLOW
+            self.title_color = C_YELLOW
+            self.outline_color = C_YELLOW
         elif message_type == 'error':
             self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ERROR))
-            self.title_color = FIFTIES_ORANGE
+            self.title_color = C_RED
+            self.outline_color = C_RED
         else:
-            self.title_color = FIFTIES_TEAL
+            self.title_color = C_BLUE
+            self.outline_color = C_BLUE
         x = self.window_x + 2 * SPACE + ICO_INFO_WIDTH
         y = self.window_y + TITLE_HEIGHT + SPACE
         width = self.window_width - x - SPACE
@@ -353,7 +358,8 @@ class ScreenMessage(ScreenModal):
         self.add_component(Memo('memo_text', self.screen, x, y, width, height, text))
         self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - SPACE - ICO_WIDTH,
                                       self.window_y + self.window_height - SPACE - BUTTON_HEIGHT, ICO_WIDTH, BUTTON_HEIGHT, "Ok"))
-        self.components['btn_ok'].button_color = FIFTIES_YELLOW
+        self.components['btn_ok'].font_color = C_GREEN
+        self.components['btn_ok'].outline_color = C_GREEN
 
     def on_click(self, x, y):
         tag_name = super(ScreenModal, self).on_click(x, y)
@@ -377,7 +383,8 @@ class ScreenYesNo(ScreenModal):
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
         self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
-        self.title_color = FIFTIES_ORANGE
+        self.title_color = C_RED
+        self.outline_color = C_RED
 
         x = self.window_x + 2 * SPACE + ICO_INFO_WIDTH
         y = self.window_y + TITLE_HEIGHT + SPACE
@@ -387,10 +394,12 @@ class ScreenYesNo(ScreenModal):
 
         y = self.window_y + self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_no', self.screen, self.window_x + SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT, "No"))
-        self.components['btn_no'].button_color = FIFTIES_ORANGE
+        self.components['btn_no'].font_color = C_RED
+        self.components['btn_no'].outline_color = C_RED
 
         self.add_component(ButtonText('btn_yes', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT, "Yes"))
-        self.components['btn_yes'].button_color = FIFTIES_ORANGE
+        self.components['btn_yes'].font_color = C_GREEN
+        self.components['btn_yes'].outline_color = C_GREEN
 
     def on_click(self, x, y):
         tag_name = super(ScreenModal, self).on_click(x, y)

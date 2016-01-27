@@ -97,7 +97,7 @@ class MPDNowPlaying(object):
         else:
             return False
 
-    def cover_art_get(self, dest_file_name="covert_art.jpg"):
+    def cover_art_get(self, dest_file_name=DEFAULT_COVER):
         if self.file == "" or self.playing_type == 'radio':
             return DEFAULT_COVER
         try:
@@ -321,7 +321,7 @@ class MPDController(object):
         else:
             return False
 
-    def get_cover_art(self, dest_file_name="covert_art.jpg"):
+    def get_cover_art(self, dest_file_name=DEFAULT_COVER):
         return self.now_playing.cover_art_get()
 
     def player_control_set(self, play_status):

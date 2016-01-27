@@ -28,10 +28,10 @@ class RadioBrowser(ItemList):
     """
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_stations', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - 4 * SPACE - ICO_WIDTH - LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
-        self.outline_visible = True #@@@
+        self.outline_visible = False
         self.item_outline_visible = True
-        self.font_color = FIFTIES_YELLOW
-        self.item_active_color = FIFTIES_ORANGE
+        self.font_color = C_GREY_LIGHTEST
+        self.item_active_color = C_YELLOW
         self.set_item_alignment(HOR_LEFT, VERT_MID)
         self.radio_stations = []
 
@@ -137,7 +137,7 @@ class ScreenSelected(ScreenModal):
         ScreenModal.__init__(self, screen_rect, station_name)
         self.station_name = station_name
         self.station_URL = station_URL
-        self.title_color = FIFTIES_YELLOW
+        self.title_color = C_BLUE
         self.initialize()
         self.return_type = ""
 
@@ -149,7 +149,8 @@ class ScreenSelected(ScreenModal):
 
         label = "Tune in"
         self.add_component(ButtonText('btn_tune_in', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_tune_in'].button_color = FIFTIES_TEAL
+        self.components['btn_tune_in'].font_color = C_GREEN
+        self.components['btn_tune_in'].outline_color = C_GREEN
 
         label = "Edit"
         button_top += SPACE + BUTTON_HEIGHT
@@ -162,6 +163,8 @@ class ScreenSelected(ScreenModal):
         label = "Back"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.components['btn_cancel'].font_color = C_RED
+        self.components['btn_cancel'].outline_color = C_RED
 
     def action(self, tag_name):
         """ Action that should be performed on a click. """
@@ -191,7 +194,7 @@ class ScreenStation(ScreenModal):
     """
     def __init__(self, screen_rect, station_name=""):
         ScreenModal.__init__(self, screen_rect, station_name)
-        self.title_color = FIFTIES_YELLOW
+        self.title_color = C_BLUE
         self.window_x = 20
         self.window_y = 60
         self.window_width -= 2 * self.window_x
@@ -220,9 +223,13 @@ class ScreenStation(ScreenModal):
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
+        self.components['btn_cancel'].font_color = C_RED
+        self.components['btn_cancel'].outline_color = C_RED
 
         label = "Ok"
         self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
+        self.components['btn_ok'].font_color = C_GREEN
+        self.components['btn_ok'].outline_color = C_GREEN
 
     def update(self):
         """ Set-up screen controls. """
@@ -240,14 +247,13 @@ class ScreenStation(ScreenModal):
         """ Action that should be performed on a click. """
         if tag_name == 'btn_name':
             keyboard = Keyboard(self.screen, "Set station name")
-            keyboard.title_color = FIFTIES_YELLOW
             keyboard.text = self.station_name
             self.station_name = keyboard.show()
             self.update()
             self.show()
         elif tag_name == 'btn_URL':
             keyboard = Keyboard(self.screen, "Set station URL")
-            keyboard.title_color = FIFTIES_YELLOW
+            keyboard.title_color = C_BLUE
             keyboard.text = self.station_URL
             self.station_URL = keyboard.show()
             self.update()

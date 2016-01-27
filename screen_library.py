@@ -28,8 +28,8 @@ class LetterBrowser(ItemList):
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT, LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_outline_visible = True
-        self.outline_visible = True #@@@
-        self.font_color = FIFTIES_GREEN
+        self.outline_visible = False
+        self.font_color = C_GREY_LIGHTEST
         self.set_item_alignment(HOR_MID, VERT_MID)
         self.list = []
 
@@ -41,9 +41,9 @@ class LibraryBrowser(ItemList):
     """
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_library', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
-        self.outline_visible = True #@@@
+        self.outline_visible = False
         self.item_outline_visible = True
-        self.font_color = FIFTIES_YELLOW
+        self.font_color = C_GREY_LIGHTEST
         self.set_item_alignment(HOR_LEFT, VERT_MID)
 
     def show_artists(self, search=None, only_start=True):
@@ -284,7 +284,8 @@ class ScreenSearch(ScreenModal):
     """
     def __init__(self, screen_rect):
         ScreenModal.__init__(self, screen_rect, "Search library for...")
-        self.title_color = FIFTIES_YELLOW
+        self.title_color = C_BLUE
+        self.font_color = C_GREY_DARK
         self.search_type = ""
         self.search_text = ""
         self.initialize()
@@ -309,6 +310,8 @@ class ScreenSearch(ScreenModal):
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.components['btn_cancel'].font_color = C_RED
+        self.components['btn_cancel'].outline_color = C_RED
 
     def action(self, tag_name):
         """ Action that should be performed on a click.
@@ -330,7 +333,6 @@ class ScreenSearch(ScreenModal):
             search_label = "Search songs"
         # Open on-screen keyboard for entering search string
         keyboard = Keyboard(self.screen, search_label)
-        keyboard.title_color = FIFTIES_YELLOW
         self.search_text = keyboard.show()  # Get entered search text
         self.close()
 
@@ -346,7 +348,8 @@ class ScreenSelected(ScreenModal):
         ScreenModal.__init__(self, screen_rect, selected_title)
         self.type = selected_type
         self.selected = selected_title
-        self.title_color = FIFTIES_YELLOW
+        self.title_color = C_BLUE
+        self.font_color = C_GREY_DARK
         self.initialize()
         self.return_type = ""
 
@@ -358,35 +361,40 @@ class ScreenSelected(ScreenModal):
         label = "Add to playlist"
         button_top = TITLE_HEIGHT + SPACE
         self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_add'].button_color = FIFTIES_TEAL
+        self.components['btn_add'].font_color = C_GREEN
+        self.components['btn_add'].outline_color = C_GREEN
 
         label = "Add to playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_add_play'].button_color = FIFTIES_TEAL
+        self.components['btn_add_play'].font_color = C_GREEN
+        self.components['btn_add_play'].outline_color = C_GREEN
 
         label = "Replace playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_replace'].button_color = FIFTIES_TEAL
+        self.components['btn_replace'].font_color = C_GREEN
+        self.components['btn_replace'].outline_color = C_GREEN
 
         if self.type == 'artists':
-            label = "Albums of " + self.title
+            label = "Albums of ..." #+ self.title
             button_top += SPACE + BUTTON_HEIGHT
             button_width_2 = int((button_width - SPACE) / 2)
             self.add_component(ButtonText('btn_artist_get_albums', self.screen, button_left, button_top, button_width_2, BUTTON_HEIGHT, label))
 
-            label = "Songs of " + self.title
+            label = "Songs of ..." #+ self.title
             #button_top += SPACE + BUTTON_HEIGHT
             self.add_component(ButtonText('btn_artist_get_songs', self.screen, button_left + button_width_2 + SPACE, button_top, button_width_2, BUTTON_HEIGHT, label))
         elif self.type == 'albums':
-            label = "Songs of " + self.title
+            label = "Songs of ..." #+ self.title
             button_top += SPACE + BUTTON_HEIGHT
             self.add_component(ButtonText('btn_album_get_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
 
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText("btn_cancel", self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.components['btn_cancel'].font_color = C_RED
+        self.components['btn_cancel'].outline_color = C_RED
 
     def action(self, tag_name):
         """ Action that should be performed on a click. """

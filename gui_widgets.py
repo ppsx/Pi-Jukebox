@@ -45,17 +45,17 @@ class Widget(object):
         self.height = height
         self.rect = Rect(x, y, width, height)
         self.outline_visible = False
-        self.outline_color = WHITE
+        self.outline_color = BLACK
         self.background_color = BLACK
         self.font = FONT
-        self.font_color = FIFTIES_YELLOW
+        self.font_color = C_GREY_LIGHTEST
         self.font_height = self.font.size('Tg')[1]
 
     def on_click(self, x, y):
         """ The function called when a widget is clicked """
         return self.tag_name
 
-    def set_font(self, font_name, font_size, font_color=FIFTIES_YELLOW):
+    def set_font(self, font_name, font_size, font_color=C_GREY_LIGHTEST):
         self.font = pygame.font.Font(font_name, font_size)
         self.font_color = font_color
 
@@ -79,7 +79,9 @@ class Rectangle(Widget):
     """
     def __init__(self, tag_name, screen_rect, x, y, width, height):
         Widget.__init__(self, tag_name, screen_rect, x, y, width, height)
-        self.background_color = FIFTIES_CHARCOAL
+        self.background_color = C_GREY_DARK
+        self.font_color = C_BLUE
+        self.outline_color = C_BLUE
 
     def draw(self):
         """ Draws the label. """
@@ -99,7 +101,7 @@ class Slider(Rectangle):
     """
     def __init__(self, tag_name, screen_rect, x, y, width, height):
         Rectangle.__init__(self, tag_name, screen_rect, x, y, width, height)
-        self.progress_color = FIFTIES_GREEN
+        self.progress_color = C_GREEN
         self.progress_percentage = 0
         self.progress_rect = Rect(x + 1, y + 1, 1, height - 2)
         self.caption_visible = True
@@ -150,9 +152,9 @@ class Slider2(Widget):
     """
     def __init__(self, tag_name, screen_rect, x, y, width, height):
         Widget.__init__(self, tag_name, screen_rect, x, y, width, height)
-        self.bottom_color = FIFTIES_CHARCOAL
+        self.bottom_color = C_GREY_LIGHT
         self.bottom_rect = (x, y + height, width, 1)
-        self.progress_color = FIFTIES_ORANGE
+        self.progress_color = C_YELLOW
         self.progress_percentage = 0
         self.progress_rect = Rect(x, y, 1, height)
         self.caption_visible = False
@@ -214,13 +216,6 @@ class Picture(Widget):
         self.prepare_picture()
 
     def draw(self):
-        # img = Image.open(self.__image_file)
-        #if img.size != (self.width, self.height):
-        #    img_scaled = img.resize((self.width, self.height), Image.ANTIALIAS)
-        #    img_scaled.save(self.__image_file)
-        #self.__image = pygame.image.load(self.__image_file).convert()
-        #self.__image = pygame.transform.scale(self.__image, (self.width, self.height))
-        #self.prepare_picture()
         SCREEN.blit(self.__image, (self.x_pos+self.x_mod, self.y_pos+self.y_mod))
         pygame.display.update(self.rect)
 
@@ -231,7 +226,6 @@ class Picture(Widget):
         """ Sets the filename of the picture. """
         self.__image_file = file_name
         self.__image = pygame.image.load(self.__image_file).convert()
-        #self.__image = pygame.transform.scale(self.__image, (self.width, self.height))
         self.prepare_picture()
         self.draw()
 
@@ -266,13 +260,16 @@ class LabelText(Widget):
     """
     def __init__(self, tag_name, screen_rect, x, y, width, height, text=""):
         Widget.__init__(self, tag_name, screen_rect, x, y, width, height)
-        self.caption = unicode(text)
+        try:
+            self.caption = text.decode('utf-8')
+        except Exception:
+            self.caption = ""
         self.alignment_horizontal = HOR_LEFT
         self.alignment_vertical = VERT_MID
         self.indent_horizontal = 0
         self.indent_vertical = 0
         self.outline_show = False
-        self.outline_color = FIFTIES_CHARCOAL
+        self.outline_color = C_BLUE
         self.background_alpha = 255
 
     def transparent_set(self, value):
@@ -360,7 +357,7 @@ class Memo(Widget):
         self.alignment_horizontal = HOR_LEFT
         self.indent_horizontal = 0
         self.outline_show = False
-        self.outline_color = FIFTIES_CHARCOAL
+        self.outline_color = C_BLUE
         self.background_alpha = 255
 
     def draw(self, text=None):
@@ -489,14 +486,16 @@ class ButtonText(LabelText):
         LabelText.__init__(self, tag_name, screen_rect, x, y, width, height, text)
         self.transparent_set(True)
         self.button_rect = (x + 1, y + 1, width - 2, height - 2)
-        self.button_color = FIFTIES_YELLOW
+        self.button_color = C_GREY_DARK
         self.__background_left = None
         self.__background_middle = None
         self.__background_right = None
         self.transparent = True
-        self.font_color = BLACK
+        self.font_color = C_BLUE
         self.alignment_vertical = VERT_MID
         self.alignment_horizontal = HOR_MID
+        self.outline_show = True
+        self.outline_color = C_BLUE
 
     def draw(self, text=None):
         self.screen.fill(self.button_color, self.button_rect)  # Background
@@ -626,7 +625,7 @@ class ItemList(Widget):
             #SCREEN.blit(indicator, (indicator_x, indicator_y))
             indicator = Rect(indicator_x, indicator_y, indicator_width, indicator_height)
             #            indicator.set_alpha(128)
-            pygame.draw.rect(self.screen, FIFTIES_ORANGE, indicator)
+            pygame.draw.rect(self.screen, C_YELLOW, indicator)
 
     def draw_items(self):
         """ Draws the list items. """
@@ -665,8 +664,7 @@ class ItemList(Widget):
             self.item_selected_index = -1
             return None
         if y_pos > self.height or (
-                self.page_showing_index * self.items_per_page + (y_pos + 2)) / self.item_height >= len(
-                self.list):  # Check whether no item was clicked
+                self.page_showing_index * self.items_per_page + (y_pos + 2)) / self.item_height >= len(self.list):  # Check whether no item was clicked
             self.item_selected_index = -1
             return None
         self.item_selected_index = (self.page_showing_index * self.items_per_page + (y_pos + 2) / self.item_height)
@@ -689,7 +687,7 @@ class ItemList(Widget):
 
     def item_selected_get(self):
         """ :return: selected item's text """
-        return self.list[self.item_selected_index] if self.item_selected_index >= 0 else None
+        return self.list[self.item_selected_index] if self.item_selected_index >= 0 and self.item_selected_index < len(self.list) else None
 
     def on_click(self, x_pos, y_pos):
         """ Relays click action to a list item.

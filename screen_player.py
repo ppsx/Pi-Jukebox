@@ -25,10 +25,10 @@ class Playlist(ItemList):
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_playing', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - 2 * ICO_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_height = 27
-        self.item_active_color = FIFTIES_ORANGE
-        self.outline_color = FIFTIES_CHARCOAL
-        self.font_color = FIFTIES_YELLOW
-        self.outline_visible = True #@@@
+        self.item_active_color = C_YELLOW
+        self.outline_color = C_BLUE
+        self.font_color = C_GREY_LIGHTEST
+        self.outline_visible = False
 
     def show_playlist(self):
         """ Display the playlist. """
@@ -49,6 +49,8 @@ class ScreenPlaylist(Screen):
     """
     def __init__(self, screen_rect):
         Screen.__init__(self, screen_rect)
+
+        self.font_color = C_GREY_LIGHTEST
 
         # Screen navigation buttons
         self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_playlist'))
@@ -336,8 +338,8 @@ class ScreenVolume(ScreenModal):
         self.window_width -= 2 * self.window_x
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
-        self.title_color = FIFTIES_GREEN
-        self.outline_color = FIFTIES_GREEN
+        self.title_color = C_BLUE
+        self.outline_color = C_BLUE
 
         button_top = self.window_y + BUTTON_TOP + SPACE
         button_left = self.window_x + SPACE + 1
@@ -357,8 +359,8 @@ class ScreenVolume(ScreenModal):
         button_top = self.window_height + self.window_y - SPACE - BUTTON_HEIGHT
         button_width = self.window_width - 2 * SPACE
         self.add_component(ButtonText('btn_back', screen_rect, button_left - 1, button_top, button_width, BUTTON_HEIGHT, label))
-        #self.add_component(ButtonText('btn_cancel', screen_rect, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_back'].button_color = FIFTIES_TEAL
+        self.components['btn_back'].font_color = C_RED
+        self.components['btn_back'].outline_color = C_RED
 
     def on_click(self, x, y):
         tag_name = super(ScreenModal, self).on_click(x, y)

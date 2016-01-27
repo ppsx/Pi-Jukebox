@@ -26,20 +26,15 @@ KEY_WIDTH_STD = 42
 KEY_WIDTH_BIG = 64
 KEY_WIDTH_HUGE = 96
 KEY_HEIGHT = 42
-KEY_SIZE_STD = '%dx%d' % (KEY_WIDTH_STD, KEY_HEIGHT)
-KEY_SIZE_BIG = '%dx%d' % (KEY_WIDTH_BIG, KEY_HEIGHT)
 
 BUTTON_HEIGHT = 42
 
-#ICO_SIZE = '48x32'
 ICO_WIDTH = 64
 ICO_HEIGHT = 42
-ICO_SIZE = '%dx%d' % (ICO_WIDTH, ICO_HEIGHT)
 ICO_INFO_WIDTH = 48
 
 SWITCH_WIDTH = 42
 SWITCH_HEIGHT = 42
-SWITCH_SIZE = '%dx%d' % (SWITCH_WIDTH, SWITCH_HEIGHT)
 
 LIST_WIDTH = 42
 LIST_INDICATOR_WIDTH = 6
@@ -82,18 +77,16 @@ WHITE = 255, 255, 255
 YELLOW = 255, 255, 0
 RED = 255, 0, 0
 GREEN = 0, 255, 0
-# Scheme aqua (currently not in use)
-AQUA_TEAL = 18, 151, 147
-AQUA_CHARCOAL = 80, 80, 80
-AQUA_YELLOW = 255, 245, 195
-AQUA_BLUE = 155, 215, 213
-AQUA_PINK = 255, 114, 96
-# Scheme FIFTIES
-FIFTIES_CHARCOAL = 124, 120, 106
-FIFTIES_TEAL = 141, 205, 193
-FIFTIES_GREEN = 211, 227, 151
-FIFTIES_YELLOW = 255, 245, 195
-FIFTIES_ORANGE = 235, 110, 68
+
+# Additional colors
+C_GREY_DARK = 22, 22, 22
+C_GREY_LIGHT = 80, 80, 80
+C_GREY_LIGHTEST = 180, 190, 200
+C_BLUE = 127, 201, 255
+C_YELLOW = 254, 255, 127
+C_GREEN = 183, 255, 157
+C_RED = 255, 107, 107
+
 
 """ Mouse related variables """
 GESTURE_MOVE_MIN = 50  # Minimum movement in pixels to call it a move
@@ -161,7 +154,6 @@ ICO_FOLDER_UP = RESOURCES + 'folder-up.png'
 
 # Radio icons
 ICO_STATION_ADD = RESOURCES + 'station-add.png'
-ICO_SYMBOLS = RESOURCES + 'symbols_%s.png' % KEY_SIZE_BIG
 
 # Standard info icons
 ICO_INFO = RESOURCES + 'icon-info.png'
@@ -173,7 +165,8 @@ DEFAULT_COVER = RESOURCES + 'cover-files.png'
 COVER_ART_RADIO = RESOURCES + 'cover-radio.png'
 
 # Special keyboard icons
-ICO_SHIFT = RESOURCES + 'shift_%s.png' % KEY_SIZE_STD
-ICO_BACKSPACE = RESOURCES + 'backspace_%s.png' % KEY_SIZE_STD
-ICO_ENTER = RESOURCES + 'enter_%s.png' % KEY_SIZE_BIG
-ICO_LETTERS = RESOURCES + 'letters_%s.png' % KEY_SIZE_BIG
+ICO_SHIFT = RESOURCES + 'keys-shift.png'
+ICO_BACKSPACE = RESOURCES + 'keys-backspace.png'
+ICO_ENTER = RESOURCES + 'keys-enter.png'
+ICO_LETTERS = RESOURCES + 'keys-letters.png'
+ICO_SYMBOLS = RESOURCES + 'keys-symbols.png'

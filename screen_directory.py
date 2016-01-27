@@ -30,8 +30,8 @@ class LetterBrowser(ItemList):
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT, LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_outline_visible = True
-        self.outline_visible = True #@@@
-        self.font_color = FIFTIES_GREEN
+        self.outline_visible = False
+        self.font_color = C_GREY_LIGHTEST
         self.set_item_alignment(HOR_MID, VERT_MID)
         self.list = []
         # self.list = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"\
@@ -47,9 +47,9 @@ class DirectoryBrowser(ItemList):
 
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_directory', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
-        self.outline_visible = True #@@@
+        self.outline_visible = False
         self.item_outline_visible = True
-        self.font_color = FIFTIES_YELLOW
+        self.font_color = C_GREY_LIGHTEST
         self.set_item_alignment(HOR_LEFT, VERT_MID)
         self.directory_current = "/"
         self.directory_content = []
@@ -194,7 +194,8 @@ class ScreenSelected(ScreenModal):
         self.directory_current = directory
         self.selected_type = selected_type
         self.selected_name = selected_item
-        self.title_color = FIFTIES_YELLOW
+        self.title_color = C_BLUE
+        self.font_color = C_GREY_DARK
         self.initialize()
         self.return_type = ""
 
@@ -205,27 +206,32 @@ class ScreenSelected(ScreenModal):
         button_top = TITLE_HEIGHT + SPACE
 
         if self.selected_type == 'directory':
-            label = "Browse directory " + self.selected_name
+            label = "Browse directory" # + " " + self.selected_name
             self.add_component(ButtonText('btn_browse', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
             button_top += SPACE + BUTTON_HEIGHT
 
         label = "Add to playlist"
         self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_add'].button_color = FIFTIES_TEAL
+        self.components['btn_add'].font_color = C_GREEN
+        self.components['btn_add'].outline_color = C_GREEN
 
         label = "Add to playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_add_play'].button_color = FIFTIES_TEAL
+        self.components['btn_add_play'].font_color = C_GREEN
+        self.components['btn_add_play'].outline_color = C_GREEN
 
         label = "Replace playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
-        self.components['btn_replace'].button_color = FIFTIES_TEAL
+        self.components['btn_replace'].font_color = C_GREEN
+        self.components['btn_replace'].outline_color = C_GREEN
 
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.components['btn_cancel'].font_color = C_RED
+        self.components['btn_cancel'].outline_color = C_RED
 
     def action(self, tag_name):
         """ Action that should be performed on a click. """
