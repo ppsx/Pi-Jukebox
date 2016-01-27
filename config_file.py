@@ -1,5 +1,5 @@
 import ConfigParser
-import subprocess
+
 
 class ConfigFile(object):
     def __init__(self):
@@ -20,9 +20,9 @@ class ConfigFile(object):
                 setting['value'] = self.setting_get(setting['section'], setting['key'])
             elif not setting['first_time']:
                 self.setting_set(setting['section'], setting['key'], setting['value'])
-            for setting in self.settings:
-                if setting['section'] == 'Radio stations':
-                    self.radio_stations.append((setting['key'], setting['value']))
+            for setting2 in self.settings:
+                if setting2['section'] == 'Radio stations':
+                    self.radio_stations.append((setting2['key'], setting2['value']))
 
     def setting_get(self, section, key):
         if self.setting_exists(section, key):
@@ -31,15 +31,20 @@ class ConfigFile(object):
 
     def setting_set(self, section, key, value):
         """ Write a setting to the configuration file
+
+            :param section: Config section
+            :param key: Key
+            :param value: Value
+
         """
-        file = open("pi-jukebox.conf", 'w')
+        my_file = open("pi-jukebox.conf", 'w')
         try:
             self.parser.add_section(section)
-        except Exception:
+        except ConfigParser.DuplicateSectionError:
             pass
         self.parser.set(section, key, value)
-        self.parser.write(file)
-        file.close()
+        self.parser.write(my_file)
+        my_file.close()
 
     def setting_remove(self, section, key):
         """ Remove a setting to the configuration file

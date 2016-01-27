@@ -4,16 +4,14 @@
 ==================================================================
 """
 
-import sys, pygame
-import time
-import subprocess
 import os
-import glob
-import mpd
+import pygame
+import sys
 from collections import deque
+
+import mpd
 from mutagen import File
 from settings import DEFAULT_COVER
-
 
 MPD_TYPE_ARTIST = 'artist'
 MPD_TYPE_ALBUM = 'album'

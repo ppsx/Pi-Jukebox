@@ -16,8 +16,8 @@
 # along with python-mpd2.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import sys
 import socket
+import sys
 import warnings
 from collections import Callable
 
@@ -45,23 +45,30 @@ except ImportError: # NullHandler was introduced in python2.7
 logger = logging.getLogger(__name__)
 logger.addHandler(NullHandler())
 
+
 class MPDError(Exception):
     pass
+
 
 class ConnectionError(MPDError):
     pass
 
+
 class ProtocolError(MPDError):
     pass
+
 
 class CommandError(MPDError):
     pass
 
+
 class CommandListError(MPDError):
     pass
 
+
 class PendingCommandError(MPDError):
     pass
+
 
 class IteratingError(MPDError):
     pass
@@ -71,8 +78,10 @@ class _NotConnected(object):
     def __getattr__(self, attr):
         return self._dummy
 
+    @staticmethod
     def _dummy(*args):
         raise ConnectionError("Not connected")
+
 
 _commands = {
     # Status Commands
@@ -188,6 +197,7 @@ _commands = {
     "sendmessage":        "_fetch_nothing",
 }
 
+
 class MPDClient(object):
     def __init__(self, use_unicode=False):
         self.iterate = False
@@ -221,15 +231,12 @@ class MPDClient(object):
 
     def _execute(self, command, args, retval):
         if self._iterating:
-            raise IteratingError("Cannot execute '%s' while iterating" %
-                                 command)
+            raise IteratingError("Cannot execute '%s' while iterating" % command)
         if self._pending:
-            raise PendingCommandError("Cannot execute '%s' with "
-                                      "pending commands" % command)
+            raise PendingCommandError("Cannot execute '%s' with pending commands" % command)
         if self._command_list is not None:
             if not isinstance(retval, Callable):
-                raise CommandListError("'%s' not allowed in command list" %
-                                        command)
+                raise CommandListError("'%s' not allowed in command list" % command)
             self._write_command(command, args)
             self._command_list.append(retval)
         else:
@@ -302,8 +309,7 @@ class MPDClient(object):
         for key, value in self._read_pairs():
             if key != seen:
                 if seen is not None:
-                    raise ProtocolError("Expected key '%s', got '%s'" %
-                                        (seen, key))
+                    raise ProtocolError("Expected key '%s', got '%s'" % (seen, key))
                 seen = key
             yield value
 

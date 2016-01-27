@@ -6,11 +6,10 @@
 
 __author__ = 'Mark Zwart'
 
-import sys, pygame
-from pygame.locals import *
-import time
 import math
+
 from settings import *
+
 # import Image
 
 reload(sys)
@@ -242,7 +241,8 @@ class Picture(Widget):
         factor = min(factor_w, factor_h)
         if factor != 1.0:
             # need to shrink the image
-            self.__image = pygame.transform.smoothscale(self.__image, (int(self.__image.get_width() * factor), int(self.__image.get_height() * factor)))
+            self.__image = pygame.transform.smoothscale(self.__image, (int(self.__image.get_width() * factor),
+                                                                       int(self.__image.get_height() * factor)))
         self.x_mod = int(float(self.width - self.__image.get_width()) / 2)
         self.y_mod = int(float(self.height - self.__image.get_height()) / 2)
 
@@ -313,7 +313,8 @@ class LabelText(Widget):
             pygame.draw.rect(self.screen, self.outline_color, self.rect,1)
         # Determining caption width and height
         i = 1
-        while self.font.size(self.caption[:i])[0] < self.rect.width and i < len(self.caption):  # Determine maximum width of line
+        # Determine maximum width of line
+        while self.font.size(self.caption[:i])[0] < self.rect.width and i < len(self.caption):
             i += 1
         caption_width = self.font.size(self.caption[:i])[0]
         caption_height = self.font.size(self.caption[:i])[1]
