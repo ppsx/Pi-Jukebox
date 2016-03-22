@@ -18,6 +18,7 @@ from screen_directory import *
 from screen_radio import *
 from screen_settings import *
 
+
 class PiJukeboxScreens(Screens):
     """ Manages Pi Jukebox's main screens.
             - Player screen
@@ -41,8 +42,9 @@ class PiJukeboxScreens(Screens):
 def apply_settings():
     # Check for first time settings
     if not config_file.setting_exists('MPD Settings', 'music directory'):
-        screen_message = ScreenMessage(SCREEN, 'No music directory',
-                                       "If you want to display cover art, Pi-Jukebox needs to know which directory your music collection is in. The location can also be found in your mpd.conf entry 'music directory'.",
+        screen_message = ScreenMessage(SCREEN, 'No music directory', "If you want to display cover art, Pi-Jukebox " +
+                                       "needs to know which directory your music collection is in. The location can " +
+                                       "also be found in your mpd.conf entry 'music directory'.",
                                        'warning')
         screen_message.show()
         settings_mpd_screen = ScreenSettingsMPD(SCREEN)
@@ -62,8 +64,8 @@ def main():
 
     # Check whether mpd is running and get it's status
     if not mpd.connect():
-        print("Couldn't connect to the mpd server " + mpd.host + " on port " + str(
-            mpd.port) + "! Check settings in file pi-jukebox.conf or check is server is running 'sudo service mpd status'.")
+        print("Couldn't connect to the mpd server " + mpd.host + " on port " + str(mpd.port) +
+              "! Check settings in file pi-jukebox.conf or check is server is running 'sudo service mpd status'.")
         sys.exit()
     mpd.status_get()  # Get mpd status
     screens = PiJukeboxScreens()  # Screens
