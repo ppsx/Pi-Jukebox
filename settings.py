@@ -40,7 +40,7 @@ LIST_WIDTH = 42
 LIST_INDICATOR_WIDTH = 6
 
 #: Switches between development/debugging on your desktop/laptop versus running on your Raspberry Pi
-RUN_ON_RASPBERRY_PI = os.uname()[4][:3] == 'arm'
+RUN_ON_RASPBERRY_PI = (os.name != 'nt' and os.uname()[4][:3] == 'arm')
 
 # Setting up touch screen, set if statement to true on Raspberry Pi
 if RUN_ON_RASPBERRY_PI:
