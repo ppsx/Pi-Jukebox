@@ -23,7 +23,8 @@ class KeyboardBase(ScreenModal):
         self.title_color = C_BLUE
         self.title_font_color = C_GREY_DARK
         # Edit box
-        edit_box = LabelText('lbl_edit_box', screen_rect, SPACE, BUTTON_TOP + 2 * SPACE, SCREEN_WIDTH - 2 * SPACE, TITLE_HEIGHT, text)
+        edit_box = LabelText('lbl_edit_box', screen_rect, SPACE, BUTTON_TOP + 2 * SPACE, SCREEN_WIDTH - 2 * SPACE,
+                             TITLE_HEIGHT, text)
         edit_box.background_color = C_GREY_LIGHTEST
         edit_box.font_color = C_GREY_DARK
         edit_box.set_alignment(HOR_LEFT, VERT_MID, 5)
@@ -73,7 +74,8 @@ class KeyboardLetters(KeyboardBase):
         self.components['btn_shift'].outline_visible = True
         self.components['btn_shift'].outline_color = C_BLUE
 
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + (len(third_row) + 1) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
+        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE,
+                                      SPACE - 1 + (len(third_row) + 1) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
         x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
@@ -147,11 +149,13 @@ class KeyboardSymbols(KeyboardBase):
         y_row += y_row_increment
         third_row = [':', ';', '.', ',', '?', '!', '\'', '*', '/']
         self.add_row_buttons(third_row, SPACE - 1, y_row)
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE, SPACE - 1 + len(third_row) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
+        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE,
+                                      SPACE - 1 + len(third_row) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
         x_button = SPACE - 1 + int(1.5 * (KEY_WIDTH_STD + KEY_SPACE))
-        self.add_component(ButtonText('btn_symbol_ampersand', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '&'))
+        self.add_component(ButtonText('btn_symbol_ampersand', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT,
+                                      '&'))
         x_button += KEY_WIDTH_STD + KEY_SPACE
         space_width = 4 * (KEY_WIDTH_STD + KEY_SPACE) + KEY_WIDTH_STD
         self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_width, KEY_HEIGHT, ' '))

@@ -2,7 +2,8 @@
 **pi-jukebox.py**: Main file
 """
 __author__ = 'Mark Zwart'
-import sys, pygame
+import sys
+import pygame
 from pygame.locals import *
 import time
 import subprocess

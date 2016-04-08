@@ -7,7 +7,8 @@
 """
 __author__ = 'Mark Zwart'
 
-import sys, pygame
+import sys
+import pygame
 from pygame.locals import *
 import time
 import subprocess
@@ -28,7 +29,8 @@ class LetterBrowser(ItemList):
     """
 
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT, LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT,
+                          LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_outline_visible = True
         self.outline_visible = False
         self.font_color = C_GREY_LIGHTEST
@@ -46,7 +48,8 @@ class DirectoryBrowser(ItemList):
     """
 
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_directory', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        ItemList.__init__(self, 'list_directory', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
+                          SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = C_GREY_LIGHTEST
@@ -61,7 +64,8 @@ class DirectoryBrowser(ItemList):
         """ Displays all songs or based on the first letter or partial string match.
 
             :param search: Search string, default = None
-            :param only_start: Boolean indicating whether the search string only matches the first letters, default = True
+            :param only_start: Boolean indicating whether the search string only matches the first letters,
+                               default = True
         """
         self.list = []
         self.directory_current = path
@@ -206,30 +210,35 @@ class ScreenSelected(ScreenModal):
         button_top = TITLE_HEIGHT + SPACE
 
         if self.selected_type == 'directory':
-            label = "Browse directory" # + " " + self.selected_name
-            self.add_component(ButtonText('btn_browse', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+            label = "Browse directory"  # + " " + self.selected_name
+            self.add_component(ButtonText('btn_browse', self.screen, button_left, button_top, button_width,
+                                          BUTTON_HEIGHT, label))
             button_top += SPACE + BUTTON_HEIGHT
 
         label = "Add to playlist"
-        self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_add'].font_color = C_GREEN
         self.components['btn_add'].outline_color = C_GREEN
 
         label = "Add to playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_add_play'].font_color = C_GREEN
         self.components['btn_add_play'].outline_color = C_GREEN
 
         label = "Replace playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_replace'].font_color = C_GREEN
         self.components['btn_replace'].outline_color = C_GREEN
 
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 

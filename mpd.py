@@ -37,7 +37,7 @@ else:
 
 try:
     from logging import NullHandler
-except ImportError: # NullHandler was introduced in python2.7
+except ImportError:  # NullHandler was introduced in python2.7
     class NullHandler(logging.Handler):
         def emit(self, record):
             pass
@@ -437,7 +437,7 @@ class MPDClient(object):
 
     def noidle(self):
         if not self._pending or self._pending[0] != 'idle':
-          raise CommandError('cannot send noidle if send_idle was not called')
+            raise CommandError('cannot send noidle if send_idle was not called')
         del self._pending[0]
         self._write_command("noidle")
         return self._fetch_list()
@@ -498,8 +498,9 @@ class MPDClient(object):
 
     def _settimeout(self, timeout):
         self._timeout = timeout
-        if self._sock != None:
+        if self._sock is not None:
             self._sock.settimeout(timeout)
+
     def _gettimeout(self):
         return self._timeout
     timeout = property(_gettimeout, _settimeout)
@@ -507,11 +508,10 @@ class MPDClient(object):
     idletimeout = None
 
     def connect(self, host, port, timeout=None):
-        logger.info("Calling MPD connect(%r, %r, timeout=%r)", host,
-                     port, timeout)
+        logger.info("Calling MPD connect(%r, %r, timeout=%r)", host, port, timeout)
         if self._sock is not None:
             raise ConnectionError("Already connected")
-        if timeout != None:
+        if timeout is not None:
             warnings.warn("The timeout parameter in connect() is deprecated! "
                           "Use MPDClient.timeout = yourtimeout instead.",
                           DeprecationWarning)
@@ -592,6 +592,7 @@ class MPDClient(object):
         delattr(cls, str("send_" + name))
         delattr(cls, str("fetch_" + name))
 
+
 def bound_decorator(self, function):
     """ bind decorator to self """
     if not isinstance(function, Callable):
@@ -601,6 +602,7 @@ def bound_decorator(self, function):
         return function(self, *args, **kwargs)
     return decorator
 
+
 def newFunction(wrapper, name, returnValue):
     def decorator(self, *args):
         return wrapper(self, name, args, bound_decorator(self, returnValue))
@@ -609,6 +611,7 @@ def newFunction(wrapper, name, returnValue):
 for key, value in _commands.items():
     returnValue = None if value is None else MPDClient.__dict__[value]
     MPDClient.add_command(key, returnValue)
+
 
 def escape(text):
     return text.replace("\\", "\\\\").replace('"', '\\"')

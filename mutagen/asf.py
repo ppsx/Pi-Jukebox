@@ -840,8 +840,8 @@ class ASF(FileType):
             self.__read_object(fileobj)
 
         for guid in [ContentDescriptionObject.GUID,
-                ExtendedContentDescriptionObject.GUID, MetadataObject.GUID,
-                MetadataLibraryObject.GUID]:
+                     ExtendedContentDescriptionObject.GUID, MetadataObject.GUID,
+                     MetadataLibraryObject.GUID]:
             self.tags.extend(self._tags.pop(guid, []))
         assert not self._tags
 

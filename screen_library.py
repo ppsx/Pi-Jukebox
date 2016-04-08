@@ -6,7 +6,8 @@
 """
 __author__ = 'Mark Zwart'
 
-import sys, pygame
+import sys
+import pygame
 from pygame.locals import *
 import time
 import subprocess
@@ -26,7 +27,8 @@ class LetterBrowser(ItemList):
         :param screen_rect: The screen rect where the library browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT, LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT,
+                          LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_outline_visible = True
         self.outline_visible = False
         self.font_color = C_GREY_LIGHTEST
@@ -40,7 +42,8 @@ class LibraryBrowser(ItemList):
         :param screen_rect: The screen rect where the library browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_library', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        ItemList.__init__(self, 'list_library', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
+                          SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = C_GREY_LIGHTEST
@@ -50,7 +53,8 @@ class LibraryBrowser(ItemList):
         """ Displays all artists or based on the first letter or partial string match.
 
             :param search: Search string, default = None
-            :param only_start: Boolean indicating whether the search string only matches the first letters, default = True
+            :param only_start: Boolean indicating whether the search string only matches the first letters,
+                               default = True
         """
         updated = False
         if self.list != mpd.artists_get(search, only_start):
@@ -64,7 +68,8 @@ class LibraryBrowser(ItemList):
         """ Displays all albums or based on the first letter or partial string match.
 
             :param search: Search string, default = None
-            :param only_start: Boolean indicating whether the search string only matches the first letters, default = True
+            :param only_start: Boolean indicating whether the search string only matches the first letters,
+                               default = True
         """
         updated = False
         if self.list != mpd.albums_get(search, only_start):
@@ -78,7 +83,8 @@ class LibraryBrowser(ItemList):
         """ Displays all songs or based on the first letter or partial string match.
 
             :param search: Search string, default = None
-            :param only_start: Boolean indicating whether the search string only matches the first letters, default = True
+            :param only_start: Boolean indicating whether the search string only matches the first letters,
+                               default = True
         """
         updated = False
         if self.list != mpd.songs_get(search, only_start):
@@ -111,8 +117,8 @@ class LibraryBrowser(ItemList):
             first_letter = item[:1].upper()
             output_set.add(first_letter)
         letter_list = list(output_set)
-        letter_list.sort(key=lambda item: (
-        [str, int].index(type(item)), item))  # Sorting, making sure letters are put before numbers
+        # Sorting, making sure letters are put before numbers
+        letter_list.sort(key=lambda item: ([str, int].index(type(item)), item))
         return letter_list
 
 
@@ -297,19 +303,23 @@ class ScreenSearch(ScreenModal):
 
         label = "Artists"
         button_top = TITLE_HEIGHT + SPACE
-        self.add_component(ButtonText('btn_artists', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_artists', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
 
         label = "Albums"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_albums', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_albums', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
 
         label = "Songs"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
 
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 
@@ -360,39 +370,46 @@ class ScreenSelected(ScreenModal):
 
         label = "Add to playlist"
         button_top = TITLE_HEIGHT + SPACE
-        self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_add'].font_color = C_GREEN
         self.components['btn_add'].outline_color = C_GREEN
 
         label = "Add to playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_add_play'].font_color = C_GREEN
         self.components['btn_add_play'].outline_color = C_GREEN
 
         label = "Replace playlist and play"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_replace'].font_color = C_GREEN
         self.components['btn_replace'].outline_color = C_GREEN
 
         if self.type == 'artists':
-            label = "Albums of ..." #+ self.title
+            label = "Albums of ..."  # + self.title
             button_top += SPACE + BUTTON_HEIGHT
             button_width_2 = int((button_width - SPACE) / 2)
-            self.add_component(ButtonText('btn_artist_get_albums', self.screen, button_left, button_top, button_width_2, BUTTON_HEIGHT, label))
+            self.add_component(ButtonText('btn_artist_get_albums', self.screen, button_left, button_top, button_width_2,
+                                          BUTTON_HEIGHT, label))
 
-            label = "Songs of ..." #+ self.title
+            label = "Songs of ..."  # + self.title
             #button_top += SPACE + BUTTON_HEIGHT
-            self.add_component(ButtonText('btn_artist_get_songs', self.screen, button_left + button_width_2 + SPACE, button_top, button_width_2, BUTTON_HEIGHT, label))
+            self.add_component(ButtonText('btn_artist_get_songs', self.screen, button_left + button_width_2 + SPACE,
+                                          button_top, button_width_2, BUTTON_HEIGHT, label))
         elif self.type == 'albums':
-            label = "Songs of ..." #+ self.title
+            label = "Songs of ..."  # + self.title
             button_top += SPACE + BUTTON_HEIGHT
-            self.add_component(ButtonText('btn_album_get_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+            self.add_component(ButtonText('btn_album_get_songs', self.screen, button_left, button_top, button_width,
+                                          BUTTON_HEIGHT, label))
 
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
-        self.add_component(ButtonText("btn_cancel", self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText("btn_cancel", self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 

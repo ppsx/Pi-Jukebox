@@ -8,7 +8,8 @@
 __author__ = 'Mark Zwart'
 
 import os
-import sys, pygame
+import sys
+import pygame
 from pygame.locals import *
 import time
 

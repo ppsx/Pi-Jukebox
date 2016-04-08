@@ -309,7 +309,7 @@ class MPDController(object):
         time_elapsed = pygame.time.get_ticks() - self.__last_update_time
         if pygame.time.get_ticks() > self.update_interval and time_elapsed < self.update_interval:
             return False
-        self.__last_update_time = pygame.time.get_ticks() # Reset update
+        self.__last_update_time = pygame.time.get_ticks()  # Reset update
         return self.__parse_mpc_status()   # Parse mpc status output
 
     def current_song_changed(self):
@@ -364,7 +364,8 @@ class MPDController(object):
 
             :param percentage: Percentage at which volume should be set.
         """
-        if percentage < 0 or percentage > 100: return
+        if percentage < 0 or percentage > 100:
+            return
         try:
             self.mpd_client.setvol(percentage)
         except mpdlib.ConnectionError:
@@ -455,7 +456,8 @@ class MPDController(object):
                 if 'title' in i:
                     self.playlist_current.append(str(track_no) + '. ' + i['title'])
                 else:
-                    self.playlist_current.append(str(track_no) + '. ' + os.path.splitext(os.path.basename(i['file']))[0])
+                    self.playlist_current.append(str(track_no) + '. ' +
+                                                 os.path.splitext(os.path.basename(i['file']))[0])
         return self.playlist_current
 
     def playlist_current_playing_index_get(self):
@@ -776,7 +778,6 @@ class MPDController(object):
             #                content_list.append(('file', os.path.basename(entry['file'])))
         return content_list
 
-
     def playlist_add(self, tag_type, tag_name, play=False, clear_playlist=False):
         """ Adds songs to the current playlist
 
@@ -904,7 +905,7 @@ class MPDController(object):
         return self.__radio_mode
 
     def __radio_mode_set(self, radio_mode):
-        if self.__radio_mode == True and radio_mode == False:
+        if self.__radio_mode is True and radio_mode is False:
             try:
                 self.playlist_current_clear()
                 self.mpd_client.load(TEMP_PLAYLIST_NAME)

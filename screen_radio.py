@@ -6,7 +6,8 @@
 """
 __author__ = 'Mark Zwart'
 
-import sys, pygame
+import sys
+import pygame
 from pygame.locals import *
 import time
 import subprocess
@@ -27,7 +28,8 @@ class RadioBrowser(ItemList):
         :param screen_rect: The screen rect where the directory browser is drawn on.
     """
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_stations', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT, SCREEN_WIDTH - 4 * SPACE - ICO_WIDTH - LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        ItemList.__init__(self, 'list_stations', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
+                          SCREEN_WIDTH - 4 * SPACE - ICO_WIDTH - LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = C_GREY_LIGHTEST
@@ -52,7 +54,8 @@ class RadioBrowser(ItemList):
         """ Displays all songs or based on the first letter or partial string match.
 
             :param search: Search string, default = None
-            :param only_start: Boolean indicating whether the search string only matches the first letters, default = True
+            :param only_start: Boolean indicating whether the search string only matches the first letters,
+                               default = True
         """
         self.list = []
         self.radio_stations = config_file.radio_stations_get()
@@ -148,21 +151,25 @@ class ScreenSelected(ScreenModal):
         button_top = TITLE_HEIGHT + SPACE
 
         label = "Tune in"
-        self.add_component(ButtonText('btn_tune_in', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_tune_in', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_tune_in'].font_color = C_GREEN
         self.components['btn_tune_in'].outline_color = C_GREEN
 
         label = "Edit"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_edit', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_edit', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
 
         label = "Remove"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_remove', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_remove', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
 
         label = "Back"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 
@@ -216,18 +223,22 @@ class ScreenStation(ScreenModal):
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
         button_top = TITLE_HEIGHT + SPACE
-        self.add_component(ButtonText('btn_name', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, btn_name_label))
+        self.add_component(ButtonText('btn_name', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      btn_name_label))
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_URL', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, btn_URL_label))
+        self.add_component(ButtonText('btn_URL', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
+                                      btn_URL_label))
 
         label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT,
+                                      label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 
         label = "Ok"
-        self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
+        self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE,
+                                      button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
         self.components['btn_ok'].font_color = C_GREEN
         self.components['btn_ok'].outline_color = C_GREEN
 

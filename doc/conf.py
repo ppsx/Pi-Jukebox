@@ -108,7 +108,7 @@ html_theme = 'sphinx_rtd_theme'
 #html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ["_themes",]
+html_theme_path = ["_themes", ]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -184,22 +184,22 @@ htmlhelp_basename = 'pi-jukeboxdoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    #'papersize': 'letterpaper',
 
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    #'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
+    # Additional stuff for the LaTeX preamble.
+    #'preamble': '',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'pi-jukebox.tex', u'pi-jukebox Documentation',
-   u'Mark Zwart', 'manual'),
+    ('index', 'pi-jukebox.tex', u'pi-jukebox Documentation',
+     u'Mark Zwart', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -242,9 +242,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'pi-jukebox', u'pi-jukebox Documentation',
-   u'Mark Zwart', 'pi-jukebox', 'One line description of project.',
-   'Miscellaneous'),
+    ('index', 'pi-jukebox', u'pi-jukebox Documentation',
+     u'Mark Zwart', 'pi-jukebox', 'One line description of project.',
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

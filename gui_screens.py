@@ -6,7 +6,8 @@
 
 __author__ = 'Mark Zwart'
 
-import sys, pygame
+import sys
+import pygame
 from pygame.locals import *
 import time
 import math
@@ -72,7 +73,8 @@ class GestureDetector(object):
     def __determine_gesture_type(self):
         """ Determines the kind of gesture.
 
-            :return: The type of gesture [:py:const:GESTURE_CLICK, :py:const:GESTURE_SWIPE_DOWN, :py:const:GESTURE_SWIPE_UP, :py:const:GESTURE_SWIPE_LEFT, :py:const:GESTURE_SWIPE_RIGHT]
+            :return: The type of gesture [:py:const:GESTURE_CLICK, :py:const:GESTURE_SWIPE_DOWN,
+                     :py:const:GESTURE_SWIPE_UP, :py:const:GESTURE_SWIPE_LEFT, :py:const:GESTURE_SWIPE_RIGHT]
         """
         x = self.x_moved
         y = self.y_moved
@@ -147,8 +149,8 @@ class Screen(object):
             :return: The tag_name of the clicked component.
         """
         for key, value in self.components.items():
-            if (isinstance(value, ButtonIcon) or isinstance(value, ButtonText) or \
-                        isinstance(value, Switch) or isinstance(value, Slider) or isinstance(value, Picture)) and \
+            if (isinstance(value, ButtonIcon) or isinstance(value, ButtonText) or
+                isinstance(value, Switch) or isinstance(value, Slider) or isinstance(value, Picture)) and \
                     value.visible:
                 if value.x_pos <= x <= value.x_pos + value.width and value.y_pos <= y <= value.y_pos + value.height:
                     value.on_click(x, y)
@@ -160,7 +162,6 @@ class Screen(object):
             if isinstance(value, WidgetContainer) and value.visible:
                 if value.x_pos <= x <= value.x_pos + value.width and value.y_pos <= y <= value.y_pos + value.height:
                     return value.on_click(x, y)
-
 
     def on_swipe(self, x, y, swipe_type):
         """ Relays swipe to ItemList components for next(up)/previous(down) swipes for ItemLists.
@@ -337,15 +338,19 @@ class ScreenMessage(ScreenModal):
     def __init__(self, screen_rect, caption, text, message_type=None):
         ScreenModal.__init__(self, screen_rect, caption)
         if message_type == 'information':
-            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_INFO))
+            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE,
+                                       self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_INFO))
             self.title_color = C_GREEN
             self.outline_color = C_GREEN
         elif message_type == 'warning':
-            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
+            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE,
+                                       self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH,
+                                       ICO_WARNING))
             self.title_color = C_YELLOW
             self.outline_color = C_YELLOW
         elif message_type == 'error':
-            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ERROR))
+            self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE,
+                                       self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ERROR))
             self.title_color = C_RED
             self.outline_color = C_RED
         else:
@@ -357,7 +362,8 @@ class ScreenMessage(ScreenModal):
         height = self.window_height - y - 2 * SPACE - BUTTON_HEIGHT
         self.add_component(Memo('memo_text', self.screen, x, y, width, height, text))
         self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - SPACE - ICO_WIDTH,
-                                      self.window_y + self.window_height - SPACE - BUTTON_HEIGHT, ICO_WIDTH, BUTTON_HEIGHT, "Ok"))
+                                      self.window_y + self.window_height - SPACE - BUTTON_HEIGHT, ICO_WIDTH,
+                                      BUTTON_HEIGHT, "Ok"))
         self.components['btn_ok'].font_color = C_GREEN
         self.components['btn_ok'].outline_color = C_GREEN
 
@@ -382,7 +388,8 @@ class ScreenYesNo(ScreenModal):
         self.window_width -= 2 * self.window_x
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
-        self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
+        self.add_component(Picture('pic_icon', self.screen, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE,
+                                   ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
         self.title_color = C_RED
         self.outline_color = C_RED
 
@@ -393,11 +400,13 @@ class ScreenYesNo(ScreenModal):
         self.add_component(Memo('memo_text', self.screen, x, y, width, height, text))
 
         y = self.window_y + self.window_height - SPACE - BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_no', self.screen, self.window_x + SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT, "No"))
+        self.add_component(ButtonText('btn_no', self.screen, self.window_x + SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT,
+                                      "No"))
         self.components['btn_no'].font_color = C_RED
         self.components['btn_no'].outline_color = C_RED
 
-        self.add_component(ButtonText('btn_yes', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT, "Yes"))
+        self.add_component(ButtonText('btn_yes', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE -
+                                      SPACE, y, KEY_WIDTH_HUGE, BUTTON_HEIGHT, "Yes"))
         self.components['btn_yes'].font_color = C_GREEN
         self.components['btn_yes'].outline_color = C_GREEN
 

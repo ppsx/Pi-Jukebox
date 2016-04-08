@@ -237,7 +237,7 @@ class Picture(Widget):
         if self.__image.get_width() > self.width:
             factor_w = float(self.width) / self.__image.get_width()
         if self.__image.get_height() > self.height:
-            factor_h = float(self.height) /  self.__image.get_height()
+            factor_h = float(self.height) / self.__image.get_height()
         factor = min(factor_w, factor_h)
         if factor != 1.0:
             # need to shrink the image
@@ -310,7 +310,7 @@ class LabelText(Widget):
         SCREEN.blit(background, (self.x_pos, self.y_pos))
         # Draw outline
         if self.outline_show:
-            pygame.draw.rect(self.screen, self.outline_color, self.rect,1)
+            pygame.draw.rect(self.screen, self.outline_color, self.rect, 1)
         # Determining caption width and height
         i = 1
         # Determine maximum width of line
@@ -387,7 +387,7 @@ class Memo(Widget):
 
     def transparent_set(self, value):
         """ Turns background transparent or opaque. """
-        if value == True:
+        if value is True:
             self.background_alpha = 0
         else:
             self.background_alpha = 255
@@ -500,7 +500,7 @@ class ButtonText(LabelText):
 
     def draw(self, text=None):
         self.screen.fill(self.button_color, self.button_rect)  # Background
-        super(ButtonText,self).draw()
+        super(ButtonText, self).draw()
         pygame.display.update(self.rect)
 
 
@@ -568,7 +568,8 @@ class ItemList(Widget):
         :ivar item_alignment_vertical: Vertical alignment of an item's text, default = :py:const:VERT_MID.
         :ivar item_outline_visible: Boolean for displaying the rectangle of an item, default = False.
 
-        :ivar active_item_index: The index of the currently active list item. It differs from selected in that it is set by the program and not by the user, default = -1.
+        :ivar active_item_index: The index of the currently active list item. It differs from selected in that it is set
+                                 by the program and not by the user, default = -1.
         :ivar item_active_color: The active list item for color, default = :py:const:BLUE.
         :ivar item_active_background_color: The active list item background color, default = :py:const:WHITE.
         :ivar item_selected_index: The index of the selected list item, default = -1.
@@ -664,8 +665,9 @@ class ItemList(Widget):
         if x_pos < 0 or x_pos > self.width or y_pos < 0:  # Check whether the click was outside the control
             self.item_selected_index = -1
             return None
+        # Check whether no item was clicked
         if y_pos > self.height or (
-                self.page_showing_index * self.items_per_page + (y_pos + 2)) / self.item_height >= len(self.list):  # Check whether no item was clicked
+                self.page_showing_index * self.items_per_page + (y_pos + 2)) / self.item_height >= len(self.list):
             self.item_selected_index = -1
             return None
         self.item_selected_index = (self.page_showing_index * self.items_per_page + (y_pos + 2) / self.item_height)
@@ -688,7 +690,8 @@ class ItemList(Widget):
 
     def item_selected_get(self):
         """ :return: selected item's text """
-        return self.list[self.item_selected_index] if self.item_selected_index >= 0 and self.item_selected_index < len(self.list) else None
+        return self.list[self.item_selected_index] if self.item_selected_index >= 0 and \
+            self.item_selected_index < len(self.list) else None
 
     def on_click(self, x_pos, y_pos):
         """ Relays click action to a list item.

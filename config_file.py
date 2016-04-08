@@ -81,7 +81,7 @@ class ConfigFile(object):
         dict1 = {}
         options = self.parser.options(section)
         for option in options:
-           setting = self.parser.getboolean(section, option)
+            setting = self.parser.getboolean(section, option)
         return dict1
 
 config_file = ConfigFile()
