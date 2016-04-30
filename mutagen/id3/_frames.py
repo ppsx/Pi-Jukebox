@@ -7,18 +7,16 @@
 # published by the Free Software Foundation.
 
 import zlib
-from warnings import warn
 from struct import unpack
 
-from ._util import (
-    ID3Warning, ID3JunkFrameError, ID3EncryptionUnsupportedError, unsynch)
+from ._util import ID3JunkFrameError, ID3EncryptionUnsupportedError, unsynch
 from ._specs import (
     BinaryDataSpec, StringSpec, Latin1TextSpec, EncodedTextSpec, ByteSpec,
     EncodingSpec, ASPIIndexSpec, SizedIntegerSpec, IntegerSpec,
     VolumeAdjustmentsSpec, VolumePeakSpec, VolumeAdjustmentSpec,
     ChannelSpec, MultiSpec, SynchronizedTextSpec, KeyEventSpec, TimeStampSpec,
     EncodedNumericPartTextSpec, EncodedNumericTextSpec, SpecError)
-from .._compat import text_type, string_types, swap_to_string, iteritems
+from .._compat import text_type, string_types, swap_to_string, iteritems, izip
 
 
 def is_valid_frame_id(frame_id):
@@ -63,7 +61,7 @@ class Frame(object):
             # ask the sub class to fill in our data
             other._to_other(self)
         else:
-            for checker, val in zip(self._framespec, args):
+            for checker, val in izip(self._framespec, args):
                 setattr(self, checker.name, checker.validate(self, val))
             for checker in self._framespec[len(args):]:
                 try:
@@ -120,9 +118,8 @@ class Frame(object):
         return '%s(%s)' % (type(self).__name__, ', '.join(kw))
 
     def _readData(self, data):
-        """Raises ID3JunkFrameError"""
+        """Raises ID3JunkFrameError; Returns leftover data"""
 
-        odata = data
         for reader in self._framespec:
             if len(data):
                 try:
@@ -133,10 +130,7 @@ class Frame(object):
                 raise ID3JunkFrameError("no data left")
             setattr(self, reader.name, value)
 
-        if data.strip(b'\x00'):
-            warn('Leftover data: %s: %r (from %r)' % (
-                 type(self).__name__, data, odata),
-                 ID3Warning)
+        return data
 
     def _writeData(self):
         data = []
@@ -173,8 +167,12 @@ class Frame(object):
             if tflags & Frame.FLAG24_UNSYNCH or id3.f_unsynch:
                 try:
                     data = unsynch.decode(data)
-                except ValueError as err:
-                    warn('%s: %r' % (err, data), ID3Warning)
+                except ValueError:
+                    # Some things write synch-unsafe data with either the frame
+                    # or global unsynch flag set. Try to load them as is.
+                    # https://bitbucket.org/lazka/mutagen/issue/210
+                    # https://bitbucket.org/lazka/mutagen/issue/223
+                    pass
             if tflags & Frame.FLAG24_ENCRYPT:
                 raise ID3EncryptionUnsupportedError
             if tflags & Frame.FLAG24_COMPRESS:
@@ -240,9 +238,8 @@ class FrameOpt(Frame):
                 setattr(other, checker.name, getattr(self, checker.name))
 
     def _readData(self, data):
-        """Raises ID3JunkFrameError"""
+        """Raises ID3JunkFrameError; Returns leftover data"""
 
-        odata = data
         for reader in self._framespec:
             if len(data):
                 try:
@@ -264,10 +261,7 @@ class FrameOpt(Frame):
                     break
                 setattr(self, reader.name, value)
 
-        if data.strip(b'\x00'):
-            warn('Leftover data: %s: %r (from %r)' % (
-                 type(self).__name__, data, odata),
-                 ID3Warning)
+        return data
 
     def _writeData(self):
         data = []

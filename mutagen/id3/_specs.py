@@ -8,11 +8,81 @@
 
 import struct
 from struct import unpack, pack
-from warnings import warn
 
-from .._compat import text_type, chr_, PY3, swap_to_string, string_types
-from .._util import total_ordering, decode_terminated, enum
-from ._util import ID3Warning, BitPaddedInt
+from .._compat import text_type, chr_, PY3, swap_to_string, string_types, \
+    xrange
+from .._util import total_ordering, decode_terminated, enum, izip
+from ._util import BitPaddedInt
+
+
+@enum
+class PictureType(object):
+    """Enumeration of image types defined by the ID3 standard for the APIC
+    frame, but also reused in WMA/FLAC/VorbisComment.
+    """
+
+    OTHER = 0
+    """Other"""
+
+    FILE_ICON = 1
+    """32x32 pixels 'file icon' (PNG only)"""
+
+    OTHER_FILE_ICON = 2
+    """Other file icon"""
+
+    COVER_FRONT = 3
+    """Cover (front)"""
+
+    COVER_BACK = 4
+    """Cover (back)"""
+
+    LEAFLET_PAGE = 5
+    """Leaflet page"""
+
+    MEDIA = 6
+    """Media (e.g. label side of CD)"""
+
+    LEAD_ARTIST = 7
+    """Lead artist/lead performer/soloist"""
+
+    ARTIST = 8
+    """Artist/performer"""
+
+    CONDUCTOR = 9
+    """Conductor"""
+
+    BAND = 10
+    """Band/Orchestra"""
+
+    COMPOSER = 11
+    """Composer"""
+
+    LYRICIST = 12
+    """Lyricist/text writer"""
+
+    RECORDING_LOCATION = 13
+    """Recording Location"""
+
+    DURING_RECORDING = 14
+    """During recording"""
+
+    DURING_PERFORMANCE = 15
+    """During performance"""
+
+    SCREEN_CAPTURE = 16
+    """Movie/video screen capture"""
+
+    FISH = 17
+    """A bright coloured fish"""
+
+    ILLUSTRATION = 18
+    """Illustration"""
+
+    BAND_LOGOTYPE = 19
+    """Band/artist logotype"""
+
+    PUBLISHER_LOGOTYPE = 20
+    """Publisher/Studio logotype"""
 
 
 class SpecError(Exception):
@@ -88,10 +158,19 @@ class SizedIntegerSpec(Spec):
 
 @enum
 class Encoding(object):
+    """Text Encoding"""
+
     LATIN1 = 0
+    """ISO-8859-1"""
+
     UTF16 = 1
+    """UTF-16 with BOM"""
+
     UTF16BE = 2
+    """UTF-16BE without BOM"""
+
     UTF8 = 3
+    """UTF-8"""
 
 
 class EncodingSpec(ByteSpec):
@@ -247,7 +326,7 @@ class MultiSpec(Spec):
                 data.append(self.specs[0].write(frame, v))
         else:
             for record in value:
-                for v, s in zip(record, self.specs):
+                for v, s in izip(record, self.specs):
                     data.append(s.write(frame, v))
         return b''.join(data)
 
@@ -261,14 +340,14 @@ class MultiSpec(Spec):
                 return [self.specs[0].validate(frame, v) for v in value]
             else:
                 return [
-                    [s.validate(frame, v) for (v, s) in zip(val, self.specs)]
+                    [s.validate(frame, v) for (v, s) in izip(val, self.specs)]
                     for val in value]
         raise ValueError('Invalid MultiSpec data: %r' % value)
 
     def _validate23(self, frame, value, **kwargs):
         if len(self.specs) != 1:
             return [[s._validate23(frame, v, **kwargs)
-                     for (v, s) in zip(val, self.specs)]
+                     for (v, s) in izip(val, self.specs)]
                     for val in value]
 
         spec = self.specs[0]
@@ -397,7 +476,7 @@ class TimeStampSpec(EncodedTextSpec):
 
 class ChannelSpec(ByteSpec):
     (OTHER, MASTER, FRONTRIGHT, FRONTLEFT, BACKRIGHT, BACKLEFT, FRONTCENTRE,
-     BACKCENTRE, SUBWOOFER) = range(9)
+     BACKCENTRE, SUBWOOFER) = xrange(9)
 
 
 class VolumeAdjustmentSpec(Spec):
@@ -432,7 +511,7 @@ class VolumePeakSpec(Spec):
         if vol_bytes + 1 > len(data):
             raise SpecError("not enough frame data")
         shift = ((8 - (bits & 7)) & 7) + (4 - vol_bytes) * 8
-        for i in range(1, vol_bytes + 1):
+        for i in xrange(1, vol_bytes + 1):
             peak *= 256
             peak += data_array[i]
         peak *= 2 ** shift
@@ -531,12 +610,14 @@ class ASPIIndexSpec(Spec):
             format = "B"
             size = 1
         else:
-            warn("invalid bit count in ASPI (%d)" % frame.b, ID3Warning)
-            return [], data
+            raise SpecError("invalid bit count in ASPI (%d)" % frame.b)
 
         indexes = data[:frame.N * size]
         data = data[frame.N * size:]
-        return list(struct.unpack(">" + format * frame.N, indexes)), data
+        try:
+            return list(struct.unpack(">" + format * frame.N, indexes)), data
+        except struct.error as e:
+            raise SpecError(e)
 
     def write(self, frame, values):
         if frame.b == 16:

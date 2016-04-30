@@ -1,4 +1,5 @@
 # Copyright (C) 2005  Michael Urman
+# -*- coding: utf-8 -*-
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -7,6 +8,7 @@
 import warnings
 
 from mutagen._util import DictMixin
+from mutagen._compat import izip
 
 
 class FileType(DictMixin):
@@ -87,7 +89,20 @@ class FileType(DictMixin):
             return self.tags.keys()
 
     def delete(self, filename=None):
-        """Remove tags from a file."""
+        """Remove tags from a file.
+
+        In cases where the tagging format is independent of the file type
+        (for example `mutagen.ID3`) all traces of the tagging format will
+        be removed.
+        In cases where the tag is part of the file type, all tags and
+        padding will be removed.
+
+        The tags attribute will be cleared as well if there is one.
+
+        Does nothing if the file has no tags.
+
+        :raises mutagen.MutagenError: if deleting wasn't possible
+        """
 
         if self.tags is not None:
             if filename is None:
@@ -99,7 +114,10 @@ class FileType(DictMixin):
             return self.tags.delete(filename)
 
     def save(self, filename=None, **kwargs):
-        """Save metadata tags."""
+        """Save metadata tags.
+
+        :raises mutagen.MutagenError: if saving wasn't possible
+        """
 
         if filename is None:
             filename = self.filename
@@ -107,10 +125,9 @@ class FileType(DictMixin):
             warnings.warn(
                 "save(filename=...) is deprecated, reload the file",
                 DeprecationWarning)
+
         if self.tags is not None:
             return self.tags.save(filename, **kwargs)
-        else:
-            raise ValueError("no tags in file")
 
     def pprint(self):
         """Print stream information and comment key=value pairs."""
@@ -126,7 +143,8 @@ class FileType(DictMixin):
     def add_tags(self):
         """Adds new tags to the file.
 
-        Raises if tags already exist.
+        :raises mutagen.MutagenError: if tags already exist or adding is not
+            possible.
         """
 
         raise NotImplementedError
@@ -218,17 +236,15 @@ def File(filename, options=None, easy=False):
     if not options:
         return None
 
-    fileobj = open(filename, "rb")
-    try:
+    with open(filename, "rb") as fileobj:
         header = fileobj.read(128)
         # Sort by name after score. Otherwise import order affects
         # Kind sort order, which affects treatment of things with
         # equals scores.
         results = [(Kind.score(filename, fileobj, header), Kind.__name__)
                    for Kind in options]
-    finally:
-        fileobj.close()
-    results = list(zip(results, options))
+
+    results = list(izip(results, options))
     results.sort()
     (score, name), Kind = results[-1]
     if score > 0:
