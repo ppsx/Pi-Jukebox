@@ -16,12 +16,12 @@
 # along with python-mpd2.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import socket
 import sys
+import socket
 import warnings
 from collections import Callable
 
-VERSION = (0, 5, 4)
+VERSION = (0, 5, 5)
 HELLO_PREFIX = "OK MPD "
 ERROR_PREFIX = "ACK "
 SUCCESS = "OK"
@@ -29,11 +29,19 @@ NEXT = "list_OK"
 
 IS_PYTHON2 = sys.version_info < (3, 0)
 if IS_PYTHON2:
-    decode_str = lambda s: s.decode("utf-8")
-    encode_str = lambda s: s if type(s) == str else (unicode(s)).encode("utf-8")
+    def decode_str(s):
+        return s.decode("utf-8")
+
+    def encode_str(s):
+        if type(s) == str:
+            return s
+        else:
+            return (unicode(s)).encode("utf-8")
 else:
-    decode_str = lambda s: s
-    encode_str = lambda s: str(s)
+
+    def decode_str(s):
+        return s
+    encode_str = str
 
 try:
     from logging import NullHandler
@@ -78,10 +86,8 @@ class _NotConnected(object):
     def __getattr__(self, attr):
         return self._dummy
 
-    @staticmethod
     def _dummy(*args):
         raise ConnectionError("Not connected")
-
 
 _commands = {
     # Status Commands
@@ -231,12 +237,15 @@ class MPDClient(object):
 
     def _execute(self, command, args, retval):
         if self._iterating:
-            raise IteratingError("Cannot execute '%s' while iterating" % command)
+            raise IteratingError("Cannot execute '%s' while iterating" %
+                                 command)
         if self._pending:
-            raise PendingCommandError("Cannot execute '%s' with pending commands" % command)
+            raise PendingCommandError("Cannot execute '%s' with "
+                                      "pending commands" % command)
         if self._command_list is not None:
             if not isinstance(retval, Callable):
-                raise CommandListError("'%s' not allowed in command list" % command)
+                raise CommandListError("'%s' not allowed in command list" %
+                                       command)
             self._write_command(command, args)
             self._command_list.append(retval)
         else:
@@ -309,7 +318,8 @@ class MPDClient(object):
         for key, value in self._read_pairs():
             if key != seen:
                 if seen is not None:
-                    raise ProtocolError("Expected key '%s', got '%s'" % (seen, key))
+                    raise ProtocolError("Expected key '%s', got '%s'" %
+                                        (seen, key))
                 seen = key
             yield value
 
@@ -437,7 +447,8 @@ class MPDClient(object):
 
     def noidle(self):
         if not self._pending or self._pending[0] != 'idle':
-            raise CommandError('cannot send noidle if send_idle was not called')
+            msg = 'cannot send noidle if send_idle was not called'
+            raise CommandError(msg)
         del self._pending[0]
         self._write_command("noidle")
         return self._fetch_list()
@@ -503,12 +514,14 @@ class MPDClient(object):
 
     def _gettimeout(self):
         return self._timeout
+
     timeout = property(_gettimeout, _settimeout)
     _timeout = None
     idletimeout = None
 
     def connect(self, host, port, timeout=None):
-        logger.info("Calling MPD connect(%r, %r, timeout=%r)", host, port, timeout)
+        logger.info("Calling MPD connect(%r, %r, timeout=%r)", host,
+                    port, timeout)
         if self._sock is not None:
             raise ConnectionError("Already connected")
         if timeout is not None:
@@ -525,10 +538,16 @@ class MPDClient(object):
             self._rfile = self._sock.makefile("r")
             self._wfile = self._sock.makefile("w")
         else:
-            # Force UTF-8 encoding, since this is dependant from the LC_CTYPE
-            # locale.
-            self._rfile = self._sock.makefile("r", encoding="utf-8")
-            self._wfile = self._sock.makefile("w", encoding="utf-8")
+            # - Force UTF-8 encoding, since this is dependant from the LC_CTYPE
+            #   locale.
+            # - by setting newline explicit, we force to send '\n' also on
+            #   windows
+            self._rfile = self._sock.makefile("r",
+                                              encoding="utf-8",
+                                              newline="\n")
+            self._wfile = self._sock.makefile("w",
+                                              encoding="utf-8",
+                                              newline="\n")
 
         try:
             self._hello()
@@ -538,11 +557,13 @@ class MPDClient(object):
 
     def disconnect(self):
         logger.info("Calling MPD disconnect()")
-        if not self._rfile is None:
+        if (self._rfile is not None
+                and not isinstance(self._rfile, _NotConnected)):
             self._rfile.close()
-        if not self._wfile is None:
+        if (self._wfile is not None
+                and not isinstance(self._wfile, _NotConnected)):
             self._wfile.close()
-        if not self._sock is None:
+        if self._sock is not None:
             self._sock.close()
         self._reset()
 
