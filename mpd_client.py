@@ -10,7 +10,7 @@ import sys
 from collections import deque
 
 import mpd as mpdlib
-from mutagen import File
+from tinytag import TinyTag
 from settings import DEFAULT_COVER
 
 MPD_TYPE_ARTIST = 'artist'
@@ -99,15 +99,9 @@ class MPDNowPlaying(object):
         if self.file == "" or self.playing_type == 'radio':
             return DEFAULT_COVER
         try:
-            music_file = File(self.music_directory + self.file)
-        except IOError:
-            return DEFAULT_COVER
-        cover_art = None
-        if 'covr' in music_file:
-            cover_art = music_file.tags['covr'].data
-        elif 'APIC:' in music_file:
-            cover_art = music_file.tags['APIC:'].data
-        else:
+            tag = TinyTag.get(os.path.join(self.music_directory, self.file), image=True)
+            cover_art = tag.get_image()
+        except:
             return DEFAULT_COVER
 
         with open(dest_file_name, 'wb') as img:
