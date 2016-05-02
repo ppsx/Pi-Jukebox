@@ -46,10 +46,7 @@ class MPDNowPlaying(object):
                 self.file = now_playing['file']
             except KeyError:
                 return
-            if self.file[:7] == "http://":
-                self.playing_type = 'radio'
-            else:
-                self.playing_type = 'file'
+            self.playing_type = 'file'
 
             if 'title' in now_playing:
                 self.title = now_playing['title']  # Song title of current song
@@ -67,12 +64,6 @@ class MPDNowPlaying(object):
                 current_total = self.str_to_float(now_playing['time'])
                 self.__time_total_sec = current_total
                 self.time_total = self.make_time_string(current_total)  # Total time current
-            elif self.playing_type == 'radio':
-                if 'name' in now_playing:
-                    self.album = now_playing['name']  # The radio station name
-                else:
-                    self.album = "Unknown"
-                self.artist = ""
         elif now_playing is None:  # Changed to no current song
             self.__now_playing = None
             self.title = ""
@@ -87,16 +78,13 @@ class MPDNowPlaying(object):
         if self.__time_current_sec != seconds:  # Playing time current
             self.__time_current_sec = seconds
             self.time_current = self.make_time_string(seconds)
-            if self.playing_type != 'radio':
-                self.time_percentage = int(self.__time_current_sec / self.__time_total_sec * 100)
-            else:
-                self.time_percentage = 0
+            self.time_percentage = int(self.__time_current_sec / self.__time_total_sec * 100)
             return True
         else:
             return False
 
     def cover_art_get(self, dest_file_name=DEFAULT_COVER):
-        if self.file == "" or self.playing_type == 'radio':
+        if self.file == "":
             return DEFAULT_COVER
         try:
             tag = TinyTag.get(os.path.join(self.music_directory, self.file), image=True)
@@ -112,7 +100,7 @@ class MPDNowPlaying(object):
         minutes = int(seconds / 60)
         seconds_left = int(round(seconds - (minutes * 60), 0))
         time_string = str(minutes) + ':'
-        seconds_string = ''
+        # seconds_string = ''
         if seconds_left < 10:
             seconds_string = '0' + str(seconds_left)
         else:
@@ -143,7 +131,6 @@ class MPDController(object):
         self.single = False
         self.consume = False
         self.updating_library = False
-        self.__radio_mode = False
         self.now_playing = MPDNowPlaying()
         self.events = deque([])  # Queue of mpd events
         # Database search results
@@ -179,34 +166,7 @@ class MPDController(object):
             self.songs_get()
         except Exception:
             pass
-        self.__starts_with_radio()
-        # See if currently playing is radio station
         return True
-
-    def __starts_with_radio(self):
-        was_playing = False  # Indicates whether mpd was playing on start
-        now_playing = MPDNowPlaying()
-        try:
-            now_playing.now_playing_set(self.mpd_client.currentsong())  # Get currenly plating info
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            now_playing.now_playing_set(self.mpd_client.currentsong())
-        if self.player_control_get() == 'play':
-            was_playing = True
-        if now_playing.playing_type == 'radio':
-            station_URL = now_playing.file  # If now playing is radio station temporarily store
-            self.playlist_current_clear()  # Clear playlist
-            try:
-                self.__radio_mode = False
-                self.mpd_client.load(TEMP_PLAYLIST_NAME)  # Try to load previously temporarily stored playlist
-                self.playlist_current_get()  # Set playlist
-            except Exception:
-                pass
-            self.__radio_mode = True  # Turn on radio mode
-            self.mpd_client.clear()  # Clear playlist
-            self.mpd_client.addid(station_URL)  # Reload station
-            if was_playing:
-                self.mpd_client.play(0)  # Resume playing
 
     def disconnect(self):
         """ Closes the connection to the mpd server. """
@@ -234,10 +194,6 @@ class MPDController(object):
 
         if self.__now_playing != now_playing and len(now_playing) > 0:  # Changed to a new song
             self.now_playing.now_playing_set(now_playing)
-            if self.now_playing.playing_type == 'radio':
-                self.__radio_mode = True
-            else:
-                self.__radio_mode = False
             self.__now_playing_changed = True
             if self.__now_playing is None or self.__now_playing.track_file != now_playing.track_file:
                 self.events.append('playing_file')
@@ -345,8 +301,6 @@ class MPDController(object):
 
             :param index: Playlist item index
         """
-        if self.__radio_mode:
-            self.__radio_mode_set(False)
         try:
             self.mpd_client.play(index - 1)
         except mpdlib.ConnectionError:
@@ -436,33 +390,29 @@ class MPDController(object):
             self.mpd_client.consume(0)
 
     def playlist_current_get(self):
-        if not self.__radio_mode:
-            self.playlist_current = []
-            playlist_info = []
-            track_no = 0
-            try:
-                playlist_info = self.mpd_client.playlistinfo()
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                playlist_info = self.mpd_client.playlistinfo()
-            for i in playlist_info:
-                track_no += 1
-                if 'title' in i:
-                    self.playlist_current.append(str(track_no) + '. ' + i['title'])
-                else:
-                    self.playlist_current.append(str(track_no) + '. ' +
-                                                 os.path.splitext(os.path.basename(i['file']))[0])
+        self.playlist_current = []
+        # playlist_info = []
+        track_no = 0
+        try:
+            playlist_info = self.mpd_client.playlistinfo()
+        except mpdlib.ConnectionError:
+            self.mpd_client.connect(self.host, self.port)
+            playlist_info = self.mpd_client.playlistinfo()
+        for i in playlist_info:
+            track_no += 1
+            if 'title' in i:
+                self.playlist_current.append(str(track_no) + '. ' + i['title'])
+            else:
+                self.playlist_current.append(str(track_no) + '. ' +
+                                             os.path.splitext(os.path.basename(i['file']))[0])
         return self.playlist_current
 
     def playlist_current_playing_index_get(self):
         """
         :return: The track number playing on the current playlist.
         """
-        if self.__radio_mode:
-            return -1
-        else:
-            self.status_get()
-            return self.__playlist_current_playing_index
+        self.status_get()
+        return self.__playlist_current_playing_index
 
     def playlist_current_playing_index_set(self, index):
         """ Starts playing item _index_ of the current playlist.
@@ -470,8 +420,6 @@ class MPDController(object):
         :param index: The track number to be played
         :return: The current playing index
         """
-        if self.__radio_mode:
-            self.__radio_mode_set(False)
         if index > 0 and index <= self.playlist_current_count():
             try:
                 self.mpd_client.playid(index)
@@ -494,8 +442,7 @@ class MPDController(object):
         except mpdlib.ConnectionError:
             self.mpd_client.connect(self.host, self.port)
             self.mpd_client.clear()
-        if not self.__radio_mode:
-            self.playlist_current = []
+        self.playlist_current = []
 
     def library_update(self):
         """ Updates the mpd library """
@@ -548,7 +495,7 @@ class MPDController(object):
         :param part: Search string.
         :return: A list with search results.
         """
-        all_results = []
+        # all_results = []
         try:
             all_results = self.mpd_client.list(tag_type)
         except mpdlib.ConnectionError:
@@ -759,7 +706,7 @@ class MPDController(object):
         :param path: Recurses through directories
         :return:
         """
-        content_list = []
+        # content_list = []
         try:
             content_list = self.mpd_client.lsinfo(path)
         except mpdlib.ConnectionError:
@@ -780,8 +727,6 @@ class MPDController(object):
         :param play: Boolean indicating whether you want to start playing what was just added.
         :param clear_playlist: Boolean indicating whether to remove all previous entries from the current playlist.
         """
-        if self.__radio_mode:
-            self.__radio_mode_set(False)
         if clear_playlist:
             self.playlist_current_clear()
         i = self.playlist_current_count()
@@ -830,8 +775,6 @@ class MPDController(object):
         :param play: Boolean indicating whether you want to start playing what was just added.
         :param clear_playlist: Boolean indicating whether to remove all previous entries from the current playlist.
         """
-        if self.__radio_mode:
-            self.__radio_mode_set(False)
         if clear_playlist:
             self.playlist_current_clear()
         i = self.playlist_current_count()
@@ -849,8 +792,6 @@ class MPDController(object):
         :param play: Boolean indicating whether you want to start playing what was just added.
         :param clear_playlist: Boolean indicating whether to remove all previous entries from the current playlist.
         """
-        if self.__radio_mode:
-            self.__radio_mode_set(False)
         if clear_playlist:
             self.playlist_current_clear()
         i = self.playlist_current_count()
@@ -868,8 +809,6 @@ class MPDController(object):
         :param play: Boolean indicating whether you want to start playing what was just added.
         :param clear_playlist: Boolean indicating whether to remove all previous entries from the current playlist.
         """
-        if self.__radio_mode:
-            self.__radio_mode_set(False)
         if clear_playlist:
             self.playlist_current_clear()
         i = self.playlist_current_count()
@@ -882,31 +821,6 @@ class MPDController(object):
                 self.mpd_client.addid(song['file'])
         if play:
             self.play_playlist_item(i + 1)
-
-    def radio_station_start(self, station_URL):
-        self.playlist_current_get()
-        self.__radio_mode = True
-        try:
-            self.mpd_client.rm(TEMP_PLAYLIST_NAME)
-        except:
-            pass
-        self.mpd_client.save(TEMP_PLAYLIST_NAME)
-        self.playlist_current_clear()
-        self.mpd_client.addid(station_URL)
-        self.mpd_client.play(0)
-
-    def radio_mode_get(self):
-        return self.__radio_mode
-
-    def __radio_mode_set(self, radio_mode):
-        if self.__radio_mode is True and radio_mode is False:
-            try:
-                self.playlist_current_clear()
-                self.mpd_client.load(TEMP_PLAYLIST_NAME)
-                self.mpd_client.rm(TEMP_PLAYLIST_NAME)
-            except Exception:
-                pass
-        self.__radio_mode = radio_mode
 
 
 mpd = MPDController()

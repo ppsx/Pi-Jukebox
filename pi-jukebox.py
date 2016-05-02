@@ -1,7 +1,8 @@
 """
 **pi-jukebox.py**: Main file
 """
-__author__ = 'Mark Zwart'
+
+
 import sys
 import pygame
 from pygame.locals import *
@@ -16,8 +17,10 @@ from mpd_client import *
 from screen_player import *
 from screen_library import *
 from screen_directory import *
-from screen_radio import *
 from screen_settings import *
+
+
+__author__ = 'Mark Zwart'
 
 
 class PiJukeboxScreens(Screens):
@@ -33,7 +36,6 @@ class PiJukeboxScreens(Screens):
         self.screen_list.append(ScreenPlaylist(SCREEN))  # Create player with playlist screen
         self.screen_list.append(ScreenLibrary(SCREEN))  # Create library browsing screen
         self.screen_list.append(ScreenDirectory(SCREEN))  # Create directory browsing screen
-        self.screen_list.append(ScreenRadio(SCREEN))  # Create radio station managing screen
 
     def mpd_updates(self):
         """ Updates a current screen if it shows mpd relevant content. """
@@ -54,8 +56,6 @@ def apply_settings():
     mpd.host = config_file.setting_get('MPD Settings', 'host')
     mpd.port = int(config_file.setting_get('MPD Settings', 'port'))
     mpd.music_directory_set(config_file.setting_get('MPD Settings', 'music directory'))
-    if not config_file.section_exists('Radio stations'):
-        config_file.setting_set('Radio stations', "Radio Swiss Jazz", "http://stream.srg-ssr.ch/m/rsj/mp3_128")
 
 
 def main():

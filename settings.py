@@ -5,13 +5,12 @@
 ================================================
 
 """
-__author__ = 'Mark Zwart'
 
 import os
-import sys
 import pygame
 from pygame.locals import *
-import time
+
+__author__ = 'Mark Zwart'
 
 
 FONT_SIZE = 20
@@ -112,16 +111,12 @@ ICO_SWITCH_OFF = RESOURCES + 'switch-off.png'
 # General icons
 ICO_PLAYER_FILE = RESOURCES + 'main-playing-file.png'
 ICO_PLAYER_FILE_ACTIVE = RESOURCES + 'main-playing-file-active.png'
-ICO_PLAYER_RADIO = RESOURCES + 'main-playing-radio.png'
-ICO_PLAYER_RADIO_ACTIVE = RESOURCES + 'main-playing-radio-active.png'
 ICO_PLAYLIST = RESOURCES + 'main-playlist.png'
 ICO_PLAYLIST_ACTIVE = RESOURCES + 'main-playlist-active.png'
 ICO_LIBRARY = RESOURCES + 'main-library.png'
 ICO_LIBRARY_ACTIVE = RESOURCES + 'main-library-active.png'
 ICO_DIRECTORY = RESOURCES + 'main-directory.png'
 ICO_DIRECTORY_ACTIVE = RESOURCES + 'main-directory-active.png'
-ICO_RADIO = RESOURCES + 'main-radio.png'
-ICO_RADIO_ACTIVE = RESOURCES + 'main-radio-active.png'
 ICO_SETTINGS = RESOURCES + 'main-settings.png'
 
 # Player icons
@@ -153,9 +148,6 @@ ICO_PLAYLISTS_ACTIVE = RESOURCES + 'filter-playlists-active.png'
 ICO_FOLDER_ROOT = RESOURCES + 'folder-root.png'
 ICO_FOLDER_UP = RESOURCES + 'folder-up.png'
 
-# Radio icons
-ICO_STATION_ADD = RESOURCES + 'station-add.png'
-
 # Standard info icons
 ICO_INFO = RESOURCES + 'icon-info.png'
 ICO_WARNING = RESOURCES + 'icon-warning.png'
@@ -163,7 +155,6 @@ ICO_ERROR = RESOURCES + 'icon-warning.png'
 
 # default covers
 DEFAULT_COVER = RESOURCES + 'cover-files.png'
-COVER_ART_RADIO = RESOURCES + 'cover-radio.png'
 
 # Special keyboard icons
 ICO_SHIFT = RESOURCES + 'keys-shift.png'

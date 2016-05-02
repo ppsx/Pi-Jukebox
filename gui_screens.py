@@ -4,15 +4,14 @@
 ======================================================================
 """
 
-__author__ = 'Mark Zwart'
-
-import sys
-import pygame
-from pygame.locals import *
-import time
-import math
 from gui_widgets import *
 from settings import *
+# import pygame
+# from pygame.locals import *
+
+
+__author__ = 'Mark Zwart'
+
 
 """ Mouse related variables """
 GESTURE_MOVE_MIN = 50  # Minimum movement in pixels to call it a move
@@ -33,6 +32,7 @@ GESTURE_DRAG_HORIZONTAL = 7
 class GestureDetector(object):
     """ Class for detecint mouse gestures
     """
+
     def __init__(self):
         self.gesture = GESTURE_NONE
         self.x_start = 0
@@ -54,7 +54,7 @@ class GestureDetector(object):
 
         gesture_ended = False
 
-        mouse_down_time = pygame.time.get_ticks()  # Start timer to detect long mouse clicks
+        # mouse_down_time = pygame.time.get_ticks()  # Start timer to detect long mouse clicks
         self.x_start, self.y_start = pygame.mouse.get_pos()  # Get click position (= start position for swipe)
         pygame.mouse.get_rel()  # Start tracking mouse movement
         mouse_down_time = pygame.time.get_ticks()
@@ -150,7 +150,7 @@ class Screen(object):
         """
         for key, value in self.components.items():
             if (isinstance(value, ButtonIcon) or isinstance(value, ButtonText) or
-                isinstance(value, Switch) or isinstance(value, Slider) or isinstance(value, Picture)) and \
+                    isinstance(value, Switch) or isinstance(value, Slider) or isinstance(value, Picture)) and \
                     value.visible:
                 if value.x_pos <= x <= value.x_pos + value.width and value.y_pos <= y <= value.y_pos + value.height:
                     value.on_click(x, y)
@@ -212,7 +212,7 @@ class Screens(object):
         if gesture == GESTURE_CLICK:  # Fire click function
             ret_value = self.screen_list[self.current_index].on_click(x, y)  # Relay tap/click to active screen
             # If the screen requests a screen switch
-            if ret_value >= 0 and ret_value < len(self.screen_list):
+            if 0 <= ret_value < len(self.screen_list):
                 self.current_index = ret_value
                 self.show()
         # Switch screens with horizontal swiping
@@ -335,6 +335,7 @@ class ScreenMessage(ScreenModal):
         :param text: Text displayed in the screen.
         :param message_type: Determines the lay-out of the screen [information, warning, error]
     """
+
     def __init__(self, screen_rect, caption, text, message_type=None):
         ScreenModal.__init__(self, screen_rect, caption)
         if message_type == 'information':

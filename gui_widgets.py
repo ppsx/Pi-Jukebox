@@ -4,13 +4,14 @@
 =======================================================
 """
 
-__author__ = 'Mark Zwart'
-
 import math
-
+import sys
+# import Image
 from settings import *
 
-# import Image
+
+__author__ = 'Mark Zwart'
+
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -179,7 +180,7 @@ class Slider2(Widget):
         if percentage == 0:
             width = 1
         else:
-            width = (self.width) * (float(percentage) / 100)
+            width = self.width * (float(percentage) / 100)
         self.progress_rect = Rect(self.x_pos, self.y_pos, width, self.height)
         self.progress_percentage = percentage
         self.draw()
@@ -211,7 +212,7 @@ class Picture(Widget):
         self.y_mod = 0
         self.__image_file = image_file
         self.__image = pygame.image.load(image_file).convert()
-        #self.__image = pygame.transform.scale(self.__image, (self.width, self.height))
+        # self.__image = pygame.transform.scale(self.__image, (self.width, self.height))
         self.prepare_picture()
 
     def draw(self):
@@ -262,7 +263,7 @@ class LabelText(Widget):
         Widget.__init__(self, tag_name, screen_rect, x, y, width, height)
         try:
             self.caption = text.decode('utf-8')
-        except Exception:
+        except UnicodeError:
             self.caption = ""
         self.alignment_horizontal = HOR_LEFT
         self.alignment_vertical = VERT_MID
@@ -283,7 +284,8 @@ class LabelText(Widget):
         """ Sets the label's horizontal and vertical alignment within the defined
             rectangle and/or the text horizontal/vertical indent.
 
-            :param horizontal: Horizontal alignment [
+            :param horizontal: Horizontal alignment
+            :param vertical: Vertical alignment
         """
         self.alignment_horizontal = horizontal
         self.alignment_vertical = vertical
@@ -398,7 +400,7 @@ class Memo(Widget):
         self.indent_horizontal = hor_indent
 
     def __truncate_line(self):
-        number_of_chars = len(self.__caption)
+        # number_of_chars = len(self.__caption)
         split_text = self.__caption
         label_width = self.font.size(self.__caption)[0]
         cut = 0
@@ -413,7 +415,7 @@ class Memo(Widget):
             else:
                 split_text = n
             label_width = self.font.size(split_text)[0]
-            number_of_chars = len(split_text)
+            # number_of_chars = len(split_text)
             done = False
         return done, split_text
 
@@ -615,16 +617,16 @@ class ItemList(Widget):
 
     def draw_page_indicator(self):
         """ Draws a 'progress' indicator on the list. """
-        no_pages = self.pages_count()
+        # no_pages = self.pages_count()
         if self.pages_count() > 1:
             indicator_width = LIST_INDICATOR_WIDTH
             indicator_height = self.height / self.pages_count()
             indicator_x = self.x_pos + self.width - indicator_width
             indicator_y = self.y_pos + self.page_showing_index * indicator_height
             # indicator = pygame.Surface(indicator_width, indicator_height)
-            #indicator.set_alpha(128)
-            #indicator.fill(FIFTIES_ORANGE)
-            #SCREEN.blit(indicator, (indicator_x, indicator_y))
+            # indicator.set_alpha(128)
+            # indicator.fill(FIFTIES_ORANGE)
+            # SCREEN.blit(indicator, (indicator_x, indicator_y))
             indicator = Rect(indicator_x, indicator_y, indicator_width, indicator_height)
             #            indicator.set_alpha(128)
             pygame.draw.rect(self.screen, C_YELLOW, indicator)
@@ -684,14 +686,13 @@ class ItemList(Widget):
         return self.list[self.active_item_index]
 
     def item_active_index_set(self, index):
-        if index >= 0 and index < len(list):
+        if 0 <= index < len(list):
             self.active_item_index = index
             self.draw()
 
     def item_selected_get(self):
         """ :return: selected item's text """
-        return self.list[self.item_selected_index] if self.item_selected_index >= 0 and \
-            self.item_selected_index < len(self.list) else None
+        return self.list[self.item_selected_index] if 0 <= self.item_selected_index < len(self.list) else None
 
     def on_click(self, x_pos, y_pos):
         """ Relays click action to a list item.
