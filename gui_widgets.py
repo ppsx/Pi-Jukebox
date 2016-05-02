@@ -212,7 +212,6 @@ class Picture(Widget):
         self.y_mod = 0
         self.__image_file = image_file
         self.__image = pygame.image.load(image_file).convert()
-        # self.__image = pygame.transform.scale(self.__image, (self.width, self.height))
         self.prepare_picture()
 
     def draw(self):

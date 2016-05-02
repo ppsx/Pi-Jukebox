@@ -12,6 +12,8 @@ from collections import deque
 import mpd as mpdlib
 from tinytag import TinyTag
 from settings import DEFAULT_COVER
+from settings import TMP_COVER
+
 
 MPD_TYPE_ARTIST = 'artist'
 MPD_TYPE_ALBUM = 'album'
@@ -46,24 +48,23 @@ class MPDNowPlaying(object):
                 self.file = now_playing['file']
             except KeyError:
                 return
-            self.playing_type = 'file'
 
             if 'title' in now_playing:
                 self.title = now_playing['title']  # Song title of current song
             else:
                 self.title = os.path.splitext(os.path.basename(now_playing['file']))[0]
-            if self.playing_type == 'file':
-                if 'artist' in now_playing:
-                    self.artist = now_playing['artist']  # Artist of current song
-                else:
-                    self.artist = "Unknown"
-                if 'album' in now_playing:
-                    self.album = now_playing['album']  # Album the current song is on
-                else:
-                    self.album = "Unknown"
-                current_total = self.str_to_float(now_playing['time'])
-                self.__time_total_sec = current_total
-                self.time_total = self.make_time_string(current_total)  # Total time current
+
+            if 'artist' in now_playing:
+                self.artist = now_playing['artist']  # Artist of current song
+            else:
+                self.artist = "Unknown"
+            if 'album' in now_playing:
+                self.album = now_playing['album']  # Album the current song is on
+            else:
+                self.album = "Unknown"
+            current_total = self.str_to_float(now_playing['time'])
+            self.__time_total_sec = current_total
+            self.time_total = self.make_time_string(current_total)  # Total time current
         elif now_playing is None:  # Changed to no current song
             self.__now_playing = None
             self.title = ""
@@ -83,7 +84,7 @@ class MPDNowPlaying(object):
         else:
             return False
 
-    def cover_art_get(self, dest_file_name=DEFAULT_COVER):
+    def cover_art_get(self):
         if self.file == "":
             return DEFAULT_COVER
         try:
@@ -92,9 +93,12 @@ class MPDNowPlaying(object):
         except:
             return DEFAULT_COVER
 
-        with open(dest_file_name, 'wb') as img:
+        if cover_art is None:
+            return DEFAULT_COVER
+
+        with open(TMP_COVER, 'wb') as img:
             img.write(cover_art)  # write artwork to new image
-        return dest_file_name
+        return TMP_COVER
 
     def make_time_string(self, seconds):
         minutes = int(seconds / 60)
@@ -269,7 +273,7 @@ class MPDController(object):
         else:
             return False
 
-    def get_cover_art(self, dest_file_name=DEFAULT_COVER):
+    def get_cover_art(self):
         return self.now_playing.cover_art_get()
 
     def player_control_set(self, play_status):

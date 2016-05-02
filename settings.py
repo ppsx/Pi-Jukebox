@@ -155,6 +155,7 @@ ICO_ERROR = RESOURCES + 'icon-warning.png'
 
 # default covers
 DEFAULT_COVER = RESOURCES + 'cover-files.png'
+TMP_COVER = RESOURCES + 'tmp_cover.jpg'
 
 # Special keyboard icons
 ICO_SHIFT = RESOURCES + 'keys-shift.png'
