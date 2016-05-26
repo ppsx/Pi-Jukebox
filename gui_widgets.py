@@ -6,7 +6,6 @@
 
 import math
 import sys
-# import Image
 from settings import *
 
 

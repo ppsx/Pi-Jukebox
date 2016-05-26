@@ -2,18 +2,21 @@
 =======================================================
 **screen_directory.py**: MPD Directory browsing screen
 =======================================================
-
 """
-__author__ = 'Mark Zwart'
 
-from settings import *
-from gui_screens import *
-from gui_widgets import *
+
+# from settings import *
+# from gui_screens import *
+# from gui_widgets import *
 from screen_settings import *
+
+
+__author__ = 'Mark Zwart'
 
 
 class ScreenNavigation(WidgetContainer):
     def __init__(self, tag_name, screen_rect, button_active):
+        self.__button_active = button_active
         WidgetContainer.__init__(self, tag_name, screen_rect, 0, 0, ICO_WIDTH + SPACE, SCREEN_HEIGHT)
         button_top = SPACE
         self.add_component(ButtonIcon('btn_player', self.screen, ICO_PLAYER_FILE_ACTIVE, SPACE, button_top))

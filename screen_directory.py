@@ -3,9 +3,8 @@
 =======================================================
 **screen_directory.py**: MPD Directory browsing screen
 =======================================================
-
 """
-__author__ = 'Mark Zwart'
+
 
 import sys
 import pygame
@@ -20,6 +19,9 @@ from mpd_client import *
 from settings import *
 from screen_keyboard import *
 from screen_settings import *
+
+
+__author__ = 'Mark Zwart'
 
 
 class LetterBrowser(ItemList):
@@ -60,7 +62,7 @@ class DirectoryBrowser(ItemList):
     def item_selected_get(self):
         return self.directory_content[self.item_selected_index]
 
-    def show_directory(self, path=""):
+    def show_directory(self, path="", first_letter=None):
         """ Displays all songs or based on the first letter or partial string match.
 
             :param search: Search string, default = None
@@ -68,8 +70,12 @@ class DirectoryBrowser(ItemList):
                                default = True
         """
         self.list = []
-        self.directory_current = path
+        if first_letter is None:
+            self.directory_current = path
         self.directory_content = mpd.directory_list(self.directory_current)
+        if first_letter:
+            self.directory_content = [(elem_type, elem_name) for elem_type, elem_name in self.directory_content \
+                                      if os.path.basename(elem_name).startswith(first_letter)]
         updated = False
         for item in self.directory_content:
             index = item[1].rfind("/")
@@ -80,8 +86,8 @@ class DirectoryBrowser(ItemList):
             updated = True
         if updated:
             self.page_showing_index = 0
-            self.draw()
             self.first_letters_in_result_get()
+            self.draw()
 
     def show_directory_up(self):
         index = self.directory_current.rfind("/")
@@ -96,10 +102,9 @@ class DirectoryBrowser(ItemList):
 
             :return: List of letters
         """
-        # TODO: Carefully check this loop below
         output_set = set()
-        for item in self.list:
-            first_letter = item[:1].upper()
+        for elem in self.list:
+            first_letter = elem[:1].upper()
             output_set.add(first_letter)
         letter_list = list(output_set)
         letter_list.sort(key=lambda item: (
@@ -144,7 +149,7 @@ class ScreenDirectory(Screen):
     def find_first_letter(self):
         """ Adjust current search type according to the letter clicked in the letter list. """
         letter = self.components['list_letters'].item_selected_get()
-        # self.components['list_directory'].(letter)
+        self.components['list_directory'].show_directory(first_letter=letter)
         self.letter_list_update()
 
     def on_click(self, x, y):
@@ -168,8 +173,10 @@ class ScreenDirectory(Screen):
             self.list_item_action()
         elif tag_name == 'btn_root':
             self.components['list_directory'].show_directory("")
+            self.letter_list_update()
         elif tag_name == 'btn_up':
             self.components['list_directory'].show_directory_up()
+            self.letter_list_update()
 
     def list_item_action(self):
         """ Displays screen for follow-up actions when an item was selected from the library. """
