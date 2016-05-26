@@ -2,23 +2,10 @@
 **pi-jukebox.py**: Main file
 """
 
-
-import sys
-import pygame
-from pygame.locals import *
 import time
-import subprocess
-import os
-import glob
-from gui_screens import *
-from config_file import *
-from settings import *
-from mpd_client import *
-from screen_player import *
-from screen_library import *
 from screen_directory import *
-from screen_settings import *
-
+from screen_library import *
+from screen_player import *
 
 __author__ = 'Mark Zwart'
 

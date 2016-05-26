@@ -5,20 +5,10 @@
 """
 __author__ = 'Mark Zwart'
 
-import sys
-import pygame
-from pygame.locals import *
-import time
-import subprocess
-import os
-import glob
 import socket
-from gui_widgets import *
-from mpd_client import *
-from settings import *
 from config_file import *
+from mpd_client import *
 from screen_keyboard import *
-from def_colors import *
 
 
 class ScreenSettings(ScreenModal):
