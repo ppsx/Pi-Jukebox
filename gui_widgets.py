@@ -7,6 +7,7 @@
 import math
 import sys
 from settings import *
+from def_colors import *
 
 
 __author__ = 'Mark Zwart'

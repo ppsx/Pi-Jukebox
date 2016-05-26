@@ -69,25 +69,6 @@ RESOURCES = os.path.dirname(__file__) + '/resources/'
 #: Standard font type
 FONT = pygame.font.Font(RESOURCES + 'LiberationSans-Regular.ttf', FONT_SIZE)
 
-""" Color definitions """
-BLUE = 0, 148, 255
-CREAM = 206, 206, 206
-BLACK = 0, 0, 0
-WHITE = 255, 255, 255
-YELLOW = 255, 255, 0
-RED = 255, 0, 0
-GREEN = 0, 255, 0
-
-# Additional colors
-C_GREY_DARK = 22, 22, 22
-C_GREY_LIGHT = 80, 80, 80
-C_GREY_LIGHTEST = 180, 190, 200
-C_BLUE = 127, 201, 255
-C_YELLOW = 254, 255, 127
-C_GREEN = 183, 255, 157
-C_RED = 255, 107, 107
-
-
 """ Mouse related variables """
 GESTURE_MOVE_MIN = 50  # Minimum movement in pixels to call it a move
 GESTURE_CLICK_MAX = 15  # Maximum movement in pixels to call it a click

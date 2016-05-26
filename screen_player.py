@@ -17,6 +17,7 @@ from pij_screen_navigation import *
 from mpd_client import *
 from settings import *
 from screen_settings import *
+from def_colors import *
 
 
 class Playlist(ItemList):

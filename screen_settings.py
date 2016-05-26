@@ -18,6 +18,7 @@ from mpd_client import *
 from settings import *
 from config_file import *
 from screen_keyboard import *
+from def_colors import *
 
 
 class ScreenSettings(ScreenModal):

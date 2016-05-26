@@ -6,6 +6,8 @@
 
 from gui_widgets import *
 from settings import *
+from def_colors import *
+
 # import pygame
 # from pygame.locals import *
 

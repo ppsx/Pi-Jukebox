@@ -19,6 +19,7 @@ from mpd_client import *
 from settings import *
 from screen_keyboard import *
 from screen_settings import *
+from def_colors import *
 
 
 __author__ = 'Mark Zwart'

@@ -8,6 +8,7 @@ __author__ = 'Mark Zwart'
 from settings import *
 from gui_widgets import *
 from gui_screens import *
+from def_colors import *
 
 
 class KeyboardBase(ScreenModal):

@@ -19,6 +19,7 @@ from mpd_client import *
 from settings import *
 from screen_keyboard import *
 from screen_settings import *
+from def_colors import *
 
 
 class LetterBrowser(ItemList):
@@ -395,7 +396,7 @@ class ScreenSelected(ScreenModal):
                                           BUTTON_HEIGHT, label))
 
             label = "Songs of ..."  # + self.title
-            #button_top += SPACE + BUTTON_HEIGHT
+            # button_top += SPACE + BUTTON_HEIGHT
             self.add_component(ButtonText('btn_artist_get_songs', self.screen, button_left + button_width_2 + SPACE,
                                           button_top, button_width_2, BUTTON_HEIGHT, label))
         elif self.type == 'albums':
