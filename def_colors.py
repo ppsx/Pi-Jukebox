@@ -4,6 +4,7 @@ File:    def_colors.py
 Info:    Color definitions
 """
 
+
 # Base colors
 BLUE = 0, 148, 255
 CREAM = 206, 206, 206
