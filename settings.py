@@ -64,69 +64,70 @@ else:
     SCREEN = pygame.display.set_mode(DISPLAY_SIZE)
 
 #: The directory where resources like button icons or the font file is stored.
-RESOURCES = os.path.dirname(__file__) + '/resources/'
+RESOURCES = os.path.join(os.path.dirname(__file__), 'resources')
+RESOURCES_ZIP = os.path.join(RESOURCES, 'resources.zip')
 
 #: Standard font type
-FONT = pygame.font.Font(RESOURCES + 'LiberationSans-Regular.ttf', FONT_SIZE)
+FONT = pygame.font.Font(os.path.join(RESOURCES, 'LiberationSans-Regular.ttf'), FONT_SIZE)
 
 
 """ Used icons """
 # Switch icons
-ICO_SWITCH_ON = RESOURCES + 'switch-on.png'
-ICO_SWITCH_OFF = RESOURCES + 'switch-off.png'
+ICO_SWITCH_ON = 'switch-on.png'
+ICO_SWITCH_OFF = 'switch-off.png'
 
 # General icons
-ICO_PLAYER_FILE = RESOURCES + 'main-playing-file.png'
-ICO_PLAYER_FILE_ACTIVE = RESOURCES + 'main-playing-file-active.png'
-ICO_PLAYLIST = RESOURCES + 'main-playlist.png'
-ICO_PLAYLIST_ACTIVE = RESOURCES + 'main-playlist-active.png'
-ICO_LIBRARY = RESOURCES + 'main-library.png'
-ICO_LIBRARY_ACTIVE = RESOURCES + 'main-library-active.png'
-ICO_DIRECTORY = RESOURCES + 'main-directory.png'
-ICO_DIRECTORY_ACTIVE = RESOURCES + 'main-directory-active.png'
-ICO_SETTINGS = RESOURCES + 'main-settings.png'
+ICO_PLAYER_FILE = 'main-playing-file.png'
+ICO_PLAYER_FILE_ACTIVE = 'main-playing-file-active.png'
+ICO_PLAYLIST = 'main-playlist.png'
+ICO_PLAYLIST_ACTIVE = 'main-playlist-active.png'
+ICO_LIBRARY = 'main-library.png'
+ICO_LIBRARY_ACTIVE = 'main-library-active.png'
+ICO_DIRECTORY = 'main-directory.png'
+ICO_DIRECTORY_ACTIVE = 'main-directory-active.png'
+ICO_SETTINGS = 'main-settings.png'
 
 # Player icons
-ICO_PLAY = RESOURCES + 'controller-play.png'
-ICO_PAUSE = RESOURCES + 'controller-pause.png'
-ICO_STOP = RESOURCES + 'controller-stop.png'
-ICO_NEXT = RESOURCES + 'controller-next.png'
-ICO_PREVIOUS = RESOURCES + 'controller-previous.png'
-ICO_VOLUME = RESOURCES + 'controller-volume.png'
+ICO_PLAY = 'controller-play.png'
+ICO_PAUSE = 'controller-pause.png'
+ICO_STOP = 'controller-stop.png'
+ICO_NEXT = 'controller-next.png'
+ICO_PREVIOUS = 'controller-previous.png'
+ICO_VOLUME = 'controller-volume.png'
 
 # Volume icons
-ICO_VOLUME_UP = RESOURCES + 'volume-up.png'
-ICO_VOLUME_DOWN = RESOURCES + 'volume-down.png'
-ICO_VOLUME_MUTE = RESOURCES + 'volume-mute.png'
-ICO_VOLUME_MUTE_ACTIVE = RESOURCES + 'volume-mute-active.png'
+ICO_VOLUME_UP = 'volume-up.png'
+ICO_VOLUME_DOWN = 'volume-down.png'
+ICO_VOLUME_MUTE = 'volume-mute.png'
+ICO_VOLUME_MUTE_ACTIVE = 'volume-mute-active.png'
 
 # Library icons
-ICO_SEARCH = RESOURCES + 'filter-search.png'
-ICO_SEARCH_ARTIST = RESOURCES + 'filter-artists.png'
-ICO_SEARCH_ARTIST_ACTIVE = RESOURCES + 'filter-artists-active.png'
-ICO_SEARCH_ALBUM = RESOURCES + 'filter-albums.png'
-ICO_SEARCH_ALBUM_ACTIVE = RESOURCES + 'filter-albums-active.png'
-ICO_SEARCH_SONG = RESOURCES + 'filter-songs.png'
-ICO_SEARCH_SONG_ACTIVE = RESOURCES + 'filter-songs-active.png'
-ICO_PLAYLISTS = RESOURCES + 'filter-playlists.png'
-ICO_PLAYLISTS_ACTIVE = RESOURCES + 'filter-playlists-active.png'
+ICO_SEARCH = 'filter-search.png'
+ICO_SEARCH_ARTIST = 'filter-artists.png'
+ICO_SEARCH_ARTIST_ACTIVE = 'filter-artists-active.png'
+ICO_SEARCH_ALBUM = 'filter-albums.png'
+ICO_SEARCH_ALBUM_ACTIVE = 'filter-albums-active.png'
+ICO_SEARCH_SONG = 'filter-songs.png'
+ICO_SEARCH_SONG_ACTIVE = 'filter-songs-active.png'
+ICO_PLAYLISTS = 'filter-playlists.png'
+ICO_PLAYLISTS_ACTIVE = 'filter-playlists-active.png'
 
 # Directory icons
-ICO_FOLDER_ROOT = RESOURCES + 'folder-root.png'
-ICO_FOLDER_UP = RESOURCES + 'folder-up.png'
+ICO_FOLDER_ROOT = 'folder-root.png'
+ICO_FOLDER_UP = 'folder-up.png'
 
 # Standard info icons
-ICO_INFO = RESOURCES + 'icon-info.png'
-ICO_WARNING = RESOURCES + 'icon-warning.png'
-ICO_ERROR = RESOURCES + 'icon-warning.png'
+ICO_INFO = 'icon-info.png'
+ICO_WARNING = 'icon-warning.png'
+ICO_ERROR = 'icon-warning.png'
 
 # default covers
-DEFAULT_COVER = RESOURCES + 'cover-files.png'
-TMP_COVER = RESOURCES + 'tmp_cover.jpg'
+DEFAULT_COVER = os.path.join(RESOURCES, 'cover-files.png')
+TMP_COVER = os.path.join(RESOURCES, 'tmp_cover.jpg')
 
 # Special keyboard icons
-ICO_SHIFT = RESOURCES + 'keys-shift.png'
-ICO_BACKSPACE = RESOURCES + 'keys-backspace.png'
-ICO_ENTER = RESOURCES + 'keys-enter.png'
-ICO_LETTERS = RESOURCES + 'keys-letters.png'
-ICO_SYMBOLS = RESOURCES + 'keys-symbols.png'
+ICO_SHIFT = 'keys-shift.png'
+ICO_BACKSPACE = 'keys-backspace.png'
+ICO_ENTER = 'keys-enter.png'
+ICO_LETTERS = 'keys-letters.png'
+ICO_SYMBOLS = 'keys-symbols.png'

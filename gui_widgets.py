@@ -4,8 +4,10 @@
 =======================================================
 """
 
+import io
 import math
 import sys
+import zipfile
 from settings import *
 from def_colors import *
 from def_gestures import *
@@ -442,21 +444,27 @@ class ButtonIcon(Widget):
     """
     def __init__(self, tag_name, screen_rect, image, x, y):
         self.image_file = image
-        self.__icon = pygame.image.load(self.image_file)
+        self.__icon = self.get_image(self.image_file)
         Widget.__init__(self, tag_name, screen_rect, x, y, self.__icon.get_width(), self.__icon.get_height())
         self.caption = ""
+
+    def get_image(self, image_file):
+        with zipfile.ZipFile(RESOURCES_ZIP) as res:
+            img = res.read(image_file)
+        bytes_io = io.BytesIO(img)
+        return pygame.image.load(bytes_io)
 
     def draw(self, icon_file=None):
         """ Draws the button """
         if icon_file is not None:
             self.image_file = icon_file
-            self.__icon = pygame.image.load(self.image_file)
+            self.__icon = self.get_image(self.image_file)
         rect = self.screen.blit(self.__icon, (self.x_pos, self.y_pos))
         pygame.display.update(rect)
 
     def icon_file_set(self, icon_file):
         self.image_file = icon_file
-        self.__icon = pygame.image.load(self.image_file)
+        self.__icon = self.get_image(self.image_file)
 
     def set_image_file(self, file_name):
         """ Sets the buttons icon.
@@ -464,7 +472,7 @@ class ButtonIcon(Widget):
             :param file_name: Points to the icon's file name.
         """
         self.image_file = file_name
-        self.__icon = pygame.image.load(self.image_file)
+        self.__icon = self.get_image(self.image_file)
         self.width = self.__icon.get_width()
         self.height = self.__icon.get_height()
         self.draw()
@@ -515,12 +523,18 @@ class Switch(Widget):
         :param y: The vertical position of the button,
     """
     def __init__(self, tag_name, screen_rect, x, y):
-        self.__icon_on = pygame.image.load(ICO_SWITCH_ON)
-        self.__icon_off = pygame.image.load(ICO_SWITCH_OFF)
+        self.__icon_on = self.get_image(ICO_SWITCH_ON)
+        self.__icon_off = self.get_image(ICO_SWITCH_OFF)
         self.width = self.__icon_on.get_width()
         self.height = self.__icon_on.get_height()
         Widget.__init__(self, tag_name, screen_rect, x, y, self.width, self.height)
         self.__is_on = False
+
+    def get_image(self, image_file):
+        with zipfile.ZipFile(RESOURCES_ZIP) as res:
+            img = res.read(image_file)
+        bytes_io = io.BytesIO(img)
+        return pygame.image.load(bytes_io)
 
     def set_on(self, boolean):
         """ Turns the control status to on or off.
