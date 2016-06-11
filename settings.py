@@ -6,8 +6,10 @@
 
 """
 
+import io
 import os
 import pygame
+import zipfile
 from pygame.locals import *
 
 __author__ = 'Mark Zwart'
@@ -68,7 +70,10 @@ RESOURCES = os.path.join(os.path.dirname(__file__), 'resources')
 RESOURCES_ZIP = os.path.join(RESOURCES, 'resources.zip')
 
 #: Standard font type
-FONT = pygame.font.Font(os.path.join(RESOURCES, 'LiberationSans-Regular.ttf'), FONT_SIZE)
+with zipfile.ZipFile(RESOURCES_ZIP) as res:
+    data = res.read('LiberationSans-Regular.ttf')
+bytes_io = io.BytesIO(data)
+FONT = pygame.font.Font(bytes_io, FONT_SIZE)
 
 
 """ Used icons """
@@ -119,10 +124,10 @@ ICO_FOLDER_UP = 'folder-up.png'
 # Standard info icons
 ICO_INFO = 'icon-info.png'
 ICO_WARNING = 'icon-warning.png'
-ICO_ERROR = 'icon-warning.png'
+ICO_ERROR = 'icon-error.png'
 
 # default covers
-DEFAULT_COVER = os.path.join(RESOURCES, 'cover-files.png')
+DEFAULT_COVER = 'cover-files.png'
 TMP_COVER = os.path.join(RESOURCES, 'tmp_cover.jpg')
 
 # Special keyboard icons

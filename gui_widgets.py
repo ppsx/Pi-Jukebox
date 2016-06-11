@@ -4,10 +4,8 @@
 =======================================================
 """
 
-import io
 import math
 import sys
-import zipfile
 from settings import *
 from def_colors import *
 from def_gestures import *
@@ -214,8 +212,19 @@ class Picture(Widget):
         self.x_mod = 0
         self.y_mod = 0
         self.__image_file = image_file
-        self.__image = pygame.image.load(image_file).convert()
+        self.__image = self.get_image(image_file)
         self.prepare_picture()
+
+    def get_image(self, image_file):
+        if not image_file:
+            return None
+        if image_file.startswith(RESOURCES):
+            data = image_file
+        else:
+            with zipfile.ZipFile(RESOURCES_ZIP) as res:
+                img = res.read(image_file)
+            data = io.BytesIO(img)
+        return pygame.image.load(data)
 
     def draw(self):
         SCREEN.blit(self.__image, (self.x_pos+self.x_mod, self.y_pos+self.y_mod))
@@ -227,11 +236,13 @@ class Picture(Widget):
     def picture_set(self, file_name):
         """ Sets the filename of the picture. """
         self.__image_file = file_name
-        self.__image = pygame.image.load(self.__image_file).convert()
+        self.__image = self.get_image(self.__image_file)
         self.prepare_picture()
         self.draw()
 
     def prepare_picture(self):
+        if not self.__image:
+            return
         if not self.__center:
             # original behavior - shrinking and/or stretching the image to fit given width/height
             self.__image = pygame.transform.smoothscale(self.__image, (self.width, self.height))
