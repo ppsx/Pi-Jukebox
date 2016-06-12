@@ -6,10 +6,8 @@
 
 """
 
-import io
 import os
 import pygame
-import zipfile
 from pygame.locals import *
 
 __author__ = 'Mark Zwart'
@@ -70,10 +68,7 @@ RESOURCES = os.path.join(os.path.dirname(__file__), 'resources')
 RESOURCES_ZIP = os.path.join(RESOURCES, 'resources.zip')
 
 #: Standard font type
-with zipfile.ZipFile(RESOURCES_ZIP) as res:
-    data = res.read('LiberationSans-Regular.ttf')
-bytes_io = io.BytesIO(data)
-FONT = pygame.font.Font(bytes_io, FONT_SIZE)
+FONT = pygame.font.Font(os.path.join(RESOURCES, 'LiberationSans-Regular.ttf'), FONT_SIZE)
 
 
 """ Used icons """

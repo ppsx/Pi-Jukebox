@@ -4,6 +4,8 @@
 =======================================================
 """
 
+import io
+import zipfile
 import math
 import sys
 from settings import *
