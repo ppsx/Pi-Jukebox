@@ -16,6 +16,16 @@ class Playlist(ItemList):
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_playing', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           SCREEN_WIDTH - 2 * ICO_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        # TODO: Add proper handling
+        # if DISPLAY == 'raspberry7':
+        #     ItemList.__init__(self, 'list_playing', screen_rect,
+        #         52, 46, 696, 419)
+        # elif DISPLAY == 'adafruit3.5':
+        #     ItemList.__init__(self, 'list_playing', screen_rect,
+        #         52, 46, 216, 189)
+        # else:
+        #     ItemList.__init__(self, 'list_playing', screen_rect,
+        #         52, 46, 216, 189)
         self.item_height = 27
         self.item_active_color = C_YELLOW
         self.outline_color = C_BLUE
@@ -323,7 +333,7 @@ class ScreenVolume(ScreenModal):
     """
 
     def __init__(self, screen_rect):
-        ScreenModal.__init__(self, screen_rect, "Volume")
+        ScreenModal.__init__(self, screen_rect, _("Volume"))
         self.window_x = 15
         self.window_y = 52
         self.window_width -= 2 * self.window_x
@@ -349,7 +359,7 @@ class ScreenVolume(ScreenModal):
                                   self.window_width - 2 * (SPACE + 1), BUTTON_HEIGHT))
         self.components['slide_volume'].progress_percentage_set(mpd.volume)
 
-        label = "Back"
+        label = _("Back")
         button_top = self.window_height + self.window_y - SPACE - BUTTON_HEIGHT
         button_width = self.window_width - 2 * SPACE
         self.add_component(ButtonText('btn_back', screen_rect, button_left - 1, button_top, button_width, BUTTON_HEIGHT,

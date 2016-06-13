@@ -1,6 +1,6 @@
 """
 =======================================================
-**interface_widgets.py**: graphical widgets for the GUI
+**gui_widgets.py**: graphical widgets for the GUI
 =======================================================
 """
 
@@ -415,7 +415,6 @@ class Memo(Widget):
         self.indent_horizontal = hor_indent
 
     def __truncate_line(self):
-        # number_of_chars = len(self.__caption)
         split_text = self.__caption
         label_width = self.font.size(self.__caption)[0]
         cut = 0
@@ -430,7 +429,6 @@ class Memo(Widget):
             else:
                 split_text = n
             label_width = self.font.size(split_text)[0]
-            # number_of_chars = len(split_text)
             done = False
         return done, split_text
 

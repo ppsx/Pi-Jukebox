@@ -8,8 +8,9 @@ class ConfigFile(object):
         self.parser.read("pi-jukebox.conf")
         # MPD configuration settings
         self.settings = []
+        self.settings.append({'section': 'Hardware', 'key': 'display', 'value': 'adafruit2.8', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'host', 'value': 'localhost', 'first_time': False})
-        self.settings.append({'section': 'MPD Settings', 'key': 'port', 'value': 6600, 'first_time': False})
+        self.settings.append({'section': 'MPD Settings', 'key': 'port', 'value': '6600', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'music directory', 'value': None, 'first_time': True})
         self.initialize()
 
@@ -20,10 +21,11 @@ class ConfigFile(object):
             elif not setting['first_time']:
                 self.setting_set(setting['section'], setting['key'], setting['value'])
 
-    def setting_get(self, section, key):
+    def setting_get(self, section, key, default=None):
         if self.setting_exists(section, key):
-            value = self.parser.get(section, key)
-            return value
+            return self.parser.get(section, key)
+        else:
+            return default
 
     def setting_set(self, section, key, value):
         """ Write a setting to the configuration file
@@ -33,14 +35,14 @@ class ConfigFile(object):
             :param value: Value
 
         """
-        my_file = open("pi-jukebox.conf", 'w')
+        cfg_file = open("pi-jukebox.conf", 'w')
         try:
             self.parser.add_section(section)
         except ConfigParser.DuplicateSectionError:
             pass
         self.parser.set(section, key, value)
-        self.parser.write(my_file)
-        my_file.close()
+        self.parser.write(cfg_file)
+        cfg_file.close()
 
     def setting_remove(self, section, key):
         """ Remove a setting to the configuration file

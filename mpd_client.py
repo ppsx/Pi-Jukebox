@@ -5,15 +5,13 @@
 """
 
 import os
-import pygame
 import sys
+import pygame
 from collections import deque
-
 import mpd as mpdlib
 from tinytag import TinyTag
 from settings import DEFAULT_COVER
 from settings import TMP_COVER
-
 
 MPD_TYPE_ARTIST = 'artist'
 MPD_TYPE_ALBUM = 'album'
@@ -54,17 +52,24 @@ class MPDNowPlaying(object):
             else:
                 self.title = os.path.splitext(os.path.basename(now_playing['file']))[0]
 
-            if 'artist' in now_playing:
-                self.artist = now_playing['artist']  # Artist of current song
-            else:
-                self.artist = "Unknown"
-            if 'album' in now_playing:
-                self.album = now_playing['album']  # Album the current song is on
-            else:
-                self.album = "Unknown"
-            current_total = self.str_to_float(now_playing['time'])
-            self.__time_total_sec = current_total
-            self.time_total = self.make_time_string(current_total)  # Total time current
+            if self.playing_type == 'file':
+                if 'artist' in now_playing:
+                    self.artist = now_playing['artist']  # Artist of current song
+                else:
+                    self.artist = _("Unknown")
+                if 'album' in now_playing:
+                    self.album = now_playing['album']  # Album the current song is on
+                else:
+                    self.album = _("Unknown")
+                current_total = self.str_to_float(now_playing['time'])
+                self.__time_total_sec = current_total
+                self.time_total = self.make_time_string(current_total)  # Total time current
+            elif self.playing_type == 'radio':
+                if 'name' in now_playing:
+                    self.album = now_playing['name']  # The radio station name
+                else:
+                    self.album = _("Unknown")
+                self.artist = ""
         elif now_playing is None:  # Changed to no current song
             self.__now_playing = None
             self.title = ""
@@ -104,7 +109,6 @@ class MPDNowPlaying(object):
         minutes = int(seconds / 60)
         seconds_left = int(round(seconds - (minutes * 60), 0))
         time_string = str(minutes) + ':'
-        # seconds_string = ''
         if seconds_left < 10:
             seconds_string = '0' + str(seconds_left)
         else:
@@ -135,6 +139,7 @@ class MPDController(object):
         self.single = False
         self.consume = False
         self.updating_library = False
+        self.__radio_mode = False
         self.now_playing = MPDNowPlaying()
         self.events = deque([])  # Queue of mpd events
         # Database search results
@@ -323,7 +328,10 @@ class MPDController(object):
         except mpdlib.ConnectionError:
             self.mpd_client.connect(self.host, self.port)
             self.mpd_client.setvol(percentage)
+        except mpdlib.CommandError, e:
+            print "CommandEror", e
         self.volume = percentage
+        self.__muted = False
 
     def volume_set_relative(self, percentage):
         """ Sets volume relatively to current volume.
@@ -341,6 +349,9 @@ class MPDController(object):
         except mpdlib.ConnectionError:
             self.mpd_client.connect(self.host, self.port)
             self.mpd_client.setvol(self.volume)
+        except mpdlib.CommandError, e:
+            print "CommandError", e
+        self.__muted = False
 
     def volume_mute_switch(self):
         """ Switches volume muting on or off. """
@@ -350,6 +361,8 @@ class MPDController(object):
             except mpdlib.ConnectionError:
                 self.mpd_client.connect(self.host, self.port)
                 self.mpd_client.setvol(self.volume)
+            except mpdlib.CommandError, e:
+                print "CommandError", e
             self.__muted = False
         else:
             try:
@@ -357,6 +370,8 @@ class MPDController(object):
             except mpdlib.ConnectionError:
                 self.mpd_client.connect(self.host, self.port)
                 self.mpd_client.setvol(0)
+            except mpdlib.CommandError, e:
+                print "CommandError", e
             self.__muted = True
 
     def volume_mute_get(self):
@@ -394,21 +409,21 @@ class MPDController(object):
             self.mpd_client.consume(0)
 
     def playlist_current_get(self):
-        self.playlist_current = []
-        # playlist_info = []
-        track_no = 0
-        try:
-            playlist_info = self.mpd_client.playlistinfo()
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            playlist_info = self.mpd_client.playlistinfo()
-        for i in playlist_info:
-            track_no += 1
-            if 'title' in i:
-                self.playlist_current.append(str(track_no) + '. ' + i['title'])
-            else:
-                self.playlist_current.append(str(track_no) + '. ' +
-                                             os.path.splitext(os.path.basename(i['file']))[0])
+        if not self.__radio_mode:
+            self.playlist_current = []
+            playlist_info = []
+            track_no = 0
+            try:
+                playlist_info = self.mpd_client.playlistinfo()
+            except mpdlib.ConnectionError:
+                self.mpd_client.connect(self.host, self.port)
+                playlist_info = self.mpd_client.playlistinfo()
+            for i in playlist_info:
+                track_no += 1
+                if 'title' in i:
+                    self.playlist_current.append(str(track_no) + '. ' + i['title'])
+                else:
+                    self.playlist_current.append(str(track_no) + '. ' + os.path.splitext(os.path.basename(i['file']))[0])
         return self.playlist_current
 
     def playlist_current_playing_index_get(self):
@@ -499,7 +514,6 @@ class MPDController(object):
         :param part: Search string.
         :return: A list with search results.
         """
-        # all_results = []
         try:
             all_results = self.mpd_client.list(tag_type)
         except mpdlib.ConnectionError:
@@ -653,6 +667,9 @@ class MPDController(object):
         except mpdlib.ConnectionError:
             self.mpd_client.connect(self.host, self.port)
             all_playlists = self.mpd_client.listplaylists()
+        except mpdlib.CommandError:
+            pass
+
         if first_letter is None:
             for playlist in all_playlists:
                 result_list.append(playlist['playlist'])
@@ -710,7 +727,6 @@ class MPDController(object):
         :param path: Recurses through directories
         :return:
         """
-        # content_list = []
         try:
             content_list = self.mpd_client.lsinfo(path)
         except mpdlib.ConnectionError:
@@ -826,5 +842,29 @@ class MPDController(object):
         if play:
             self.play_playlist_item(i + 1)
 
+    def radio_station_start(self, station_URL):
+        self.playlist_current_get()
+        self.__radio_mode = True
+        try:
+            self.mpd_client.rm(TEMP_PLAYLIST_NAME)
+        except:
+            pass
+        self.mpd_client.save(TEMP_PLAYLIST_NAME)
+        self.playlist_current_clear()
+        self.mpd_client.addid(station_URL)
+        self.mpd_client.play(0)
+
+    def radio_mode_get(self):
+        return self.__radio_mode
+
+    def __radio_mode_set(self, radio_mode):
+        if self.__radio_mode == True and radio_mode == False:
+            try:
+                self.playlist_current_clear()
+                self.mpd_client.load(TEMP_PLAYLIST_NAME)
+                self.mpd_client.rm(TEMP_PLAYLIST_NAME)
+            except Exception:
+                pass
+        self.__radio_mode = radio_mode
 
 mpd = MPDController()

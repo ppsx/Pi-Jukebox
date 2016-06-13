@@ -9,9 +9,12 @@
 import os
 import pygame
 from pygame.locals import *
+from config_file import config_file
 
 __author__ = 'Mark Zwart'
 
+
+VERSION = (1, 1, 0)
 
 FONT_SIZE = 20
 
@@ -39,6 +42,21 @@ SWITCH_HEIGHT = 42
 LIST_WIDTH = 42
 LIST_INDICATOR_WIDTH = 6
 
+
+#: The display dimensions, change this if you have a bigger touch screen.
+#: adafruit 2.8" -> 320x200
+#: adafruit 3.5" -> 480x320
+#: raspberry 7" -> 800x480
+DISPLAY = config_file.setting_get('Hardware', 'display')
+if DISPLAY == 'adafruit2.8':
+    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
+elif DISPLAY == 'adafruit3.5':
+    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 480, 320
+elif DISPLAY == 'raspberry7':
+    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 800, 480
+else:
+    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
+
 #: Switches between development/debugging on your desktop/laptop versus running on your Raspberry Pi
 RUN_ON_RASPBERRY_PI = (os.name != 'nt' and os.uname()[4][:3] == 'arm')
 
@@ -46,13 +64,16 @@ RUN_ON_RASPBERRY_PI = (os.name != 'nt' and os.uname()[4][:3] == 'arm')
 if RUN_ON_RASPBERRY_PI:
     os.environ['SDL_VIDEODRIVER'] = 'fbcon'
     os.environ['SDL_FBDEV'] = '/dev/fb1'
-    os.environ['SDL_MOUSEDEV'] = '/dev/input/touchscreen'
-    os.environ['SDL_MOUSEDRV'] = 'TSLIB'
+    if DISPLAY == 'raspberry7':
+        os.environ['SDL_MOUSEDEV'] = '/dev/input/mouse1'
+        os.environ['SDL_MOUSEDRV'] = 'FT5406'
+    else:
+        os.environ['SDL_MOUSEDEV'] = '/dev/input/touchscreen'
+        os.environ['SDL_MOUSEDRV'] = 'TSLIB'
 
 # Display settings
 pygame.init() 	# Pygame initialization
-#: The display dimensions, change this if you have a bigger touch screen.
-DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 480, 320
+
 PYGAME_EVENT_DELAY = 25
 
 if RUN_ON_RASPBERRY_PI:  # If started on Raspberry Pi
@@ -120,6 +141,11 @@ ICO_FOLDER_UP = 'folder-up.png'
 ICO_INFO = 'icon-info.png'
 ICO_WARNING = 'icon-warning.png'
 ICO_ERROR = 'icon-error.png'
+
+# Radio icons
+# TODO: Add this again
+# ICO_STATION_ADD = RESOURCES + 'station_add_48x32.png'
+# COVER_ART_RADIO = RESOURCES + 'radio_cover_art.png'
 
 # default covers
 DEFAULT_COVER = 'cover-files.png'

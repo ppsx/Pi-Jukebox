@@ -3,9 +3,11 @@
 **screen_keyboard.py**: On-screen keyboard
 =======================================================
 """
-__author__ = 'Mark Zwart'
 
 from gui_screens import *
+
+
+__author__ = 'Mark Zwart'
 
 
 class KeyboardBase(ScreenModal):
@@ -223,6 +225,9 @@ class Keyboard():
                 self.text = self.keyboard_symbols.text
                 if value == 'letters':
                     self.selected = value
+            if value is None:
+                # ESC pressed
+                value = 'cancel'
         if value == 'enter':
             return self.text  # When the user pressed enter the entered text value is returned
         elif value == 'cancel':

@@ -5,8 +5,11 @@
 =======================================================
 """
 
-from pij_screen_navigation import *
-from screen_settings import *
+from gui_screens import *
+from pij_screen_navigation import ScreenNavigation
+from screen_settings import ScreenSettings
+from mpd_client import mpd
+
 
 __author__ = 'Mark Zwart'
 
@@ -39,6 +42,13 @@ class DirectoryBrowser(ItemList):
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_directory', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        # TODO: Add proper handling
+        # if DISPLAY == 'raspberry7':
+        #     ItemList.__init__(self, 'list_directory', screen_rect, 55, 42, 690, 424)
+        # elif DISPLAY == 'adafruit3.5':
+        #     ItemList.__init__(self, 'list_directory', screen_rect, 55, 42, 214, 194)
+        # else:
+        #     ItemList.__init__(self, 'list_directory', screen_rect, 55, 42, 210, 194)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = C_GREY_LIGHTEST
@@ -203,32 +213,33 @@ class ScreenSelected(ScreenModal):
         button_top = TITLE_HEIGHT + SPACE
 
         if self.selected_type == 'directory':
-            label = "Browse directory"  # + " " + self.selected_name
+            # label = _("Browse directory {0}").format(self.selected_name)  # name removed because of its potential length
+            label = _("Browse directory")  # TODO: is this correct?
             self.add_component(ButtonText('btn_browse', self.screen, button_left, button_top, button_width,
                                           BUTTON_HEIGHT, label))
             button_top += SPACE + BUTTON_HEIGHT
 
-        label = "Add to playlist"
+        label = _("Add to playlist")
         self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
         self.components['btn_add'].font_color = C_GREEN
         self.components['btn_add'].outline_color = C_GREEN
 
-        label = "Add to playlist and play"
+        label = _("Add to playlist and play")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
         self.components['btn_add_play'].font_color = C_GREEN
         self.components['btn_add_play'].outline_color = C_GREEN
 
-        label = "Replace playlist and play"
+        label = _("Replace playlist and play")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
         self.components['btn_replace'].font_color = C_GREEN
         self.components['btn_replace'].outline_color = C_GREEN
 
-        label = "Cancel"
+        label = _("Cancel")
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))

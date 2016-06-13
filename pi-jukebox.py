@@ -1,11 +1,23 @@
+#!/usr/bin/env python
 """
 **pi-jukebox.py**: Main file
 """
 
 import time
-from screen_directory import *
-from screen_library import *
-from screen_player import *
+import pygame
+import locale
+import gettext
+from config_file import config_file
+from settings import *
+from gui_screens import Screens
+from pij_screen_navigation import ScreenNavigation
+from screen_library import ScreenMessage, ScreenLibrary
+from screen_player import ScreenPlaying, ScreenPlaylist
+from screen_directory import ScreenDirectory
+from screen_radio import ScreenRadio
+from screen_settings import ScreenSettingsMPD
+from mpd_client import mpd
+
 
 __author__ = 'Mark Zwart'
 
@@ -28,17 +40,25 @@ class PiJukeboxScreens(Screens):
         """ Updates a current screen if it shows mpd relevant content. """
         self.screen_list[self.current_index].update()
 
+def init_gettext(domain, localedir):
+    locale.setlocale(locale.LC_ALL, '')
+    gettext.bindtextdomain(domain, localedir)
+    gettext.bind_textdomain_codeset(domain, 'UTF-8')
+    gettext.textdomain(domain)
+    gettext.install(domain, localedir, unicode=True)
 
 def apply_settings():
     # Check for first time settings
     if not config_file.setting_exists('MPD Settings', 'music directory'):
-        screen_message = ScreenMessage(SCREEN, 'No music directory', "If you want to display cover art, Pi-Jukebox " +
-                                       "needs to know which directory your music collection is in. The location can " +
-                                       "also be found in your mpd.conf entry 'music directory'.",
-                                       'warning')
+        screen_message = ScreenMessage(
+            SCREEN, 
+            _("No music directory"),
+            _("If you want to display cover art, Pi-Jukebox needs to know which directory your music collection is in. "
+	      "The location can also be found in your mpd.conf entry 'music directory'."),
+            'warning')
         screen_message.show()
         settings_mpd_screen = ScreenSettingsMPD(SCREEN)
-        settings_mpd_screen.keyboard_setting("Set music directory", 'MPD Settings', 'music directory',
+        settings_mpd_screen.keyboard_setting(_("Set music directory"), 'MPD Settings', 'music directory',
                                              '/var/lib/mpd/music/')
     mpd.host = config_file.setting_get('MPD Settings', 'host')
     mpd.port = int(config_file.setting_get('MPD Settings', 'port'))
@@ -47,16 +67,18 @@ def apply_settings():
 
 def main():
     """ The function where it all starts...."""
+    init_gettext('pi-jukebox', 'locale')
     pygame.display.set_caption("Pi Jukebox")
     apply_settings()  # Check for first time settings and applies settings
 
     # Check whether mpd is running and get it's status
     if not mpd.connect():
-        screen_message = ScreenMessage(SCREEN, "Couldn't connect to the mpd server!",
-                                       "Couldn't connect to the mpd server '%s' on port %d! "
-                                       "Check settings in file pi-jukebox.conf or check if server is running: "
-                                       "'sudo service mpd status'." % (mpd.host, mpd.port),
-                                       'error')
+        screen_message = ScreenMessage(
+            SCREEN,
+            "Couldn't connect to the mpd server!",  # TODO: Add to translation
+            _("Couldn't connect to the mpd server {0} on port {1:d}!".format(mpd.host, mpd.port)) +
+            _("Check settings in file pi-jukebox.conf or check is server is running 'sudo service mpd status'."),
+            'error')
         screen_message.show()
         sys.exit()
 

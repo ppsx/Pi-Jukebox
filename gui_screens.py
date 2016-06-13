@@ -130,9 +130,9 @@ class Screen(object):
             :return: The tag_name of the clicked component.
         """
         for key, value in self.components.items():
-            if (isinstance(value, ButtonIcon) or isinstance(value, ButtonText) or
-                    isinstance(value, Switch) or isinstance(value, Slider) or isinstance(value, Picture)) and \
-                    value.visible:
+            if ((isinstance(value, ButtonIcon) or isinstance(value, ButtonText) or
+                    isinstance(value, Switch) or isinstance(value, Slider) or isinstance(value, Picture)) and 
+                    value.visible):
                 if value.x_pos <= x <= value.x_pos + value.width and value.y_pos <= y <= value.y_pos + value.height:
                     value.on_click(x, y)
                     return key

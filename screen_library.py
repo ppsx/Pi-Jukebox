@@ -4,10 +4,15 @@
 =======================================================
 
 """
-__author__ = 'Mark Zwart'
 
-from pij_screen_navigation import *
-from screen_settings import *
+from gui_screens import *
+from pij_screen_navigation import ScreenNavigation
+from screen_settings import ScreenSettings
+from screen_keyboard import Keyboard
+from mpd_client import mpd
+
+
+__author__ = 'Mark Zwart'
 
 
 class LetterBrowser(ItemList):
@@ -18,6 +23,16 @@ class LetterBrowser(ItemList):
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        # TODO: Add proper handling
+        # if DISPLAY == 'raspberry7':
+        #     ItemList.__init__(self, 'list_letters', screen_rect,
+        #         748, 40, 52, 425)
+        # elif DISPLAY == 'adafruit3.5':
+        #     ItemList.__init__(self, 'list_letters', screen_rect,
+        #         268, 40, 52, 195)
+        # else:
+        #     ItemList.__init__(self, 'list_letters', screen_rect,
+        #         268, 40, 52, 195)
         self.item_outline_visible = True
         self.outline_visible = False
         self.font_color = C_GREY_LIGHTEST
@@ -33,6 +48,16 @@ class LibraryBrowser(ItemList):
     def __init__(self, screen_rect):
         ItemList.__init__(self, 'list_library', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        # TODO: Add proper handling
+        # if DISPLAY == 'raspberry7':
+        #     ItemList.__init__(self, 'list_library', screen_rect, 
+        #         55, 42, 690, 424)
+        # elif DISPLAY == 'adafruit3.5':
+        #     ItemList.__init__(self, 'list_library', screen_rect, 
+        #         55, 42, 210, 194)
+        # else:
+        #     ItemList.__init__(self, 'list_library', screen_rect, 
+        #         55, 42, 210, 194)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = C_GREY_LIGHTEST
@@ -276,7 +301,7 @@ class ScreenSearch(ScreenModal):
         :ivar search_text: Partial text which should be searched for
     """
     def __init__(self, screen_rect):
-        ScreenModal.__init__(self, screen_rect, "Search library for...")
+        ScreenModal.__init__(self, screen_rect, _("Search library for..."))
         self.title_color = C_BLUE
         self.font_color = C_GREY_DARK
         self.search_type = ""
@@ -288,25 +313,21 @@ class ScreenSearch(ScreenModal):
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
 
-        label = "Artists"
         button_top = TITLE_HEIGHT + SPACE
-        self.add_component(ButtonText('btn_artists', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
-                                      label))
+        self.add_component(
+            ButtonText('btn_artists', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, _("Artists")))
 
-        label = "Albums"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_albums', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
-                                      label))
+        self.add_component(
+            ButtonText('btn_albums', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, _("Albums")))
 
-        label = "Songs"
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
-                                      label))
+        self.add_component(
+            ButtonText('btn_songs', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, _("Songs")))
 
-        label = "Cancel"
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
-                                      label))
+        self.add_component(
+            ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, _("Cancel")))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 
@@ -321,13 +342,13 @@ class ScreenSearch(ScreenModal):
             return
         elif tag_name == 'btn_artists':
             self.search_type = 'artist'
-            search_label = "Search artists"
+            search_label = _("Search artists")
         elif tag_name == 'btn_albums':
             self.search_type = 'album'
-            search_label = "Search albums"
+            search_label = _("Search albums")
         elif tag_name == 'btn_songs':
             self.search_type = 'song'
-            search_label = "Search songs"
+            search_label = _("Search songs")
         # Open on-screen keyboard for entering search string
         keyboard = Keyboard(self.screen, search_label)
         self.search_text = keyboard.show()  # Get entered search text
@@ -355,21 +376,21 @@ class ScreenSelected(ScreenModal):
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
 
-        label = "Add to playlist"
+        label = _("Add to playlist")
         button_top = TITLE_HEIGHT + SPACE
         self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
         self.components['btn_add'].font_color = C_GREEN
         self.components['btn_add'].outline_color = C_GREEN
 
-        label = "Add to playlist and play"
+        label = _("Add to playlist and play")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
         self.components['btn_add_play'].font_color = C_GREEN
         self.components['btn_add_play'].outline_color = C_GREEN
 
-        label = "Replace playlist and play"
+        label = _("Replace playlist and play")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
@@ -377,23 +398,27 @@ class ScreenSelected(ScreenModal):
         self.components['btn_replace'].outline_color = C_GREEN
 
         if self.type == 'artists':
-            label = "Albums of ..."  # + self.title
+            label = _("Albums of ...")  # + self.title  # TODO: Re-add commented data?
+            # label = _("Albums of {0}").format(self.title)
             button_top += SPACE + BUTTON_HEIGHT
             button_width_2 = int((button_width - SPACE) / 2)
             self.add_component(ButtonText('btn_artist_get_albums', self.screen, button_left, button_top, button_width_2,
                                           BUTTON_HEIGHT, label))
 
-            label = "Songs of ..."  # + self.title
+            label = _("Songs of ...")  # + self.title
+            # label = _("Songs of {0}").format(self.title)  # TODO: Re-add commented data?
             # button_top += SPACE + BUTTON_HEIGHT
             self.add_component(ButtonText('btn_artist_get_songs', self.screen, button_left + button_width_2 + SPACE,
                                           button_top, button_width_2, BUTTON_HEIGHT, label))
         elif self.type == 'albums':
-            label = "Songs of ..."  # + self.title
+            label = _("Songs of ...")  # + self.title  # TODO: Re-add commented data?
+            # label = _("Songs of {0}").format(self.title)
             button_top += SPACE + BUTTON_HEIGHT
             self.add_component(ButtonText('btn_album_get_songs', self.screen, button_left, button_top, button_width,
                                           BUTTON_HEIGHT, label))
 
-        label = "Cancel"
+        # TODO: Should the Cancel button be removed?
+        label = _("Cancel")
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText("btn_cancel", self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))

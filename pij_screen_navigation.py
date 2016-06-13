@@ -4,11 +4,7 @@
 =======================================================
 """
 
-
-# from settings import *
-# from gui_screens import *
-# from gui_widgets import *
-from screen_settings import *
+from gui_widgets import *
 
 
 __author__ = 'Mark Zwart'
@@ -16,6 +12,7 @@ __author__ = 'Mark Zwart'
 
 class ScreenNavigation(WidgetContainer):
     def __init__(self, tag_name, screen_rect, button_active):
+        self.__radio_mode = False
         self.__button_active = button_active
         WidgetContainer.__init__(self, tag_name, screen_rect, 0, 0, ICO_WIDTH + SPACE, SCREEN_HEIGHT)
         button_top = SPACE
@@ -26,6 +23,9 @@ class ScreenNavigation(WidgetContainer):
         self.add_component(ButtonIcon('btn_library', self.screen, ICO_LIBRARY, SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
         self.add_component(ButtonIcon('btn_directory', self.screen, ICO_DIRECTORY, SPACE, button_top))
+        # TODO: uncomment when proper icons will appear in resources
+	# button_top += ICO_HEIGHT + SPACE
+        # self.add_component(ButtonIcon('btn_radio', self.screen, ICO_RADIO, 3, 165))
         button_top += ICO_HEIGHT + SPACE
         self.add_component(ButtonIcon('btn_settings', self.screen, ICO_SETTINGS, SPACE, button_top))
         self.button_active_set(button_active)
