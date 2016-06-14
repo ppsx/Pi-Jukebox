@@ -100,12 +100,16 @@ ICO_SWITCH_OFF = 'switch-off.png'
 # General icons
 ICO_PLAYER_FILE = 'main-playing-file.png'
 ICO_PLAYER_FILE_ACTIVE = 'main-playing-file-active.png'
+ICO_PLAYER_RADIO = 'main-playing-radio.png'
+ICO_PLAYER_RADIO_ACTIVE = 'main-playing-radio-active.png'
 ICO_PLAYLIST = 'main-playlist.png'
 ICO_PLAYLIST_ACTIVE = 'main-playlist-active.png'
 ICO_LIBRARY = 'main-library.png'
 ICO_LIBRARY_ACTIVE = 'main-library-active.png'
 ICO_DIRECTORY = 'main-directory.png'
 ICO_DIRECTORY_ACTIVE = 'main-directory-active.png'
+ICO_RADIO = 'main-radio.png'
+ICO_RADIO_ACTIVE = 'main-radio-active.png'
 ICO_SETTINGS = 'main-settings.png'
 
 # Player icons
@@ -143,12 +147,11 @@ ICO_WARNING = 'icon-warning.png'
 ICO_ERROR = 'icon-error.png'
 
 # Radio icons
-# TODO: Add this again
-# ICO_STATION_ADD = RESOURCES + 'station_add_48x32.png'
-# COVER_ART_RADIO = RESOURCES + 'radio_cover_art.png'
+ICO_STATION_ADD = 'station-add.png'
 
 # default covers
 DEFAULT_COVER = 'cover-files.png'
+COVER_ART_RADIO = 'cover-radio.png'
 TMP_COVER = os.path.join(RESOURCES, 'tmp_cover.jpg')
 
 # Special keyboard icons

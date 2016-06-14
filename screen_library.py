@@ -10,6 +10,7 @@ from pij_screen_navigation import ScreenNavigation
 from screen_settings import ScreenSettings
 from screen_keyboard import Keyboard
 from mpd_client import mpd
+from settings import *
 
 
 __author__ = 'Mark Zwart'
@@ -165,7 +166,7 @@ class ScreenLibrary(Screen):
         self.currently_showing = 'artists'
 
     def show(self):
-        self.components['screen_nav'].play_pause()
+        self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
         if self.first_time_showing:
             self.set_currently_showing('artists')
             self.components['list_library'].show_artists()
@@ -174,7 +175,7 @@ class ScreenLibrary(Screen):
         super(ScreenLibrary, self).show()
 
     def update(self):
-        self.components['screen_nav'].play_pause()
+        self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
 
     def set_currently_showing(self, type_showing):
         """ Switch icons to active dependent on which kind of searching is active.
@@ -264,6 +265,8 @@ class ScreenLibrary(Screen):
             return 2
         elif tag_name == 'btn_directory':
             return 3
+        elif tag_name == 'btn_radio':
+            return 4
         elif tag_name == 'btn_settings':
             setting_screen = ScreenSettings(self.screen)
             setting_screen.show()

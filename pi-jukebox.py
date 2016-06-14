@@ -3,14 +3,12 @@
 **pi-jukebox.py**: Main file
 """
 
+import sys
 import time
-import pygame
 import locale
 import gettext
-from config_file import config_file
 from settings import *
 from gui_screens import Screens
-from pij_screen_navigation import ScreenNavigation
 from screen_library import ScreenMessage, ScreenLibrary
 from screen_player import ScreenPlaying, ScreenPlaylist
 from screen_directory import ScreenDirectory
@@ -35,6 +33,7 @@ class PiJukeboxScreens(Screens):
         self.screen_list.append(ScreenPlaylist(SCREEN))  # Create player with playlist screen
         self.screen_list.append(ScreenLibrary(SCREEN))  # Create library browsing screen
         self.screen_list.append(ScreenDirectory(SCREEN))  # Create directory browsing screen
+        self.screen_list.append(ScreenRadio(SCREEN))  # Create radio station managing screen
 
     def mpd_updates(self):
         """ Updates a current screen if it shows mpd relevant content. """
@@ -63,6 +62,8 @@ def apply_settings():
     mpd.host = config_file.setting_get('MPD Settings', 'host')
     mpd.port = int(config_file.setting_get('MPD Settings', 'port'))
     mpd.music_directory_set(config_file.setting_get('MPD Settings', 'music directory'))
+    if not config_file.section_exists('Radio stations'):
+        config_file.setting_set('Radio stations', "Radio Swiss Jazz", "http://stream.srg-ssr.ch/m/rsj/mp3_128")
 
 
 def main():

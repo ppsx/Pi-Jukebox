@@ -150,23 +150,23 @@ class ScreenSelected(ScreenModal):
         button_width = self.window_width - 2 * button_left
         button_top = TITLE_HEIGHT + SPACE
 
-        label = "Tune in"
+        label = _("Tune in")
         self.add_component(ButtonText('btn_tune_in', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
         self.components['btn_tune_in'].font_color = C_GREEN
         self.components['btn_tune_in'].outline_color = C_GREEN
 
-        label = "Edit"
+        label = _("Edit")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_edit', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
 
-        label = "Remove"
+        label = _("Remove")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(ButtonText('btn_remove', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
 
-        label = "Back"
+        label = _("Cancel")
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
@@ -182,8 +182,8 @@ class ScreenSelected(ScreenModal):
             screen_edit.show()
             self.close()
         elif tag_name == 'btn_remove':
-            screen_yes_no = ScreenYesNo(self.screen, "Remove " + self.station_name,
-                                        "Are you sure you want to remove " + self.station_name + "?")
+            screen_yes_no = ScreenYesNo(self.screen, _("Remove {0}").format(self.station_name),
+                _("Are you sure you want to remove {0}?").format(self.station_name))
             if screen_yes_no.show() == 'yes':
                 config_file.setting_remove('Radio stations', self.station_name)
             self.close()
@@ -210,15 +210,15 @@ class ScreenStation(ScreenModal):
         self.station_name = station_name
 
         if station_name == "":
-            ScreenModal.__init__(self, screen_rect, "Add a radio station")
+            ScreenModal.__init__(self, screen_rect, _("Add a radio station"))
             self.station_URL = ""
-            btn_name_label = "Set station name"
-            btn_URL_label = "Set station URL"
+            btn_name_label = _("Set station name")
+            btn_URL_label = _("Set station URL")
         else:
-            ScreenModal.__init__(self, screen_rect, "Edit radio station")
+            ScreenModal.__init__(self, screen_rect, _("Edit radio station"))
             self.station_URL = config_file.setting_get('Radio stations', self.station_name)
-            btn_name_label = "Change name " + self.station_name
-            btn_URL_label = "Change station URL"
+            btn_name_label = _("Change name {0}").format(self.station_name)
+            btn_URL_label = _("Change station URL")
 
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
@@ -229,14 +229,14 @@ class ScreenStation(ScreenModal):
         self.add_component(ButtonText('btn_URL', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       btn_URL_label))
 
-        label = "Cancel"
+        label = _("Cancel")
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(ButtonText('btn_cancel', self.screen, button_left, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT,
                                       label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 
-        label = "Ok"
+        label = _("Ok")
         self.add_component(ButtonText('btn_ok', self.screen, self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE,
                                       button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
         self.components['btn_ok'].font_color = C_GREEN
@@ -245,25 +245,25 @@ class ScreenStation(ScreenModal):
     def update(self):
         """ Set-up screen controls. """
         if self.station_name == "":
-            self.components['btn_name'].draw("Set station name")
+            self.components['btn_name'].draw(_("Set station name"))
         else:
-            self.components['btn_name'].draw("Change name " + self.station_name)
+            self.components['btn_name'].draw(_("Change name {0}").format(self.station_name))
         if self.station_URL == "":
-            self.components['btn_URL'].draw("Set station URL")
+            self.components['btn_URL'].draw(_("Set station URL"))
         else:
-            self.components['btn_URL'].draw("Change station URL")
+            self.components['btn_URL'].draw(_("Change station URL"))
         self.show()
 
     def action(self, tag_name):
         """ Action that should be performed on a click. """
         if tag_name == 'btn_name':
-            keyboard = Keyboard(self.screen, "Set station name")
+            keyboard = Keyboard(self.screen, _("Set station name"))
             keyboard.text = self.station_name
             self.station_name = keyboard.show()
             self.update()
             self.show()
         elif tag_name == 'btn_URL':
-            keyboard = Keyboard(self.screen, "Set station URL")
+            keyboard = Keyboard(self.screen, _("Set station URL"))
             keyboard.title_color = C_BLUE
             keyboard.text = self.station_URL
             self.station_URL = keyboard.show()

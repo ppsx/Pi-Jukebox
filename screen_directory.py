@@ -9,6 +9,7 @@ from gui_screens import *
 from pij_screen_navigation import ScreenNavigation
 from screen_settings import ScreenSettings
 from mpd_client import mpd
+from settings import *
 
 
 __author__ = 'Mark Zwart'
@@ -129,7 +130,7 @@ class ScreenDirectory(Screen):
         self.add_component(LetterBrowser(self.screen))
 
     def show(self):
-        self.components['screen_nav'].play_pause()
+        self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
         if self.first_time_showing:
             self.components['list_directory'].show_directory()
             self.letter_list_update()
@@ -137,7 +138,7 @@ class ScreenDirectory(Screen):
         super(ScreenDirectory, self).show()
 
     def update(self):
-        self.components['screen_nav'].play_pause()
+        self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
 
     def letter_list_update(self):
         self.components['list_letters'].list = self.components['list_directory'].first_letters_in_result_get()
@@ -160,6 +161,8 @@ class ScreenDirectory(Screen):
             return 2
         elif tag_name == 'btn_directory':
             return 3
+        elif tag_name == 'btn_radio':
+            return 4
         elif tag_name == 'btn_settings':
             setting_screen = ScreenSettings(self.screen)
             setting_screen.show()

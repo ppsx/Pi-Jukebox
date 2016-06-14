@@ -35,7 +35,6 @@ class Playlist(ItemList):
     def show_playlist(self):
         """ Display the playlist. """
         updated = False
-        # playing_nr = mpd.playlist_current_playing_index_get()
         if self.list != mpd.playlist_current_get():
             self.list = mpd.playlist_current_get()
             updated = True
@@ -95,7 +94,7 @@ class ScreenPlaylist(Screen):
 
     def show(self):
         """ Displays the screen. """
-        self.components['screen_nav'].play_pause()
+        self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
         now_playing = mpd.now_playing
         # self.components['lbl_time'].text_set(now_playing.time_current + '/' + now_playing.time_total)
         # self.components['lbl_volume'].text_set('Vol: ' + str(mpd.volume) + '%')
@@ -114,7 +113,7 @@ class ScreenPlaylist(Screen):
 
     def update(self):
         now_playing = mpd.now_playing
-        self.components['screen_nav'].play_pause()
+        self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
         while True:
             try:
                 event = mpd.events.popleft()
@@ -155,6 +154,8 @@ class ScreenPlaylist(Screen):
             return 2
         elif tag_name == 'btn_directory':
             return 3
+        elif tag_name == 'btn_radio':
+            return 4
         elif tag_name == 'btn_settings':
             setting_screen = ScreenSettings(self.screen)
             setting_screen.show()
@@ -245,7 +246,7 @@ class ScreenPlaying(Screen):
         label_left = ICO_WIDTH + 2 * SPACE
         label_width = SCREEN_WIDTH - 2 * (ICO_WIDTH + 2 * SPACE)
 
-        self.components['screen_nav'].play_pause()
+        self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
         self.components['lbl_time_current'].text_set(mpd.now_playing.time_current)
         self.components['lbl_time_total'].text_set(mpd.now_playing.time_total)
         if mpd.player_control_get() == 'play':
@@ -256,10 +257,17 @@ class ScreenPlaying(Screen):
         self.components['lbl_track_title'].text_set(mpd.now_playing.title)
         self.components['lbl_track_artist'].text_set(mpd.now_playing.artist)
         self.components['lbl_track_album'].text_set(mpd.now_playing.album)
-        self.components['lbl_track_artist'].visible = True
-        self.components['lbl_track_artist'].text_set(mpd.now_playing.artist)
-        self.components['lbl_track_album'].position_set(label_left, SPACE - 1 + FONT_SIZE, label_width, FONT_SIZE + 2)
-        self.components['pic_cover_art'].picture_set(mpd.now_playing.cover_art_get())
+        if mpd.radio_mode_get():
+            self.components['lbl_track_artist'].visible = False
+            self.components['lbl_track_album'].position_set(label_left, SPACE - 1 + FONT_SIZE, label_width,
+                                                            FONT_SIZE + 2)
+            self.components['pic_cover_art'].picture_set(COVER_ART_RADIO)
+        else:
+            self.components['lbl_track_artist'].visible = True
+            self.components['lbl_track_artist'].text_set(mpd.now_playing.artist)
+            self.components['lbl_track_album'].position_set(label_left, SPACE - 1 + FONT_SIZE, label_width,
+                                                            FONT_SIZE + 2)
+            self.components['pic_cover_art'].picture_set(mpd.now_playing.cover_art_get())
         super(ScreenPlaying, self).show()  # Draw screen
 
     def update(self):
@@ -269,18 +277,24 @@ class ScreenPlaying(Screen):
         while True:
             try:
                 event = mpd.events.popleft()
-                self.components['screen_nav'].play_pause()
+                self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
                 playing = mpd.now_playing
                 if event == 'time_elapsed':
                     self.components['lbl_time_current'].text_set(playing.time_current)
                     self.components['slide_time'].draw(playing.time_percentage)
                 elif event == 'playing_file':
                     self.components['lbl_track_title'].text_set(playing.title)
-                    self.components['lbl_track_artist'].visible = True
-                    self.components['lbl_track_artist'].text_set(playing.artist)
-                    self.components['lbl_track_album'].position_set(label_left, SPACE - 1 + FONT_SIZE, label_width,
-                                                                    FONT_SIZE + 2)
-                    self.components['pic_cover_art'].picture_set(mpd.now_playing.cover_art_get())
+                    if mpd.radio_mode_get():
+                        self.components['lbl_track_artist'].visible = False
+                        self.components['lbl_track_album'].position_set(label_left, SPACE - 1 + FONT_SIZE, label_width,
+                                                                        FONT_SIZE + 2)
+                        self.components['pic_cover_art'].picture_set(COVER_ART_RADIO)
+                    else:
+                        self.components['lbl_track_artist'].visible = True
+                        self.components['lbl_track_artist'].text_set(playing.artist)
+                        self.components['lbl_track_album'].position_set(label_left, SPACE - 1 + FONT_SIZE, label_width,
+                                                                        FONT_SIZE + 2)
+                        self.components['pic_cover_art'].picture_set(mpd.now_playing.cover_art_get())
                     self.components['lbl_track_album'].text_set(playing.album)
                     self.components['lbl_time_total'].text_set(playing.time_total)
                 elif event == 'state':
@@ -301,6 +315,8 @@ class ScreenPlaying(Screen):
             return 2
         elif tag_name == 'btn_directory':
             return 3
+        elif tag_name == 'btn_radio':
+            return 4
         elif tag_name == 'btn_settings':
             setting_screen = ScreenSettings(self.screen)
             setting_screen.show()
