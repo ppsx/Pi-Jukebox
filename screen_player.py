@@ -227,19 +227,24 @@ class ScreenPlaying(Screen):
                                      label_width, FONT_SIZE + 2))
         self.components['lbl_track_title'].set_alignment(HOR_MID, VERT_MID)
 
+        self.add_component(Slider2('slide_time', self.screen,
+                                   label_left, SCREEN_HEIGHT - LIST_INDICATOR_WIDTH - FONT_SIZE - 2 * SPACE,
+                                   label_width, LIST_INDICATOR_WIDTH))
+
+         # Cover art
+        self.add_component(Picture('pic_cover_art', self.screen,
+                                   label_left, 2 * SPACE + 2 * FONT_SIZE,
+                                   label_width, SCREEN_HEIGHT - LIST_INDICATOR_WIDTH - 3 * FONT_SIZE - 5 * SPACE,
+                                   mpd.get_cover_art(), center=True))
+
+        # time info # TODO: Change '48' to some computation
         self.add_component(LabelText('lbl_time_current', self.screen, SCREEN_WIDTH - ICO_WIDTH,
                                      SCREEN_HEIGHT - ICO_HEIGHT - SPACE, 48, FONT_SIZE + 2))
         self.components['lbl_time_current'].set_alignment(HOR_MID, VERT_MID)
+
         self.add_component(LabelText('lbl_time_total', self.screen, SCREEN_WIDTH - ICO_WIDTH,
                                      SCREEN_HEIGHT - ICO_HEIGHT - SPACE + FONT_SIZE, 48, FONT_SIZE + 2))
         self.components['lbl_time_total'].set_alignment(HOR_MID, VERT_MID)
-
-        self.add_component(Slider2('slide_time', self.screen, label_left, SCREEN_HEIGHT - SPACE - ICO_HEIGHT + 2,
-                                   label_width, LIST_INDICATOR_WIDTH))
-
-        # Cover art
-        self.add_component(Picture('pic_cover_art', self.screen, label_left, ICO_HEIGHT + 2 * SPACE, label_width,
-                                   4 * ICO_HEIGHT + 3 * SPACE, mpd.get_cover_art(), center=True))
 
     def show(self):
         """ Displays the screen. """
