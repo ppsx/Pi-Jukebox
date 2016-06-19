@@ -76,9 +76,9 @@ def main():
     if not mpd.connect():
         screen_message = ScreenMessage(
             SCREEN,
-            "Couldn't connect to the mpd server!",  # TODO: Add to translation
-            _("Couldn't connect to the mpd server {0} on port {1:d}!".format(mpd.host, mpd.port)) +
-            _("Check settings in file pi-jukebox.conf or check is server is running 'sudo service mpd status'."),
+            "Couldn't connect to the mpd server!",
+            _("Couldn't connect to the mpd server {0} on port {1:d}! ".format(mpd.host, mpd.port)) +
+            _("Check settings in file pi-jukebox.conf or check if server is running: 'sudo service mpd status'."),
             'error')
         screen_message.show()
         sys.exit()
