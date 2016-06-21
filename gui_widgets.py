@@ -229,7 +229,7 @@ class Picture(Widget):
         return pygame.image.load(data)
 
     def draw(self):
-        SCREEN.blit(self.__image, (self.x_pos+self.x_mod, self.y_pos+self.y_mod))
+        SCREEN.blit(self.__image, (self.x_pos + self.x_mod, self.y_pos + self.y_mod))
         pygame.display.update(self.rect)
 
     def on_click(self, x, y):
@@ -608,7 +608,7 @@ class ItemList(Widget):
         self.list = []
         self.outline_visible = True
 
-        self.item_height = TITLE_HEIGHT
+        self.item_height = FONT_SPACE
         self.item_indent = SPACE
         self.item_alignment_horizontal = HOR_LEFT
         self.item_alignment_vertical = VERT_MID
@@ -642,18 +642,12 @@ class ItemList(Widget):
 
     def draw_page_indicator(self):
         """ Draws a 'progress' indicator on the list. """
-        # no_pages = self.pages_count()
         if self.pages_count() > 1:
             indicator_width = LIST_INDICATOR_WIDTH
             indicator_height = self.height / self.pages_count()
             indicator_x = self.x_pos + self.width - indicator_width
             indicator_y = self.y_pos + self.page_showing_index * indicator_height
-            # indicator = pygame.Surface(indicator_width, indicator_height)
-            # indicator.set_alpha(128)
-            # indicator.fill(FIFTIES_ORANGE)
-            # SCREEN.blit(indicator, (indicator_x, indicator_y))
             indicator = Rect(indicator_x, indicator_y, indicator_width, indicator_height)
-            #            indicator.set_alpha(128)
             pygame.draw.rect(self.screen, C_YELLOW, indicator)
 
     def draw_items(self):
@@ -666,9 +660,9 @@ class ItemList(Widget):
         item_start = self.page_showing_index * self.items_per_page
         while item_nr + item_start < len(self.list) and item_nr < self.items_per_page:
             item_text = self.list[item_nr + item_start]  # Get item text from list
-            item_x_pos = self.x_pos + self.item_indent                                  # x position of item
-            item_width = self.width - 2 * self.item_indent - 10  # Maximum item width
-            item_y_pos = self.y_pos + self.item_indent + (self.item_height * item_nr)   # y position of item
+            item_x_pos = self.x_pos + self.item_indent                                     # x position of item
+            item_width = self.width - 2 * self.item_indent - SPACE - LIST_INDICATOR_WIDTH  # Maximum item width
+            item_y_pos = self.y_pos + self.item_indent + (self.item_height * item_nr)      # y position of item
             list_item = LabelText('lbl_item_' + str(item_nr), self.screen, item_x_pos, item_y_pos, item_width,
                                   self.item_height, item_text)  # Create label
             list_item.font_color = self.font_color

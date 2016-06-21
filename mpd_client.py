@@ -72,6 +72,9 @@ class MPDNowPlaying(object):
                 else:
                     self.album = _("Unknown")
                 self.artist = ""
+                self.time_percentage = 0
+                self.__time_total_sec = 0
+                self.time_total = ""
         elif now_playing is None:  # Changed to no current song
             self.__now_playing = None
             self.title = ""
@@ -90,7 +93,6 @@ class MPDNowPlaying(object):
                self.time_percentage = int(self.__time_current_sec / self.__time_total_sec * 100)
             else:
                 self.time_percentage = 0
-            self.time_percentage = int(self.__time_current_sec / self.__time_total_sec * 100)
             return True
         else:
             return False
@@ -305,7 +307,7 @@ class MPDController(object):
             :return: Returns boolean whether updated or not.
         """
         time_elapsed = pygame.time.get_ticks() - self.__last_update_time
-        if pygame.time.get_ticks() > self.update_interval and time_elapsed < self.update_interval:
+        if pygame.time.get_ticks() > self.update_interval > time_elapsed:
             return False
         self.__last_update_time = pygame.time.get_ticks()  # Reset update
         return self.__parse_mpc_status()   # Parse mpc status output

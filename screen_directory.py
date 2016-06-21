@@ -22,7 +22,8 @@ class LetterBrowser(ItemList):
     """
 
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_letters', screen_rect, SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT,
+        ItemList.__init__(self, 'list_letters', screen_rect,
+                          SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.item_outline_visible = True
         self.outline_visible = False
@@ -41,8 +42,9 @@ class DirectoryBrowser(ItemList):
     """
 
     def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_directory', screen_rect, 2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
-                          SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
+        ItemList.__init__(self, 'list_directory', screen_rect,
+                          2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
+                          SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE)
         # TODO: Add proper handling
         # if DISPLAY == 'raspberry7':
         #     ItemList.__init__(self, 'list_directory', screen_rect, 55, 42, 690, 424)
@@ -217,28 +219,28 @@ class ScreenSelected(ScreenModal):
 
         if self.selected_type == 'directory':
             # label = _("Browse directory {0}").format(self.selected_name)  # name removed because of its potential length
-            label = _("Browse directory")  # TODO: is this correct?
-            self.add_component(ButtonText('btn_browse', self.screen, button_left, button_top, button_width,
-                                          BUTTON_HEIGHT, label))
+            label = _("Browse directory")
+            self.add_component(
+                ButtonText('btn_browse', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
             button_top += SPACE + BUTTON_HEIGHT
 
         label = _("Add to playlist")
-        self.add_component(ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
-                                      label))
+        self.add_component(
+            ButtonText('btn_add', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_add'].font_color = C_GREEN
         self.components['btn_add'].outline_color = C_GREEN
 
         label = _("Add to playlist and play")
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
-                                      label))
+        self.add_component(
+            ButtonText('btn_add_play', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_add_play'].font_color = C_GREEN
         self.components['btn_add_play'].outline_color = C_GREEN
 
         label = _("Replace playlist and play")
         button_top += SPACE + BUTTON_HEIGHT
-        self.add_component(ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT,
-                                      label))
+        self.add_component(
+            ButtonText('btn_replace', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_replace'].font_color = C_GREEN
         self.components['btn_replace'].outline_color = C_GREEN
 
