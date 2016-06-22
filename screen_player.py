@@ -222,7 +222,7 @@ class ScreenPlaying(Screen):
         self.add_component(Picture('pic_cover_art', self.screen,
                                    label_left, 2 * SPACE + 2 * FONT_SIZE,
                                    label_width, SCREEN_HEIGHT - LIST_INDICATOR_WIDTH - 3 * FONT_SIZE - 5 * SPACE,
-                                   mpd.get_cover_art(), center=True))
+                                   image_data=mpd.get_cover_art(), center=True))
 
         self.add_component(Slider2('slide_time', self.screen,
                                    label_left, SCREEN_HEIGHT - LIST_INDICATOR_WIDTH - FONT_SIZE - 2 * SPACE,
@@ -259,11 +259,10 @@ class ScreenPlaying(Screen):
         self.components['lbl_track_title'].text_set(mpd.now_playing.title)
         self.components['lbl_track_artist'].text_set(mpd.now_playing.artist)
         self.components['lbl_track_album'].text_set(mpd.now_playing.album)
-        self.components['pic_cover_art'].picture_set(mpd.get_cover_art())
+        self.components['pic_cover_art'].picture_set(image_data=mpd.get_cover_art())
         super(ScreenPlaying, self).show()  # Draw screen
 
     def update(self):
-
         while True:
             try:
                 event = mpd.events.popleft()
@@ -275,7 +274,7 @@ class ScreenPlaying(Screen):
                 elif event == 'playing_file':
                     self.components['lbl_track_title'].text_set(playing.title)
                     self.components['lbl_track_artist'].text_set(playing.artist)
-                    self.components['pic_cover_art'].picture_set(mpd.get_cover_art())
+                    self.components['pic_cover_art'].picture_set(image_data=mpd.get_cover_art())
                     self.components['lbl_track_album'].text_set(playing.album)
                     self.components['lbl_time_total'].text_set(playing.time_total)
                 elif event == 'state':

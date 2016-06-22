@@ -208,13 +208,13 @@ class Picture(Widget):
         :param center: If set to True - the picture will be centered in given rectangle
     """
 
-    def __init__(self, tag_name, screen_rect, x, y, width, height, image_file="", center=False):
+    def __init__(self, tag_name, screen_rect, x, y, width, height, image_file="", center=False, image_data=None):
         Widget.__init__(self, tag_name, screen_rect, x, y, width, height)
         self.__center = center
         self.x_mod = 0
         self.y_mod = 0
         self.__image_file = image_file
-        self.__image = self.get_image(image_file)
+        self.__image = image_data if image_data else self.get_image(image_file)
         self.prepare_picture()
 
     def get_image(self, image_file):
@@ -235,10 +235,10 @@ class Picture(Widget):
     def on_click(self, x, y):
         return self.tag_name
 
-    def picture_set(self, file_name):
+    def picture_set(self, image_file="", image_data=None):
         """ Sets the filename of the picture. """
-        self.__image_file = file_name
-        self.__image = self.get_image(self.__image_file)
+        self.__image_file = image_file
+        self.__image = image_data if image_data else self.get_image(self.__image_file)
         self.prepare_picture()
         self.draw()
 

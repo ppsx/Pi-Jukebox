@@ -4,7 +4,9 @@
 ==================================================================
 """
 
+import io
 import sys
+import zipfile
 from collections import deque
 import mpd as mpdlib
 from tinytag import TinyTag
@@ -90,30 +92,35 @@ class MPDNowPlaying(object):
             self.__time_current_sec = seconds
             self.time_current = self.make_time_string(seconds)
             if self.playing_type != 'radio':
-               self.time_percentage = int(self.__time_current_sec / self.__time_total_sec * 100)
+                self.time_percentage = int(self.__time_current_sec / self.__time_total_sec * 100)
             else:
                 self.time_percentage = 0
             return True
         else:
             return False
 
+    def _get_cover_from_zip(self, cover_art):
+        with zipfile.ZipFile(RESOURCES_ZIP) as res:
+            img = res.read(cover_art)
+        bytes_io = io.BytesIO(img)
+        return pygame.image.load(bytes_io)
+
     def cover_art_get(self):
         if self.playing_type == 'radio':
-            return COVER_ART_RADIO
+            return self._get_cover_from_zip(COVER_ART_RADIO)
         if self.file == "" :
-            return DEFAULT_COVER
+            return self._get_cover_from_zip(DEFAULT_COVER)
         try:
             tag = TinyTag.get(os.path.join(self.music_directory, self.file), image=True)
             cover_art = tag.get_image()
         except:
-            return DEFAULT_COVER
+            return self._get_cover_from_zip(DEFAULT_COVER)
 
         if cover_art is None:
-            return DEFAULT_COVER
+            return self._get_cover_from_zip(DEFAULT_COVER)
 
-        with open(TMP_COVER, 'wb') as img:
-            img.write(cover_art)  # write artwork to new image
-        return TMP_COVER
+        bytes_io = io.BytesIO(cover_art)
+        return pygame.image.load(bytes_io)
 
     def make_time_string(self, seconds):
         minutes = int(seconds / 60)
@@ -228,8 +235,6 @@ class MPDController(object):
 
             :return: Boolean indicating if the status was changed
         """
-        current_seconds = 0
-        current_total = 0
         try:
             now_playing = self.mpd_client.currentsong()
         except mpdlib.ConnectionError:

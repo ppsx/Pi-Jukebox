@@ -152,7 +152,6 @@ ICO_STATION_ADD = 'station-add.png'
 # default covers
 DEFAULT_COVER = 'cover-files.png'
 COVER_ART_RADIO = 'cover-radio.png'
-TMP_COVER = os.path.join(RESOURCES, 'tmp_cover.jpg')
 
 # Special keyboard icons
 ICO_SHIFT = 'keys-shift.png'
