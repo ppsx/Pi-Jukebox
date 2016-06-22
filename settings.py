@@ -16,13 +16,12 @@ __author__ = 'Mark Zwart'
 
 VERSION = (1, 1, 0)
 
-FONT_SIZE = 32
-
-SPACE = 10
+FONT_SIZE = 22
 
 TITLE_HEIGHT = int(FONT_SIZE * 1.4)
 FONT_SPACE = int(FONT_SIZE * 1.2)
 BUTTON_TOP = TITLE_HEIGHT
+SPACE = 10
 
 KEY_SPACE = 4
 KEY_WIDTH_STD = 42
@@ -36,8 +35,8 @@ ICO_WIDTH = 64
 ICO_HEIGHT = 42
 ICO_INFO_WIDTH = 48
 
-SWITCH_WIDTH = 42
-SWITCH_HEIGHT = 42
+SWITCH_WIDTH = 32
+SWITCH_HEIGHT = 32
 
 LIST_WIDTH = 42
 LIST_INDICATOR_WIDTH = 6
@@ -72,7 +71,7 @@ if RUN_ON_RASPBERRY_PI:
         os.environ['SDL_MOUSEDRV'] = 'TSLIB'
 
 # Display settings
-pygame.init() 	# Pygame initialization
+pygame.init()  # Pygame initialization
 
 PYGAME_EVENT_DELAY = 25
 

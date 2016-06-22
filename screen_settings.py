@@ -135,9 +135,9 @@ class ScreenSettingsPlayback(ScreenModal):
     def __init__(self, screen_rect):
         ScreenModal.__init__(self, screen_rect, _("Playback settings"))
         self.title_color = C_GREY_LIGHTEST
-        switch_width = SWITCH_WIDTH + int(SPACE / 2)
-        label_top = FONT_SPACE + int(2.5 * SPACE)
-        switch_top = label_top - int(FONT_SIZE * 0.4) + 6
+        switch_width = SWITCH_WIDTH + int(SPACE * 1.5)
+        label_top = TITLE_HEIGHT + SPACE
+        switch_top = label_top - int((SWITCH_HEIGHT - FONT_SPACE) / 2)
         switch_left = 2 * SPACE
         switch_space = int((self.window_width - 4 * SPACE) / 3)
         label_length = switch_space - switch_width
@@ -156,8 +156,8 @@ class ScreenSettingsPlayback(ScreenModal):
         self.add_component(LabelText('lbl_single', screen_rect, switch_left + switch_width, label_top, label_length,
                                      FONT_SPACE, _("Single")))
 
-        label_top += 2 * FONT_SPACE
-        switch_top += 2 * FONT_SPACE
+        label_top += int(1.5 * FONT_SPACE)
+        switch_top += int(1.5 * FONT_SPACE)
 
         self.add_component(Switch('switch_consume', screen_rect, 2 * SPACE, switch_top))
         self.add_component(LabelText('lbl_consume', screen_rect, 2 * SPACE + switch_width, label_top,
