@@ -120,6 +120,7 @@ class Slider(Rectangle):
         :param width: The width of the slider's rectangle.
         :param height: The height of the slider's rectangle.
     """
+
     def __init__(self, tag_name, surface, x, y, width, height):
         Rectangle.__init__(self, tag_name, surface, x, y, width, height)
         self.progress_color = C_GREEN
@@ -236,7 +237,8 @@ class Picture(Widget):
         self.__image = image_data if image_data else self.get_image(image_file)
         self.prepare_picture()
 
-    def get_image(self, image_file):
+    @staticmethod
+    def get_image(image_file):
         if not image_file:
             return None
         if image_file.startswith(RESOURCES):
@@ -355,20 +357,23 @@ class LabelText(Widget):
             i += 1
         caption_width = self.font.size(self.caption[:i])[0]
         caption_height = self.font.size(self.caption[:i])[1]
+
         # Horizontal alignment
-        if self.alignment_horizontal == HOR_LEFT:
-            x = self.rect.left + self.indent_horizontal
-        elif self.alignment_horizontal == HOR_MID:
+        if self.alignment_horizontal == HOR_MID:
             x = self.rect.centerx + self.indent_horizontal - caption_width / 2
         elif self.alignment_horizontal == HOR_RIGHT:
             x = self.rect.right - self.indent_horizontal - caption_width
+        else:   # default alignment: HOR_LEFT
+            x = self.rect.left + self.indent_horizontal
+
         # Vertical alignment
-        if self.alignment_vertical == VERT_TOP:
-            y = self.rect.top + self.indent_vertical
-        elif self.alignment_vertical == VERT_MID:
+        if self.alignment_vertical == VERT_MID:
             y = self.rect.centery + self.indent_vertical - caption_height / 2
         elif self.alignment_vertical == VERT_BOTTOM:
             y = self.rect.bottom - self.indent_vertical - caption_height
+        else:   # default alignment: VERT_TOP
+            y = self.rect.top + self.indent_vertical
+
         # Draw Caption
         image = FONT.render(self.caption[:i], True, self.font_color)
         self.surface.blit(image, (x, y))
@@ -401,7 +406,7 @@ class Memo(Widget):
 
     def draw(self, text=None):
         if text is not None:
-            self.__caption = self.text.decode('utf-8')
+            self.__caption = text.decode('utf-8')
         # Draw background
         background = pygame.Surface((self.width, self.height))
         background.set_alpha(self.background_alpha)
@@ -481,7 +486,8 @@ class ButtonIcon(Widget):
         Widget.__init__(self, tag_name, surface, x, y, self.__icon.get_width(), self.__icon.get_height())
         self.caption = ""
 
-    def get_image(self, image_file):
+    @staticmethod
+    def get_image(image_file):
         with zipfile.ZipFile(RESOURCES_ZIP) as res:
             img = res.read(image_file)
         bytes_io = io.BytesIO(img)
@@ -567,7 +573,8 @@ class Switch(Widget):
         Widget.__init__(self, tag_name, surface, x, y, self.width, self.height)
         self.__is_on = False
 
-    def get_image(self, image_file):
+    @staticmethod
+    def get_image(image_file):
         with zipfile.ZipFile(RESOURCES_ZIP) as res:
             img = res.read(image_file)
         bytes_io = io.BytesIO(img)

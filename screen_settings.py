@@ -94,6 +94,7 @@ class ScreenSettingsQuit(ScreenModal):
 
         :param screen_rect: The display's rectangle where the screen is drawn on.
     """
+
     def __init__(self, screen):
         ScreenModal.__init__(self, screen, _("Quit"))
         self.window_x = 70
@@ -130,7 +131,8 @@ class ScreenSettingsQuit(ScreenModal):
         tag_name = super(ScreenModal, self).on_click(x, y)
         if tag_name == 'btn_quit':
             mpd.disconnect()
-            print (_("Thanks for using pi-jukebox!\nBye!"))
+            print(_("Thanks for using pi-jukebox!"))
+            print(_("Bye!"))
             sys.exit()
         elif tag_name == 'btn_shutdown':
             if RUN_ON_RASPBERRY_PI:
@@ -281,14 +283,13 @@ class ScreenSettingsMPD(ScreenModal):
         label = _("Check and save")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(
-                ButtonText('btn_save', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+            ButtonText('btn_save', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_save'].font_color = C_GREEN
         self.components['btn_save'].outline_color = C_GREEN
 
     def on_click(self, x, y):
         tag_name = super(ScreenModal, self).on_click(x, y)
         setting_label = ""
-        setting_value = None
         if tag_name == 'btn_save':
             if self.save_settings():
                 self.close()
@@ -333,7 +334,7 @@ class ScreenSettingsMPD(ScreenModal):
             mpd.port = self.port_new
             if not mpd.connect():
                 error_text = "Couldn't connect to the mpd server " + mpd.host + " on port " + str(mpd.port) + "!" \
-                                                                                                              "Is the MPD server running? Try the command 'sudo service mpd start' on the CLI."
+                             "Is the MPD server running? Try the command 'sudo service mpd start' on the CLI."
                 msg_show = ScreenMessage(self.surface, "Wrong host or port!", error_text, 'warning')
                 msg_show.show()
                 mpd.host = host_old

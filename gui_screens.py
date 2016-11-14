@@ -22,10 +22,6 @@ __author__ = 'Mark Zwart'
 #
 # (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
 
-import sys, pygame
-from pygame.locals import *
-import time
-import math
 from gui_widgets import *
 from settings import *
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 # This file is part of pi-jukebox.
 #
 # pi-jukebox is free software: you can redistribute it and/or modify
@@ -19,6 +20,7 @@
 """
 **pi-jukebox.py**: Main file
 """
+__author__ = 'Mark Zwart'
 
 import sys
 import time
@@ -59,6 +61,7 @@ class PiJukeboxScreens(ScreenControl):
 
     def update(self):
         pass
+
 
 def init_gettext(domain, localedir):
     locale.setlocale(locale.LC_ALL, '')

@@ -253,6 +253,9 @@ class MPDController(object):
         """
         try:
             now_playing = self.mpd_client.currentsong()
+        except mpdlib.ConnectionError:
+            self.mpd_client.connect(self.host, self.port)
+            now_playing = self.mpd_client.currentsong()
         except Exception:
             return False
 
@@ -482,7 +485,7 @@ class MPDController(object):
         """
         if self.__radio_mode:
             self.__radio_mode_set(False)
-        if index > 0 and index <= self.playlist_current_count():
+        if 0 < index <= self.playlist_current_count():
             self.mpd_client.playid(index)
             self.__playlist_current_playing_index = index
         return self.__playlist_current_playing_index

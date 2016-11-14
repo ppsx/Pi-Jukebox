@@ -43,6 +43,7 @@ class RadioBrowser(ItemList):
 
         :param screen_rect: The screen rect where the directory browser is drawn on.
     """
+
     def __init__(self, surface):
         ItemList.__init__(self, 'list_stations', surface,
                           2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
