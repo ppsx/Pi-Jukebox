@@ -1,32 +1,46 @@
+# This file is part of pi-jukebox.
+#
+# pi-jukebox is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pi-jukebox is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
+#
+# (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
 """
 =======================================================
 **screen_directory.py**: MPD Directory browsing screen
 =======================================================
 """
+__author__ = 'Mark Zwart'
 
 from gui_widgets import *
 
 
-__author__ = 'Mark Zwart'
-
-
 class ScreenNavigation(WidgetContainer):
-    def __init__(self, tag_name, screen_rect, button_active):
+    def __init__(self, tag_name, surface, button_active):
+        WidgetContainer.__init__(self, tag_name, surface, 0, 0, ICO_WIDTH + SPACE, SCREEN_HEIGHT)
         self.__radio_mode = False
         self.__button_active = button_active
-        WidgetContainer.__init__(self, tag_name, screen_rect, 0, 0, ICO_WIDTH + SPACE, SCREEN_HEIGHT)
         button_top = SPACE
-        self.add_component(ButtonIcon('btn_player', self.screen, ICO_PLAYER_FILE_ACTIVE, SPACE, button_top))
+        self.add_component(ButtonIcon('btn_player', self.surface, ICO_PLAYER_FILE_ACTIVE, SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_playlist', self.screen, ICO_PLAYLIST, SPACE, button_top))
+        self.add_component(ButtonIcon('btn_playlist', self.surface, ICO_PLAYLIST, SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_library', self.screen, ICO_LIBRARY, SPACE, button_top))
+        self.add_component(ButtonIcon('btn_library', self.surface, ICO_LIBRARY, SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_directory', self.screen, ICO_DIRECTORY, SPACE, button_top))
+        self.add_component(ButtonIcon('btn_directory', self.surface, ICO_DIRECTORY, SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_radio', self.screen, ICO_RADIO, SPACE, button_top))
+        self.add_component(ButtonIcon('btn_radio', self.surface, ICO_RADIO, SPACE, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_settings', self.screen, ICO_SETTINGS, SPACE, button_top))
+        self.add_component(ButtonIcon('btn_settings', self.surface, ICO_SETTINGS, SPACE, button_top))
         self.button_active_set(button_active)
 
     def on_click(self, x, y):
@@ -53,7 +67,6 @@ class ScreenNavigation(WidgetContainer):
             self.components['btn_player'].icon_file_set(ICO_PLAYER_RADIO)
         else:
             self.components['btn_player'].icon_file_set(ICO_PLAYER_FILE)
-        self.components['btn_player'].icon_file_set(ICO_PLAYER_FILE)
         self.components['btn_playlist'].icon_file_set(ICO_PLAYLIST)
         self.components['btn_library'].icon_file_set(ICO_LIBRARY)
         self.components['btn_directory'].icon_file_set(ICO_DIRECTORY)

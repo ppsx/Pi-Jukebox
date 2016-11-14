@@ -1,3 +1,19 @@
+# This file is part of pi-jukebox.
+#
+# pi-jukebox is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pi-jukebox is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
+#
+# (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
 """
 ==================================================================
 **mpd_client.py**: controlling and monitoring mpd via python-mpd2.
@@ -44,7 +60,7 @@ class MPDNowPlaying(object):
             try:
                 self.file = now_playing['file']
             except KeyError:
-                return
+                return False
 
             if self.file[:7] == "http://":
                 self.playing_type = 'radio'
@@ -151,7 +167,7 @@ class MPDController(object):
         self.update_interval = 1000  # Interval between mpc status update calls (milliseconds)
         self.volume = 0  # Playback volume
         self.playlist_current = []  # Current playlist song title
-        self.repeat = False         #
+        self.repeat = False  #
         self.random = False
         self.single = False
         self.consume = False
@@ -171,7 +187,7 @@ class MPDController(object):
         self.__now_playing = None  # Dictionary containing currently playing song info
         self.__now_playing_changed = False
         self.__player_control = ''  # Indicates whether mpd is playing, pausing or has stopped playing music
-        self.__muted = False          # Indicates whether muted
+        self.__muted = False  # Indicates whether muted
         self.__playlist_current_playing_index = 0
         self.__last_update_time = 0   # For checking last update time (milliseconds)
         self.__status = None  # mps's current status output
@@ -236,9 +252,6 @@ class MPDController(object):
             :return: Boolean indicating if the status was changed
         """
         try:
-            now_playing = self.mpd_client.currentsong()
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
             now_playing = self.mpd_client.currentsong()
         except Exception:
             return False
@@ -311,6 +324,7 @@ class MPDController(object):
 
             :return: Returns boolean whether updated or not.
         """
+        self.mpd_client.ping()
         time_elapsed = pygame.time.get_ticks() - self.__last_update_time
         if pygame.time.get_ticks() > self.update_interval > time_elapsed:
             return False
@@ -392,34 +406,15 @@ class MPDController(object):
             self.volume = 100
         else:
             self.volume += percentage
-        try:
-            self.mpd_client.setvol(self.volume)
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            self.mpd_client.setvol(self.volume)
-        except mpdlib.CommandError, e:
-            print "CommandError", e
-        self.__muted = False
+        self.mpd_client.setvol(self.volume)
 
     def volume_mute_switch(self):
         """ Switches volume muting on or off. """
         if self.__muted:
-            try:
-                self.mpd_client.setvol(self.volume)
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.mpd_client.setvol(self.volume)
-            except mpdlib.CommandError, e:
-                print "CommandError", e
+            self.mpd_client.setvol(self.volume)
             self.__muted = False
         else:
-            try:
-                self.mpd_client.setvol(0)
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.mpd_client.setvol(0)
-            except mpdlib.CommandError, e:
-                print "CommandError", e
+            self.mpd_client.setvol(0)
             self.__muted = True
 
     def volume_mute_get(self):
@@ -460,11 +455,7 @@ class MPDController(object):
         if not self.__radio_mode:
             self.playlist_current = []
             track_no = 0
-            try:
-                playlist_info = self.mpd_client.playlistinfo()
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                playlist_info = self.mpd_client.playlistinfo()
+            playlist_info = self.mpd_client.playlistinfo()
             for i in playlist_info:
                 track_no += 1
                 if 'title' in i:
@@ -489,12 +480,10 @@ class MPDController(object):
         :param index: The track number to be played
         :return: The current playing index
         """
+        if self.__radio_mode:
+            self.__radio_mode_set(False)
         if index > 0 and index <= self.playlist_current_count():
-            try:
-                self.mpd_client.playid(index)
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.mpd_client.playid(index)
+            self.mpd_client.playid(index)
             self.__playlist_current_playing_index = index
         return self.__playlist_current_playing_index
 
@@ -506,29 +495,17 @@ class MPDController(object):
 
     def playlist_current_clear(self):
         """ Removes everything from the current playlist """
-        try:
-            self.mpd_client.clear()
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            self.mpd_client.clear()
+        self.mpd_client.clear()
         if not self.__radio_mode:
             self.playlist_current = []
 
     def library_update(self):
         """ Updates the mpd library """
-        try:
-            self.mpd_client.update()
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            self.mpd_client.update()
+        self.mpd_client.update()
 
     def library_rescan(self):
         """ Rebuild library. """
-        try:
-            self.mpd_client.rescan()
-        except:
-            self.mpd_client.connect(self.host, self.port)
-            self.mpd_client.rescan()
+        self.mpd_client.rescan()
 
     def __search(self, tag_type):
         """ Searches all entries of a certain type.
@@ -536,11 +513,7 @@ class MPDController(object):
         :param tag_type: ["artist"s, "album"s, song"title"s]
         :return: A list with search results.
         """
-        try:
-            self.list_query_results = self.mpd_client.list(tag_type)
-        except:
-            self.mpd_client.connect(self.host, self.port)
-            self.list_query_results = self.mpd_client.list(tag_type)
+        self.list_query_results = self.mpd_client.list(tag_type)
         self.list_query_results.sort()
         return self.list_query_results
 
@@ -565,11 +538,8 @@ class MPDController(object):
         :param part: Search string.
         :return: A list with search results.
         """
-        try:
-            all_results = self.mpd_client.list(tag_type)
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            all_results = self.mpd_client.list(tag_type)
+        all_results = []
+        all_results = self.mpd_client.list(tag_type)
         self.list_query_results = []
         all_results.sort()
         for i in all_results:
@@ -587,37 +557,16 @@ class MPDController(object):
         :return:
         """
         if self.searching_artist == "" and self.searching_album == "":
-            try:
-                self.list_query_results = self.mpd_client.list(type_result, type_filter, name_filter)
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.list_query_results = self.mpd_client.list(type_result, type_filter, name_filter)
+            self.list_query_results = self.mpd_client.list(type_result, type_filter, name_filter)
         elif self.searching_artist != "" and self.searching_album == "":
-            try:
-                self.list_query_results = self.mpd_client.list(type_result, 'artist', self.searching_artist,
-                                                               type_filter,
-                                                               name_filter)
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.list_query_results = self.mpd_client.list(type_result, 'artist', self.searching_artist,
-                                                               type_filter,
-                                                               name_filter)
+            self.list_query_results = self.mpd_client.list(type_result, 'artist', self.searching_artist,
+                                                           type_filter, name_filter)
         elif self.searching_artist == "" and self.searching_album != "":
-            try:
-                self.list_query_results = self.mpd_client.list(type_result, 'album', self.searching_album, type_filter,
-                                                               name_filter)
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.list_query_results = self.mpd_client.list(type_result, 'album', self.searching_album, type_filter,
-                                                               name_filter)
+            self.list_query_results = self.mpd_client.list(type_result, 'album', self.searching_album, type_filter,
+                                                           name_filter)
         elif self.searching_artist != "" and self.searching_album != "":
-            try:
-                self.list_query_results = self.mpd_client.list(type_result, 'artist', self.searching_artist, 'album',
-                                                               self.searching_album, type_filter, name_filter)
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.list_query_results = self.mpd_client.list(type_result, 'artist', self.searching_artist, 'album',
-                                                               self.searching_album, type_filter, name_filter)
+            self.list_query_results = self.mpd_client.list(type_result, 'artist', self.searching_artist, 'album',
+                                                           self.searching_album, type_filter, name_filter)
         self.list_query_results.sort()
         return self.list_query_results
 
@@ -715,12 +664,8 @@ class MPDController(object):
         all_playlists = []
         try:
             all_playlists = self.mpd_client.listplaylists()
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            all_playlists = self.mpd_client.listplaylists()
         except mpdlib.CommandError:
             pass
-
         if first_letter is None:
             for playlist in all_playlists:
                 result_list.append(playlist['playlist'])
@@ -738,11 +683,7 @@ class MPDController(object):
         result_list = []
         directory_list = []
         path_entries = None
-        try:
-            path_entries = self.mpd_client.lsinfo(path)
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            path_entries = self.mpd_client.lsinfo(path)
+        path_entries = self.mpd_client.lsinfo(path)
         for entry in path_entries:
             if 'directory' in entry:
                 directory_list.append(('directory', entry['directory']))
@@ -778,11 +719,8 @@ class MPDController(object):
         :param path: Recurses through directories
         :return:
         """
-        try:
-            content_list = self.mpd_client.lsinfo(path)
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            content_list = self.mpd_client.lsinfo(path)
+        content_list = []
+        content_list = self.mpd_client.lsinfo(path)
         for entry in content_list:
             if 'directory' in entry:
                 content_list += self.__directory_recurse_get(entry['directory'])
@@ -872,11 +810,7 @@ class MPDController(object):
         if clear_playlist:
             self.playlist_current_clear()
         i = self.playlist_current_count()
-        try:
-            self.mpd_client.addid(uri)
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            self.mpd_client.addid(uri)
+        self.mpd_client.addid(uri)
         if play:
             self.play_playlist_item(i + 1)
 
@@ -893,11 +827,7 @@ class MPDController(object):
         i = self.playlist_current_count()
         songs = self.directory_songs_get(path)
         for song in songs:
-            try:
-                self.mpd_client.addid(song['file'])
-            except mpdlib.ConnectionError:
-                self.mpd_client.connect(self.host, self.port)
-                self.mpd_client.addid(song['file'])
+            self.mpd_client.addid(song['file'])
         if play:
             self.play_playlist_item(i + 1)
 
@@ -906,7 +836,7 @@ class MPDController(object):
         self.__radio_mode = True
         try:
             self.mpd_client.rm(TEMP_PLAYLIST_NAME)
-        except:
+        except Exception:
             pass
         self.mpd_client.save(TEMP_PLAYLIST_NAME)
         self.playlist_current_clear()

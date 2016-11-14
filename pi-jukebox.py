@@ -1,4 +1,21 @@
 #!/usr/bin/env python
+# This file is part of pi-jukebox.
+#
+# pi-jukebox is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pi-jukebox is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
+#
+# (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
+
 """
 **pi-jukebox.py**: Main file
 """
@@ -8,7 +25,7 @@ import time
 import locale
 import gettext
 from settings import *
-from gui_screens import Screens
+from gui_screens import ScreenControl
 from screen_library import ScreenMessage, ScreenLibrary
 from screen_player import ScreenPlaying, ScreenPlaylist
 from screen_directory import ScreenDirectory
@@ -17,10 +34,7 @@ from screen_settings import ScreenSettingsMPD
 from mpd_client import mpd
 
 
-__author__ = 'Mark Zwart'
-
-
-class PiJukeboxScreens(Screens):
+class PiJukeboxScreens(ScreenControl):
     """ Manages Pi Jukebox's main screens.
             - Player screen
             - Library screen
@@ -28,16 +42,23 @@ class PiJukeboxScreens(Screens):
         updates on screen(s)
     """
     def __init__(self):
-        Screens.__init__(self)
-        self.screen_list.append(ScreenPlaying(SCREEN))  # Screen with now playing and cover art
-        self.screen_list.append(ScreenPlaylist(SCREEN))  # Create player with playlist screen
-        self.screen_list.append(ScreenLibrary(SCREEN))  # Create library browsing screen
-        self.screen_list.append(ScreenDirectory(SCREEN))  # Create directory browsing screen
-        self.screen_list.append(ScreenRadio(SCREEN))  # Create radio station managing screen
+        ScreenControl.__init__(self)
+
+        self.add_screen(ScreenPlaying(SCREEN), self.loop_hook)  # Screen with now playing and cover art
+        self.add_screen(ScreenPlaylist(SCREEN), self.loop_hook)  # Create player with playlist screen
+        self.add_screen(ScreenLibrary(SCREEN), self.loop_hook)  # Create library browsing screen
+        self.add_screen(ScreenDirectory(SCREEN), self.loop_hook)  # Create directory browsing screen
+        self.add_screen(ScreenRadio(SCREEN), self.loop_hook)  # Create radio station managing screen
 
     def mpd_updates(self):
         """ Updates a current screen if it shows mpd relevant content. """
         self.screen_list[self.current_index].update()
+
+    def loop_hook(self):
+        return mpd.status_get()
+
+    def update(self):
+        pass
 
 def init_gettext(domain, localedir):
     locale.setlocale(locale.LC_ALL, '')
@@ -50,10 +71,10 @@ def apply_settings():
     # Check for first time settings
     if not config_file.setting_exists('MPD Settings', 'music directory'):
         screen_message = ScreenMessage(
-            SCREEN, 
+            SCREEN,
             _("No music directory"),
             _("If you want to display cover art, Pi-Jukebox needs to know which directory your music collection is in. "
-	      "The location can also be found in your mpd.conf entry 'music directory'."),
+              "The location can also be found in your mpd.conf entry 'music directory'."),
             'warning')
         screen_message.show()
         settings_mpd_screen = ScreenSettingsMPD(SCREEN)
@@ -86,18 +107,6 @@ def main():
     mpd.status_get()  # Get mpd status
     screens = PiJukeboxScreens()  # Screens
     screens.show()  # Display the screen
-
-    while 1:
-        # Check whether mpd's status changed
-        pygame.time.wait(PYGAME_EVENT_DELAY)
-        if mpd.status_get():
-            screens.mpd_updates()  # If so update relevant screens
-
-        for event in pygame.event.get():  # Do for all events in pygame's event queue
-            screens.process_mouse_event(event)  # Handle mouse related events
-            if event.type == KEYDOWN and event.key == K_ESCAPE:
-                mpd.disconnect()
-                sys.exit()
 
     time.sleep(0.2)
     pygame.display.update()

@@ -1,13 +1,27 @@
+# This file is part of pi-jukebox.
+#
+# pi-jukebox is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pi-jukebox is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
+#
+# (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
 """
 =======================================================
 **screen_keyboard.py**: On-screen keyboard
 =======================================================
 """
+__author__ = 'Mark Zwart'
 
 from gui_screens import *
-
-
-__author__ = 'Mark Zwart'
 
 
 class KeyboardBase(ScreenModal):
@@ -17,13 +31,14 @@ class KeyboardBase(ScreenModal):
         :param caption: The title displayed at the top of the screen.
         :param text: The text that will be edited with the keyboard, default = "".
     """
-    def __init__(self, screen_rect, caption, text=""):
-        ScreenModal.__init__(self, screen_rect, caption)
+
+    def __init__(self, screen, caption, text=""):
+        ScreenModal.__init__(self, screen, caption)
         self.text = text
         self.title_color = C_BLUE
         self.title_font_color = C_GREY_DARK
         # Edit box
-        edit_box = LabelText('lbl_edit_box', screen_rect,
+        edit_box = LabelText('lbl_edit_box', self.surface,
                              SPACE, BUTTON_TOP + 2 * SPACE, SCREEN_WIDTH - 2 * SPACE, TITLE_HEIGHT, text)
         edit_box.background_color = C_GREY_LIGHTEST
         edit_box.font_color = C_GREY_DARK
@@ -34,7 +49,7 @@ class KeyboardBase(ScreenModal):
         """ Adds a list of symbol keys starting at x on y. """
         for letter in list_symbols:
             btn_name = 'btn_symbol_' + letter
-            btn = ButtonText(btn_name, self.screen, x, y, KEY_WIDTH_STD, KEY_HEIGHT, letter)
+            btn = ButtonText(btn_name, self.surface, x, y, KEY_WIDTH_STD, KEY_HEIGHT, letter)
             self.add_component(btn)
             x += KEY_WIDTH_STD + KEY_SPACE
 
@@ -50,8 +65,9 @@ class KeyboardBase(ScreenModal):
 class KeyboardLetters(KeyboardBase):
     """ Displays keyboard for letters.
     """
-    def __init__(self, screen_rect, caption, text=""):
-        KeyboardBase.__init__(self, screen_rect, caption, text)
+
+    def __init__(self, screen, caption, text=""):
+        KeyboardBase.__init__(self, screen, caption, text)
 
         self.shift_state = False
 
@@ -69,25 +85,25 @@ class KeyboardLetters(KeyboardBase):
         y_row += y_row_increment
         self.add_row_buttons(third_row, SPACE - 1 + KEY_WIDTH_STD + KEY_SPACE, y_row)
 
-        self.add_component(ButtonIcon('btn_shift', screen_rect, ICO_SHIFT, SPACE - 1, y_row))
+        self.add_component(ButtonIcon('btn_shift', self.surface, ICO_SHIFT, SPACE - 1, y_row))
         self.components['btn_shift'].outline_show = True
         self.components['btn_shift'].outline_visible = True
         self.components['btn_shift'].outline_color = C_BLUE
 
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE,
+        self.add_component(ButtonIcon('btn_backspace', self.surface, ICO_BACKSPACE,
                                       SPACE - 1 + (len(third_row) + 1) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
         x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
-        self.add_component(ButtonText('btn_symbol_comma', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, ','))
+        self.add_component(ButtonText('btn_symbol_comma', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, ','))
         x_button += KEY_HEIGHT + KEY_SPACE
         space_width = 4 * (KEY_HEIGHT + KEY_SPACE) + KEY_HEIGHT
-        self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_width, KEY_HEIGHT, ' '))
+        self.add_component(ButtonText('btn_symbol_space', self.surface, x_button, y_row, space_width, KEY_HEIGHT, ' '))
         x_button += space_width + KEY_SPACE
-        self.add_component(ButtonText('btn_symbol_point', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '.'))
+        self.add_component(ButtonText('btn_symbol_point', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '.'))
 
-        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
-        self.add_component(ButtonIcon('btn_symbols', screen_rect, ICO_SYMBOLS, SPACE - 1, y_row))
+        self.add_component(ButtonIcon('btn_enter', self.surface, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
+        self.add_component(ButtonIcon('btn_symbols', self.surface, ICO_SYMBOLS, SPACE - 1, y_row))
 
     def __letters_shift(self):
         """ Sets button values to lower- or uppercase depending on the shift state. """
@@ -133,8 +149,9 @@ class KeyboardLetters(KeyboardBase):
 class KeyboardSymbols(KeyboardBase):
     """ Displays keyboard for numbers and symbols.
     """
-    def __init__(self, screen_rect, caption, text=""):
-        KeyboardBase.__init__(self, screen_rect, caption, text)
+
+    def __init__(self, screen, caption, text=""):
+        KeyboardBase.__init__(self, screen, caption, text)
 
         y_row = 2 * (TITLE_HEIGHT + 2 * SPACE)
         y_row_increment = KEY_HEIGHT + KEY_SPACE
@@ -149,21 +166,21 @@ class KeyboardSymbols(KeyboardBase):
         y_row += y_row_increment
         third_row = [':', ';', '.', ',', '?', '!', '\'', '*', '/']
         self.add_row_buttons(third_row, SPACE - 1, y_row)
-        self.add_component(ButtonIcon('btn_backspace', screen_rect, ICO_BACKSPACE,
+        self.add_component(ButtonIcon('btn_backspace', self.surface, ICO_BACKSPACE,
                                       SPACE - 1 + len(third_row) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
         x_button = SPACE - 1 + int(1.5 * (KEY_WIDTH_STD + KEY_SPACE))
         self.add_component(
-            ButtonText('btn_symbol_ampersand', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '&'))
+            ButtonText('btn_symbol_ampersand', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '&'))
         x_button += KEY_WIDTH_STD + KEY_SPACE
         space_width = 4 * (KEY_WIDTH_STD + KEY_SPACE) + KEY_WIDTH_STD
-        self.add_component(ButtonText('btn_symbol_space', screen_rect, x_button, y_row, space_width, KEY_HEIGHT, ' '))
+        self.add_component(ButtonText('btn_symbol_space', self.surface, x_button, y_row, space_width, KEY_HEIGHT, ' '))
         x_button += space_width + KEY_SPACE
-        self.add_component(ButtonText('btn_symbol_at', screen_rect, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '@'))
+        self.add_component(ButtonText('btn_symbol_at', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '@'))
 
-        self.add_component(ButtonIcon('btn_enter', screen_rect, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
-        self.add_component(ButtonIcon('btn_symbol_letters', screen_rect, ICO_LETTERS, SPACE - 1, y_row))
+        self.add_component(ButtonIcon('btn_enter', self.surface, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
+        self.add_component(ButtonIcon('btn_symbol_letters', self.surface, ICO_LETTERS, SPACE - 1, y_row))
 
     def on_click(self, x, y):
         tag_name = super(KeyboardSymbols, self).on_click(x, y)
@@ -197,12 +214,13 @@ class Keyboard():
         :param caption: The title displayed at the top of the screen.
         :param text: The text that will be edited with the keyboard, default = "".
     """
-    def __init__(self, screen_rect, caption, text=""):
+
+    def __init__(self, screen, caption, text=""):
         self.text = text
         self.text_original = text
         self.selected = 'letters'
-        self.keyboard_letters = KeyboardLetters(screen_rect, caption, text)
-        self.keyboard_symbols = KeyboardSymbols(screen_rect, caption, text)
+        self.keyboard_letters = KeyboardLetters(screen, caption, text)
+        self.keyboard_symbols = KeyboardSymbols(screen, caption, text)
 
     def show(self):
         """ Loops until enter, cancel or escape on the keyboard is pressed.

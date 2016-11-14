@@ -1,3 +1,19 @@
+# This file is part of pi-jukebox.
+#
+# pi-jukebox is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# pi-jukebox is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
+#
+# (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
 """
 =======================================================
 **screen_radio.py**: MPD radio management
@@ -27,8 +43,8 @@ class RadioBrowser(ItemList):
 
         :param screen_rect: The screen rect where the directory browser is drawn on.
     """
-    def __init__(self, screen_rect):
-        ItemList.__init__(self, 'list_stations', screen_rect,
+    def __init__(self, surface):
+        ItemList.__init__(self, 'list_stations', surface,
                           2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           SCREEN_WIDTH - 4 * SPACE - ICO_WIDTH - LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
         self.outline_visible = False
@@ -72,22 +88,22 @@ class RadioBrowser(ItemList):
 class ScreenRadio(Screen):
     """ The screen where the user can browse and add radio station and add those to playlists.
 
-        :param screen_rect: The display's rect where the library browser is drawn on.
+        :param screen_rect: The display's rect where the radio station browser is drawn on.
     """
     def __init__(self, screen_rect):
         Screen.__init__(self, screen_rect)
         self.first_time_showing = True
         # Screen navigation buttons
-        self.add_component(ScreenNavigation('screen_nav', self.screen, 'btn_radio'))
+        self.add_component(ScreenNavigation('screen_nav', self.surface, 'btn_radio'))
         # Radio station buttons
-        self.add_component(ButtonIcon('btn_station_add', self.screen, ICO_STATION_ADD, 2 * SPACE + ICO_WIDTH, SPACE))
+        self.add_component(ButtonIcon('btn_station_add', self.surface, ICO_STATION_ADD, 2 * SPACE + ICO_WIDTH, SPACE))
         # Lists
-        self.add_component(RadioBrowser(self.screen))
+        self.add_component(RadioBrowser(self.surface))
 
     def show(self):
         self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
         self.components['list_stations'].show_stations()
-        super(ScreenRadio, self).show()
+        return super(ScreenRadio, self).show()
 
     def update(self):
         self.components['screen_nav'].radio_mode_set(mpd.radio_mode_get())
@@ -96,7 +112,7 @@ class ScreenRadio(Screen):
     def station_action(self):
         """ Displays screen for follow-up actions when an item was selected from the library. """
         selected = self.components['list_stations'].item_selected_get()
-        select_screen = ScreenSelected(self.screen, selected[0], selected[1])
+        select_screen = ScreenSelected(self, selected[0], selected[1])
         select_screen.show()
         self.show()
 
@@ -109,21 +125,26 @@ class ScreenRadio(Screen):
         """
         tag_name = super(ScreenRadio, self).on_click(x, y)
         if tag_name == 'btn_player':
-            return 0
+            self.return_object = 0
+            self.close()
         elif tag_name == 'btn_playlist':
-            return 1
+            self.return_object = 1
+            self.close()
         elif tag_name == 'btn_library':
-            return 2
+            self.return_object = 2
+            self.close()
         elif tag_name == 'btn_directory':
-            return 3
+            self.return_object = 3
+            self.close()
         elif tag_name == 'btn_radio':
-            return 4
+            self.return_object = 4
+            self.close()
         elif tag_name == 'btn_station_add':
-            screen_add = ScreenStation(self.screen)
+            screen_add = ScreenStation(self)
             screen_add.show()
             self.show()
         elif tag_name == 'btn_settings':
-            setting_screen = ScreenSettings(self.screen)
+            setting_screen = ScreenSettings(self)
             setting_screen.show()
             self.show()
         elif tag_name == 'list_stations':
@@ -137,8 +158,9 @@ class ScreenSelected(ScreenModal):
         :param station_name: The name of the selected radio station.
         :param station_URL: The URL of the selected radio station.
     """
-    def __init__(self, screen_rect, station_name, station_URL):
-        ScreenModal.__init__(self, screen_rect, station_name)
+
+    def __init__(self, screen, station_name, station_URL):
+        ScreenModal.__init__(self, screen, station_name)
         self.station_name = station_name
         self.station_URL = station_URL
         self.title_color = C_BLUE
@@ -153,35 +175,38 @@ class ScreenSelected(ScreenModal):
 
         label = _("Tune in")
         self.add_component(
-            ButtonText('btn_tune_in', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+            ButtonText('btn_tune_in', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_tune_in'].font_color = C_GREEN
         self.components['btn_tune_in'].outline_color = C_GREEN
 
         label = _("Edit")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(
-            ButtonText('btn_edit', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+            ButtonText('btn_edit', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
 
         label = _("Remove")
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(
-            ButtonText('btn_remove', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+            ButtonText('btn_remove', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
 
         label = _("Cancel")
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(
-            ButtonText('btn_cancel', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, label))
+            ButtonText('btn_cancel', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 
-    def action(self, tag_name):
+    def on_click(self, x, y):
         """ Action that should be performed on a click. """
+        tag_name = super(ScreenModal, self).on_click(x, y)
+        play = False
+        clear_playlist = False
         if tag_name == 'btn_edit':
-            screen_edit = ScreenStation(self.screen, self.station_name)
+            screen_edit = ScreenStation(self, self.station_name)
             screen_edit.show()
             self.close()
         elif tag_name == 'btn_remove':
-            screen_yes_no = ScreenYesNo(self.screen, _("Remove {0}").format(self.station_name),
+            screen_yes_no = ScreenYesNo(self, _("Remove {0}").format(self.station_name),
                 _("Are you sure you want to remove {0}?").format(self.station_name))
             if screen_yes_no.show() == 'yes':
                 config_file.setting_remove('Radio stations', self.station_name)
@@ -207,7 +232,8 @@ class ScreenStation(ScreenModal):
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
         self.station_name = station_name
-
+        btn_name_label = ""
+        btn_URL_label = ""
         if station_name == "":
             ScreenModal.__init__(self, screen_rect, _("Add a radio station"))
             self.station_URL = ""
@@ -223,20 +249,20 @@ class ScreenStation(ScreenModal):
         button_width = self.window_width - 2 * button_left
         button_top = TITLE_HEIGHT + SPACE
         self.add_component(
-            ButtonText('btn_name', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, btn_name_label))
+            ButtonText('btn_name', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, btn_name_label))
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(
-            ButtonText('btn_URL', self.screen, button_left, button_top, button_width, BUTTON_HEIGHT, btn_URL_label))
+            ButtonText('btn_URL', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, btn_URL_label))
 
         label = _("Cancel")
         button_top = self.window_height - SPACE - BUTTON_HEIGHT
         self.add_component(
-            ButtonText('btn_cancel', self.screen, button_left, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
+            ButtonText('btn_cancel', self.surface, button_left, button_top, KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
         self.components['btn_cancel'].font_color = C_RED
         self.components['btn_cancel'].outline_color = C_RED
 
         label = _("Ok")
-        self.add_component(ButtonText('btn_ok', self.screen,
+        self.add_component(ButtonText('btn_ok', self.surface,
                                       self.window_x + self.window_width - KEY_WIDTH_HUGE - SPACE, button_top,
                                       KEY_WIDTH_HUGE, BUTTON_HEIGHT, label))
         self.components['btn_ok'].font_color = C_GREEN
@@ -254,16 +280,17 @@ class ScreenStation(ScreenModal):
             self.components['btn_URL'].draw(_("Change station URL"))
         self.show()
 
-    def action(self, tag_name):
+    def on_click(self, x, y):
         """ Action that should be performed on a click. """
+        tag_name = super(ScreenModal, self).on_click(x, y)
         if tag_name == 'btn_name':
-            keyboard = Keyboard(self.screen, _("Set station name"))
+            keyboard = Keyboard(self.surface, _("Set station name"))
             keyboard.text = self.station_name
             self.station_name = keyboard.show()
             self.update()
             self.show()
         elif tag_name == 'btn_URL':
-            keyboard = Keyboard(self.screen, _("Set station URL"))
+            keyboard = Keyboard(self.surface, _("Set station URL"))
             keyboard.title_color = C_BLUE
             keyboard.text = self.station_URL
             self.station_URL = keyboard.show()
@@ -275,4 +302,3 @@ class ScreenStation(ScreenModal):
             if self.station_name != "" and self.station_URL != "":
                 config_file.setting_set('Radio stations', self.station_name, self.station_URL)
             self.close()
-
