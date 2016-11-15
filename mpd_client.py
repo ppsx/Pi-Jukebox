@@ -138,7 +138,8 @@ class MPDNowPlaying(object):
         bytes_io = io.BytesIO(cover_art)
         return pygame.image.load(bytes_io)
 
-    def make_time_string(self, seconds):
+    @staticmethod
+    def make_time_string(seconds):
         minutes = int(seconds / 60)
         seconds_left = int(round(seconds - (minutes * 60), 0))
         time_string = str(minutes) + ':'
@@ -149,7 +150,8 @@ class MPDNowPlaying(object):
         time_string += seconds_string
         return time_string
 
-    def str_to_float(self, s):
+    @staticmethod
+    def str_to_float(s):
         try:
             return float(s)
         except ValueError:
@@ -315,7 +317,8 @@ class MPDController(object):
             self.consume = status['consume'] == '1'
             self.events.append('consume')
 
-    def str_to_float(self, s):
+    @staticmethod
+    def str_to_float(s):
         try:
             return float(s)
         except ValueError:
@@ -390,13 +393,12 @@ class MPDController(object):
             return
         try:
             self.mpd_client.setvol(percentage)
-        except mpdlib.ConnectionError:
-            self.mpd_client.connect(self.host, self.port)
-            self.mpd_client.setvol(percentage)
         except mpdlib.CommandError, e:
             print "CommandEror", e
-        self.volume = percentage
-        self.__muted = False
+            self.volume = percentage
+            self.__muted = False
+        except Exception:
+            pass
 
     def volume_set_relative(self, percentage):
         """ Sets volume relatively to current volume.
@@ -409,16 +411,25 @@ class MPDController(object):
             self.volume = 100
         else:
             self.volume += percentage
-        self.mpd_client.setvol(self.volume)
+        try:
+            self.mpd_client.setvol(self.volume)
+        except Exception:
+            pass
 
     def volume_mute_switch(self):
         """ Switches volume muting on or off. """
         if self.__muted:
-            self.mpd_client.setvol(self.volume)
-            self.__muted = False
+            try:
+                self.mpd_client.setvol(self.volume)
+                self.__muted = False
+            except Exception:
+                pass
         else:
-            self.mpd_client.setvol(0)
-            self.__muted = True
+            try:
+                self.mpd_client.setvol(0)
+                self.__muted = True
+            except Exception:
+                pass
 
     def volume_mute_get(self):
         return self.__muted
