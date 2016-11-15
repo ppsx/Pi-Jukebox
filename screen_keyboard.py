@@ -33,9 +33,8 @@ class KeyboardBase(ScreenModal):
     """
 
     def __init__(self, screen, caption, text=""):
-        ScreenModal.__init__(self, screen, caption)
+        ScreenModal.__init__(self, screen, caption, C_BLUE)
         self.text = text
-        self.title_color = C_BLUE
         self.title_font_color = C_GREY_DARK
         # Dialog close button
         btn = ButtonText('btn_cancel', self.surface,

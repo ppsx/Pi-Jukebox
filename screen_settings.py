@@ -34,8 +34,7 @@ class ScreenSettings(ScreenModal):
     """
 
     def __init__(self, screen):
-        ScreenModal.__init__(self, screen, _("Settings"))
-        self.title_color = C_GREY_LIGHTEST
+        ScreenModal.__init__(self, screen, _("Settings"), C_GREY_LIGHTEST)
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
         button_top = TITLE_HEIGHT + SPACE
@@ -156,8 +155,7 @@ class ScreenSettingsPlayback(ScreenModal):
     """
 
     def __init__(self, screen):
-        ScreenModal.__init__(self, screen, _("Playback settings"))
-        self.title_color = C_GREY_LIGHTEST
+        ScreenModal.__init__(self, screen, _("Playback settings"), C_GREY_LIGHTEST)
         switch_width = SWITCH_WIDTH + int(SPACE * 1.5)
         label_top = TITLE_HEIGHT + SPACE
         switch_top = label_top - int((SWITCH_HEIGHT - FONT_SPACE) / 2)
@@ -251,8 +249,7 @@ class ScreenSettingsMPD(ScreenModal):
         self.port_new = config_file.setting_get('MPD Settings', 'port')
         self.dir_new = config_file.setting_get('MPD Settings', 'music directory')
 
-        ScreenModal.__init__(self, screen_rect, _("MPD settings"))
-        self.title_color = C_GREY_LIGHTEST
+        ScreenModal.__init__(self, screen_rect, _("MPD settings"), C_GREY_LIGHTEST)
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
         button_top = TITLE_HEIGHT + SPACE
@@ -370,8 +367,7 @@ class ScreenSystemInfo(ScreenModal):
     """
 
     def __init__(self, screen_rect):
-        ScreenModal.__init__(self, screen_rect, _("System info"))
-        self.title_color = C_GREY_LIGHTEST
+        ScreenModal.__init__(self, screen_rect, _("System info"), C_GREY_LIGHTEST)
         info = mpd.mpd_client.stats()
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left

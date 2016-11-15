@@ -161,10 +161,9 @@ class ScreenSelected(ScreenModal):
     """
 
     def __init__(self, screen, station_name, station_URL):
-        ScreenModal.__init__(self, screen, station_name)
+        ScreenModal.__init__(self, screen, station_name, C_BLUE)
         self.station_name = station_name
         self.station_URL = station_URL
-        self.title_color = C_BLUE
         self.initialize()
         self.return_type = ""
 
@@ -225,8 +224,7 @@ class ScreenStation(ScreenModal):
         :param station_URL: The URL of the selected radio station.
     """
     def __init__(self, screen_rect, station_name=""):
-        ScreenModal.__init__(self, screen_rect, station_name)
-        self.title_color = C_BLUE
+        ScreenModal.__init__(self, screen_rect, station_name, C_BLUE)
         self.window_x = 20
         self.window_y = 60
         self.window_width -= 2 * self.window_x

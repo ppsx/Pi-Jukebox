@@ -245,8 +245,6 @@ class ScreenLibrary(Screen):
         selected = self.components['list_library'].item_selected_get()
         if selected:
             select_screen = ScreenSelected(self, self.currently_showing, selected)
-            # FIXME: change colour or remove following line
-            # select_screen.outline_color = C_RED
             select_screen.show()
             if isinstance(select_screen.return_object, list):
                 self.components['list_library'].list = select_screen.return_object
@@ -311,9 +309,7 @@ class ScreenSearch(ScreenModal):
     """
 
     def __init__(self, screen):
-        ScreenModal.__init__(self, screen, _("Search library for..."))
-        self.title_color = C_BLUE
-        self.outline_color = C_BLUE
+        ScreenModal.__init__(self, screen, _("Search library for..."), C_BLUE)
         self.font_color = C_GREY_DARK
         self.search_type = ""
         self.search_text = ""
@@ -380,10 +376,9 @@ class ScreenSelected(ScreenModal):
     """
 
     def __init__(self, screen, selected_type, selected_title):
-        ScreenModal.__init__(self, screen, selected_title)
+        ScreenModal.__init__(self, screen, selected_title, C_BLUE)
         self.type = selected_type
         self.selected = selected_title
-        self.title_color = C_BLUE
         self.font_color = C_GREY_DARK
         self.initialize()
         self.return_type = ""

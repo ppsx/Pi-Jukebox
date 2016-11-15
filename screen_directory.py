@@ -214,11 +214,10 @@ class ScreenSelected(ScreenModal):
     """
 
     def __init__(self, screen, directory, selected_type, selected_item):
-        ScreenModal.__init__(self, screen, selected_item)
+        ScreenModal.__init__(self, screen, selected_item, C_BLUE)
         self.directory_current = directory
         self.selected_type = selected_type
         self.selected_name = selected_item
-        self.title_color = C_BLUE
         self.font_color = C_GREY_DARK
         self.initialize()
         self.return_type = ""

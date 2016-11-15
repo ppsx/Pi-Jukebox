@@ -295,7 +295,7 @@ class ScreenModal(Screen):
         :ivar title: The title displayed at the top of the screen.
     """
 
-    def __init__(self, screen_or_surface, title):
+    def __init__(self, screen_or_surface, title, color=C_RED):
         Screen.__init__(self, screen_or_surface)
         self.title = title.decode('utf-8')
         self.window_x = 0
@@ -304,9 +304,9 @@ class ScreenModal(Screen):
         self.window_height = SCREEN_HEIGHT
         self.return_object = None
         self.title_font_color = C_GREY_DARK
-        self.title_color = C_RED
+        self.title_color = color
+        self.outline_color = color
         self.outline_shown = True
-        self.outline_color = C_RED
 
     def show(self):
         self.__draw_window()
@@ -342,6 +342,10 @@ class ScreenModal(Screen):
         self.surface.blit(image, (title_rect.centerx - font_width / 2, title_rect.centery - font_height / 2))
         pygame.display.flip()
 
+    def setColor(self, color):
+        self.title_color = color
+        self.outline_color = color
+
 
 class ScreenMessage(ScreenModal):
     """ A screen that displays a message.
@@ -357,22 +361,18 @@ class ScreenMessage(ScreenModal):
         if message_type == 'information':
             self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE,
                                        self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_INFO))
-            self.title_color = C_GREEN
-            self.outline_color = C_GREEN
+            self.setColor(C_GREEN)
         elif message_type == 'warning':
             self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE,
                                        self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH,
                                        ICO_WARNING))
-            self.title_color = C_YELLOW
-            self.outline_color = C_YELLOW
+            self.setColor(C_YELLOW)
         elif message_type == 'error':
             self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE,
                                        self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ERROR))
-            self.title_color = C_RED
-            self.outline_color = C_RED
+            self.setColor(C_RED)
         else:
-            self.title_color = C_BLUE
-            self.outline_color = C_BLUE
+            self.setColor(C_BLUE)
         x = self.window_x + 2 * SPACE + ICO_INFO_WIDTH
         y = self.window_y + TITLE_HEIGHT + SPACE
         width = self.window_width - x - SPACE
@@ -399,7 +399,7 @@ class ScreenYesNo(ScreenModal):
     """
 
     def __init__(self, screen_or_surface, caption, text):
-        ScreenModal.__init__(self, screen_or_surface, caption)
+        ScreenModal.__init__(self, screen_or_surface, caption, C_RED)
         self.window_x = 80
         self.window_y = 60
         self.window_width -= 2 * self.window_x
@@ -407,8 +407,6 @@ class ScreenYesNo(ScreenModal):
         self.outline_shown = True
         self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE,
                                    ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
-        self.title_color = C_RED
-        self.outline_color = C_RED
 
         x = self.window_x + 2 * SPACE + ICO_INFO_WIDTH
         y = self.window_y + TITLE_HEIGHT + SPACE

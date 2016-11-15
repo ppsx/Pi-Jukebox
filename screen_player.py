@@ -395,14 +395,12 @@ class ScreenVolume(ScreenModal):
     """
 
     def __init__(self, screen):
-        ScreenModal.__init__(self, screen, _("Volume"))
+        ScreenModal.__init__(self, screen, _("Volume"), C_BLUE)
         self.window_x = 15
         self.window_y = 52
         self.window_width -= 2 * self.window_x
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
-        self.title_color = C_BLUE
-        self.outline_color = C_BLUE
 
         button_top = self.window_y + BUTTON_TOP + SPACE
         button_left = self.window_x + SPACE + 1
