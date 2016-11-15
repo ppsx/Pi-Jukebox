@@ -40,16 +40,6 @@ class LetterBrowser(ItemList):
         ItemList.__init__(self, 'list_letters', surface,
                           SCREEN_WIDTH - SPACE - LIST_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           LIST_WIDTH, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
-        # TODO: Add proper handling
-        # if DISPLAY == 'raspberry7':
-        #     ItemList.__init__(self, 'list_letters', screen_rect,
-        #         748, 40, 52, 425)
-        # elif DISPLAY == 'adafruit3.5':
-        #     ItemList.__init__(self, 'list_letters', screen_rect,
-        #         268, 40, 52, 195)
-        # else:
-        #     ItemList.__init__(self, 'list_letters', screen_rect,
-        #         268, 40, 52, 195)
         self.item_outline_visible = True
         self.outline_visible = False
         self.font_color = C_GREY_LIGHTEST
@@ -67,16 +57,6 @@ class LibraryBrowser(ItemList):
         ItemList.__init__(self, 'list_library', surface,
                           2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE + 2)
-        # TODO: Add proper handling
-        # if DISPLAY == 'raspberry7':
-        #     ItemList.__init__(self, 'list_library', screen_rect,
-        #         55, 42, 690, 424)
-        # elif DISPLAY == 'adafruit3.5':
-        #     ItemList.__init__(self, 'list_library', screen_rect,
-        #         55, 42, 210, 194)
-        # else:
-        #     ItemList.__init__(self, 'list_library', screen_rect,
-        #         55, 42, 210, 194)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = C_GREY_LIGHTEST
@@ -266,7 +246,7 @@ class ScreenLibrary(Screen):
         if selected:
             select_screen = ScreenSelected(self, self.currently_showing, selected)
             # FIXME: change colour or remove following line
-            select_screen.outline_color = C_RED
+            # select_screen.outline_color = C_RED
             select_screen.show()
             if isinstance(select_screen.return_object, list):
                 self.components['list_library'].list = select_screen.return_object

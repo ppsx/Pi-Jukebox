@@ -285,6 +285,7 @@ class Screen(object):
                 value.draw()
         pygame.display.flip()
 
+
 class ScreenModal(Screen):
     """ Screen with its own event capture loop.
 

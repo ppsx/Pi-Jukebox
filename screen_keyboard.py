@@ -37,6 +37,10 @@ class KeyboardBase(ScreenModal):
         self.text = text
         self.title_color = C_BLUE
         self.title_font_color = C_GREY_DARK
+        # Dialog close button
+        btn = ButtonText('btn_cancel', self.surface,
+            SCREEN_WIDTH - TITLE_HEIGHT, 0, TITLE_HEIGHT, TITLE_HEIGHT, 'X')
+        self.add_component(btn)
         # Edit box
         edit_box = LabelText('lbl_edit_box', self.surface,
                              SPACE, BUTTON_TOP + 2 * SPACE, SCREEN_WIDTH - 2 * SPACE, TITLE_HEIGHT, text)
@@ -123,6 +127,11 @@ class KeyboardLetters(KeyboardBase):
         if tag_name is None:
             return
 
+        if tag_name == 'btn_cancel':
+            self.return_object = 'cancel'
+            self.close()
+            return
+
         if tag_name == 'btn_shift':
             self.__letters_shift()
         elif tag_name[:11] == 'btn_symbol_':  # If keyboard symbol is pressed add it to the text
@@ -186,6 +195,11 @@ class KeyboardSymbols(KeyboardBase):
         tag_name = super(KeyboardSymbols, self).on_click(x, y)
 
         if tag_name is None:
+            return
+
+        if tag_name == 'btn_cancel':
+            self.return_object = 'cancel'
+            self.close()
             return
 
         if tag_name[:11] == 'btn_symbol_':  # If keyboard symbol is pressed add it to the text

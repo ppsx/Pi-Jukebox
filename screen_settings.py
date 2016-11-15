@@ -22,7 +22,6 @@
 __author__ = 'Mark Zwart'
 
 import socket
-from config_file import *
 from gui_screens import *
 from mpd_client import *
 from screen_keyboard import Keyboard
@@ -313,15 +312,13 @@ class ScreenSettingsMPD(ScreenModal):
         self.show()
 
     def keyboard_setting(self, caption, value=""):
-        keyboard = Keyboard(self, caption)
-        keyboard.text = value
+        keyboard = Keyboard(self, caption, value)
         new_value = keyboard.show()  # Get entered search text
         return new_value
 
     def update(self):
         label = _("Change host: {0}").format(self.host_new)
         self.components['btn_host'].draw(label)
-        # TODO: str(self.port_new) instead of self.port_new ???
         label = _("Change port: {0}").format(self.port_new)
         self.components['btn_port'].draw(label)
 
@@ -347,7 +344,7 @@ class ScreenSettingsMPD(ScreenModal):
                 return True
         if setting_type == 'music directory':
             if not os.path.isdir(self.dir_new):
-                error_text = "The music directory you specified " + self.dir_new + " does not exist!"
+                error_text = "The music directory you specified <" + self.dir_new + "> does not exist!"
                 msg_show = ScreenMessage(self.surface, "Invalid directory", error_text, 'error')
                 msg_show.show()
                 return False
@@ -362,6 +359,9 @@ class ScreenSettingsMPD(ScreenModal):
             mpd.host = self.host_new
             mpd.port = self.port_new
             mpd.music_directory = self.dir_new
+            return True
+        return False
+
 
 class ScreenSystemInfo(ScreenModal):
     """ Screen for settings playback options

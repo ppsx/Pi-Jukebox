@@ -59,13 +59,6 @@ class DirectoryBrowser(ItemList):
         ItemList.__init__(self, 'list_directory', surface,
                           2 * SPACE + ICO_WIDTH, 2 * SPACE + ICO_HEIGHT,
                           SCREEN_WIDTH - ICO_WIDTH - LIST_WIDTH - 4 * SPACE, SCREEN_HEIGHT - ICO_HEIGHT - 3 * SPACE)
-        # TODO: Add proper handling
-        # if DISPLAY == 'raspberry7':
-        #     ItemList.__init__(self, 'list_directory', screen_rect, 55, 42, 690, 424)
-        # elif DISPLAY == 'adafruit3.5':
-        #     ItemList.__init__(self, 'list_directory', screen_rect, 55, 42, 214, 194)
-        # else:
-        #     ItemList.__init__(self, 'list_directory', screen_rect, 55, 42, 210, 194)
         self.outline_visible = False
         self.item_outline_visible = True
         self.font_color = C_GREY_LIGHTEST

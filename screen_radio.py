@@ -285,15 +285,13 @@ class ScreenStation(ScreenModal):
         """ Action that should be performed on a click. """
         tag_name = super(ScreenModal, self).on_click(x, y)
         if tag_name == 'btn_name':
-            keyboard = Keyboard(self.surface, _("Set station name"))
-            keyboard.text = self.station_name
+            keyboard = Keyboard(self.surface, _("Set station name"), self.station_name)
             self.station_name = keyboard.show()
             self.update()
             self.show()
         elif tag_name == 'btn_URL':
-            keyboard = Keyboard(self.surface, _("Set station URL"))
+            keyboard = Keyboard(self.surface, _("Set station URL"), self.station_URL)
             keyboard.title_color = C_BLUE
-            keyboard.text = self.station_URL
             self.station_URL = keyboard.show()
             self.update()
             self.show()

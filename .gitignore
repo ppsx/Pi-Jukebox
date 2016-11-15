@@ -3,6 +3,5 @@
 /.idea
 pi-jukebox.conf
 cover_art.jpg
-tmp_cover.jpg
 dependencies
 locale/*.pot
