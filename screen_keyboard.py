@@ -97,10 +97,10 @@ class KeyboardLetters(KeyboardBase):
                                       SPACE - 1 + (len(third_row) + 1) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
-        x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
+        x_button = SPACE - 1 + int(1.5 * (KEY_WIDTH_STD + KEY_SPACE))
         self.add_component(ButtonText('btn_symbol_comma', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, ','))
-        x_button += KEY_HEIGHT + KEY_SPACE
-        space_width = 4 * (KEY_HEIGHT + KEY_SPACE) + KEY_HEIGHT
+        x_button += KEY_WIDTH_STD + KEY_SPACE
+        space_width = 4 * (KEY_WIDTH_STD + KEY_SPACE) + KEY_WIDTH_STD
         self.add_component(ButtonText('btn_symbol_space', self.surface, x_button, y_row, space_width, KEY_HEIGHT, ' '))
         x_button += space_width + KEY_SPACE
         self.add_component(ButtonText('btn_symbol_point', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '.'))
