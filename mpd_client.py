@@ -190,6 +190,7 @@ class MPDController(object):
         self.__now_playing_changed = False
         self.__player_control = ''  # Indicates whether mpd is playing, pausing or has stopped playing music
         self.__muted = False  # Indicates whether muted
+        self.__muted_volume = 0
         self.__playlist_current_playing_index = 0
         self.__last_update_time = 0   # For checking last update time (milliseconds)
         self.__status = None  # mps's current status output
@@ -384,19 +385,18 @@ class MPDController(object):
             self.mpd_client.connect(self.host, self.port)
             self.mpd_client.play(index - 1)
 
-    def volume_set(self, percentage):
+    def volume_set(self, volume):
         """ Sets volume in absolute percentage.
 
             :param percentage: Percentage at which volume should be set.
         """
-        if percentage < 0 or percentage > 100:
-            return
+        volume = max(min(volume, 100), 0)  # set percentage as no more than 100 and no less than 0
+        self.volume = volume
+        self.__muted, self.__muted_volume = False, 0
         try:
-            self.mpd_client.setvol(percentage)
+            self.mpd_client.setvol(volume)
         except mpdlib.CommandError, e:
             print "CommandEror", e
-            self.volume = percentage
-            self.__muted = False
         except Exception:
             pass
 
@@ -405,12 +405,9 @@ class MPDController(object):
 
             :param percentage: Percentage point volume increase.
         """
-        if self.volume + percentage < 0:
-            self.volume = 0
-        elif self.volume + percentage > 100:
-            self.volume = 100
-        else:
-            self.volume += percentage
+        self.volume += percentage
+        self.volume = max(min(self.volume, 100), 0)  # set volume as no more than 100 and no less than 0
+        self.__muted, self.__muted_volume = False, 0
         try:
             self.mpd_client.setvol(self.volume)
         except Exception:
@@ -418,18 +415,12 @@ class MPDController(object):
 
     def volume_mute_switch(self):
         """ Switches volume muting on or off. """
-        if self.__muted:
-            try:
-                self.mpd_client.setvol(self.volume)
-                self.__muted = False
-            except Exception:
-                pass
-        else:
-            try:
-                self.mpd_client.setvol(0)
-                self.__muted = True
-            except Exception:
-                pass
+        self.volume, self.__muted_volume = self.__muted_volume, self.volume
+        try:
+            self.mpd_client.setvol(self.volume if self.__muted else 0)
+        except Exception:
+            pass
+        self.__muted = not self.__muted
 
     def volume_mute_get(self):
         return self.__muted
