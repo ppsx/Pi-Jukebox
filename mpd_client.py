@@ -543,12 +543,11 @@ class MPDController(object):
         :param part: Search string.
         :return: A list with search results.
         """
-        all_results = []
         all_results = self.mpd_client.list(tag_type)
         self.list_query_results = []
         all_results.sort()
         for i in all_results:
-            result = i.upper()
+            result = i.decode('utf-8').upper()
             if result.find(part.upper()) > -1:
                 self.list_query_results.append(i)
         return self.list_query_results
