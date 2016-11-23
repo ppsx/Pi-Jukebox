@@ -27,6 +27,7 @@ from collections import deque
 import mpd as mpdlib
 from tinytag import TinyTag
 from settings import *
+from gettext import gettext as _
 
 MPD_TYPE_ARTIST = 'artist'
 MPD_TYPE_ALBUM = 'album'
@@ -115,7 +116,8 @@ class MPDNowPlaying(object):
         else:
             return False
 
-    def _get_cover_from_zip(self, cover_art):
+    @staticmethod
+    def _get_cover_from_zip(cover_art):
         with zipfile.ZipFile(RESOURCES_ZIP) as res:
             img = res.read(cover_art)
         bytes_io = io.BytesIO(img)

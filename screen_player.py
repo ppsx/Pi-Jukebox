@@ -22,12 +22,13 @@
 
 from pij_screen_navigation import *
 from screen_settings import *
+from gettext import gettext as _
 
 
 class ScreenPlaying(Screen):
     """ Screen cover art
 
-        :param screen_rect: The display's rectangle where the screen is drawn on.
+        :param screen_surface: The display's rectangle where the screen is drawn on.
     """
 
     def __init__(self, screen_surface):
@@ -84,7 +85,6 @@ class ScreenPlaying(Screen):
                                      SCREEN_WIDTH - ICO_WIDTH - SPACE, SCREEN_HEIGHT - 2 * FONT_SIZE - SPACE,
                                      ICO_WIDTH, FONT_SIZE))
         self.components['lbl_time_current'].set_alignment(HOR_MID, VERT_MID)
-
 
     def show(self):
         """ Displays the screen. """
@@ -169,31 +169,12 @@ class ScreenPlaying(Screen):
             screen_volume.show()
             self.show()
 
-    # FIXME: probably this will change to something else (or be deleted at all)
-    def draw_cover_art(self):
-        left_position = 79
-        hor_length = SCREEN_WIDTH - 2 * 79
-        top_position = 40
-        vert_length = SCREEN_HEIGHT - 2 * 40
-        if hor_length > vert_length:
-            cover_size = vert_length
-            top_position = 40
-            left_position = (SCREEN_WIDTH - cover_size) / 2
-        else:
-            cover_size = hor_length
-            top_position = (SCREEN_HEIGHT - cover_size) / 2
-            left_position = 79
-
-        self.add_component(Picture('pic_cover_art', self.surface, left_position, top_position, cover_size, cover_size,
-                                   mpd.get_cover_art()))
-
 
 class ScreenPlaylist(Screen):
     """ The screen containing everything to control playback.
     """
     def __init__(self, screen_rect):
         Screen.__init__(self, screen_rect)
-        self.return_object = None
 
         self.font_color = C_GREY_LIGHTEST
 
@@ -422,4 +403,3 @@ class ScreenVolume(ScreenModal):
         else:
             self.components['btn_mute'].set_image_file(ICO_VOLUME_MUTE)
         self.components['btn_mute'].draw()
-

@@ -22,26 +22,16 @@
 """
 __author__ = 'Mark Zwart'
 
-import sys
-import pygame
-from pygame.locals import *
-import time
-import subprocess
-import os
-import glob
-from gui_widgets import *
 from pij_screen_navigation import *
-from mpd_client import *
-from settings import *
-from screen_keyboard import *
 from screen_settings import *
 from config_file import *
+from gettext import gettext as _
 
 
 class RadioBrowser(ItemList):
     """ The component that displays internet radio stations
 
-        :param screen_rect: The screen rect where the directory browser is drawn on.
+        :param surface: The screen rect where the directory browser is drawn on.
     """
 
     def __init__(self, surface):
@@ -155,15 +145,15 @@ class ScreenRadio(Screen):
 class ScreenSelected(ScreenModal):
     """ Screen for selecting playback actions with a selected radio station.
 
-        :param screen_rect: The directory's rect where the library browser is drawn on.
+        :param screen: The directory's rect where the library browser is drawn on.
         :param station_name: The name of the selected radio station.
-        :param station_URL: The URL of the selected radio station.
+        :param station_url: The URL of the selected radio station.
     """
 
-    def __init__(self, screen, station_name, station_URL):
+    def __init__(self, screen, station_name, station_url):
         ScreenModal.__init__(self, screen, station_name, C_BLUE)
         self.station_name = station_name
-        self.station_URL = station_URL
+        self.station_URL = station_url
         self.initialize()
         self.return_type = ""
 
@@ -199,15 +189,13 @@ class ScreenSelected(ScreenModal):
     def on_click(self, x, y):
         """ Action that should be performed on a click. """
         tag_name = super(ScreenModal, self).on_click(x, y)
-        play = False
-        clear_playlist = False
         if tag_name == 'btn_edit':
             screen_edit = ScreenStation(self, self.station_name)
             screen_edit.show()
             self.close()
         elif tag_name == 'btn_remove':
             screen_yes_no = ScreenYesNo(self, _("Remove {0}").format(self.station_name),
-                _("Are you sure you want to remove {0}?").format(self.station_name))
+                                        _("Are you sure you want to remove {0}?").format(self.station_name))
             if screen_yes_no.show() == 'yes':
                 config_file.setting_remove('Radio stations', self.station_name)
             self.close()
@@ -221,7 +209,6 @@ class ScreenStation(ScreenModal):
 
         :param screen_rect: The directory's rect where the library browser is drawn on.
         :param station_name: The name of the selected radio station.
-        :param station_URL: The URL of the selected radio station.
     """
     def __init__(self, screen_rect, station_name=""):
         ScreenModal.__init__(self, screen_rect, station_name, C_BLUE)
@@ -231,18 +218,16 @@ class ScreenStation(ScreenModal):
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
         self.station_name = station_name
-        btn_name_label = ""
-        btn_URL_label = ""
         if station_name == "":
             ScreenModal.__init__(self, screen_rect, _("Add a radio station"))
             self.station_URL = ""
             btn_name_label = _("Set station name")
-            btn_URL_label = _("Set station URL")
+            btn_url_label = _("Set station URL")
         else:
             ScreenModal.__init__(self, screen_rect, _("Edit radio station"))
             self.station_URL = config_file.setting_get('Radio stations', self.station_name)
             btn_name_label = _("Change name {0}").format(self.station_name)
-            btn_URL_label = _("Change station URL")
+            btn_url_label = _("Change station URL")
 
         button_left = self.window_x + SPACE
         button_width = self.window_width - 2 * button_left
@@ -251,7 +236,7 @@ class ScreenStation(ScreenModal):
             ButtonText('btn_name', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, btn_name_label))
         button_top += SPACE + BUTTON_HEIGHT
         self.add_component(
-            ButtonText('btn_URL', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, btn_URL_label))
+            ButtonText('btn_URL', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, btn_url_label))
 
         label = _("Cancel")
         button_top = self.window_height - SPACE - BUTTON_HEIGHT

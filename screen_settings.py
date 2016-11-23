@@ -25,12 +25,13 @@ import socket
 from gui_screens import *
 from mpd_client import *
 from screen_keyboard import Keyboard
+from gettext import gettext as _
 
 
 class ScreenSettings(ScreenModal):
     """ Screen for settings or quitting/shutting down
 
-        :param screen_rect: The display's rectangle where the screen is drawn on.
+        :param screen: The display's rectangle where the screen is drawn on.
     """
 
     def __init__(self, screen):
@@ -90,7 +91,7 @@ class ScreenSettings(ScreenModal):
 class ScreenSettingsQuit(ScreenModal):
     """ Screen for quitting pi-jukebox.
 
-        :param screen_rect: The display's rectangle where the screen is drawn on.
+        :param screen: The display's rectangle where the screen is drawn on.
     """
 
     def __init__(self, screen):
@@ -151,7 +152,7 @@ class ScreenSettingsQuit(ScreenModal):
 class ScreenSettingsPlayback(ScreenModal):
     """ Screen for settings playback options
 
-        :param screen_rect: The display's rectangle where the screen is drawn on.
+        :param screen: The display's rectangle where the screen is drawn on.
     """
 
     def __init__(self, screen):
@@ -269,7 +270,6 @@ class ScreenSettingsMPD(ScreenModal):
             ButtonText('btn_music_dir', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
 
         label = _("Cancel")
-        # FIXME: Check and correct button position
         button_top = self.window_height - 2 * SPACE - 2 * BUTTON_HEIGHT
         self.add_component(
             ButtonText('btn_cancel', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
@@ -285,7 +285,6 @@ class ScreenSettingsMPD(ScreenModal):
 
     def on_click(self, x, y):
         tag_name = super(ScreenModal, self).on_click(x, y)
-        setting_label = ""
         if tag_name == 'btn_save':
             if self.save_settings():
                 self.close()
@@ -420,10 +419,10 @@ class ScreenSystemInfo(ScreenModal):
         self.add_component(LabelText('lbl_host_name', self.surface, button_left, label_top,
                                      self.window_width - button_left - SPACE, FONT_SPACE, label))
         try:
-            label = _("IP address: {0}").format(ip_address)
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect(('google.com', 0))
             ip_address = s.getsockname()[0]
+            label = _("IP address: {0}").format(ip_address)
             label_top += FONT_SPACE
             self.add_component(LabelText('lbl_ip_address', self.surface, button_left, label_top,
                                          self.window_width - button_left - SPACE, FONT_SPACE, label))
@@ -436,7 +435,8 @@ class ScreenSystemInfo(ScreenModal):
             self.close()
             return
 
-    def make_time_string(self, seconds):
+    @staticmethod
+    def make_time_string(seconds):
         days = int(seconds / 86400)
         hours = int((seconds - (days * 86400)) / 3600)
         minutes = int((seconds - (days * 86400) - (hours * 3600)) / 60)
