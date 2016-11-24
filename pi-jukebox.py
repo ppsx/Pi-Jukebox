@@ -81,8 +81,9 @@ def apply_settings():
             'warning')
         screen_message.show()
         settings_mpd_screen = ScreenSettingsMPD(SCREEN)
-        settings_mpd_screen.keyboard_setting(_("Set music directory"), 'MPD Settings', 'music directory',
-                                             '/var/lib/mpd/music/')
+
+        music_dir = settings_mpd_screen.keyboard_setting(_("Set music directory"), '/var/lib/mpd/music/')
+        config_file.setting_set('MPD Settings', 'music directory', music_dir)
     mpd.host = config_file.setting_get('MPD Settings', 'host')
     mpd.port = int(config_file.setting_get('MPD Settings', 'port'))
     mpd.music_directory_set(config_file.setting_get('MPD Settings', 'music directory'))
@@ -101,7 +102,7 @@ def main():
         screen_message = ScreenMessage(
             SCREEN,
             "Couldn't connect to the mpd server!",
-            _("Couldn't connect to the mpd server {0} on port {1:d}! ".format(mpd.host, mpd.port)) +
+            _("Couldn't connect to the mpd server {0} on port {1:d}! ").format(mpd.host, mpd.port) +
             _("Check settings in file pi-jukebox.conf or check if server is running: 'sudo service mpd status'."),
             'error')
         screen_message.show()
