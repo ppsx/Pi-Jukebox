@@ -116,6 +116,9 @@ class MPDNowPlaying(object):
         else:
             return False
 
+    def get_time_total_sec(self):
+        return self.__time_total_sec
+
     @staticmethod
     def _get_cover_from_zip(cover_art):
         with zipfile.ZipFile(RESOURCES_ZIP) as res:
@@ -426,6 +429,10 @@ class MPDController(object):
 
     def volume_mute_get(self):
         return self.__muted
+
+    def seek(self, percentage):
+        pos = float(self.now_playing.get_time_total_sec()) * percentage / 100
+        self.mpd_client.seekcur(pos)
 
     def random_switch(self):
         """ Switches random playing on or off. """
