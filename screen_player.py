@@ -168,6 +168,8 @@ class ScreenPlaying(Screen):
             screen_volume = ScreenVolume(self)
             screen_volume.show()
             self.show()
+        elif tag_name == 'slide_time':
+            mpd.seek(self.components['slide_time'].progress_percentage)
 
     # FIXME: probably this will change to something else (or be deleted at all)
     def draw_cover_art(self):
