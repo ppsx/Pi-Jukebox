@@ -34,6 +34,7 @@ from screen_directory import ScreenDirectory
 from screen_radio import ScreenRadio
 from screen_settings import ScreenSettingsMPD
 from mpd_client import mpd
+from gettext import gettext as _
 
 
 class PiJukeboxScreens(ScreenControl):
@@ -56,7 +57,8 @@ class PiJukeboxScreens(ScreenControl):
         """ Updates a current screen if it shows mpd relevant content. """
         self.screen_list[self.current_index].update()
 
-    def loop_hook(self):
+    @staticmethod
+    def loop_hook():
         return mpd.status_get()
 
     def update(self):
@@ -69,6 +71,7 @@ def init_gettext(domain, localedir):
     gettext.bind_textdomain_codeset(domain, 'UTF-8')
     gettext.textdomain(domain)
     gettext.install(domain, localedir, unicode=True)
+
 
 def apply_settings():
     # Check for first time settings

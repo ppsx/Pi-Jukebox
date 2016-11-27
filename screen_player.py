@@ -22,12 +22,13 @@
 
 from pij_screen_navigation import *
 from screen_settings import *
+from gettext import gettext as _
 
 
 class ScreenPlaying(Screen):
     """ Screen cover art
 
-        :param screen_rect: The display's rectangle where the screen is drawn on.
+        :param screen_surface: The display's rectangle where the screen is drawn on.
     """
 
     def __init__(self, screen_surface):
@@ -84,7 +85,6 @@ class ScreenPlaying(Screen):
                                      SCREEN_WIDTH - ICO_WIDTH - SPACE, SCREEN_HEIGHT - 2 * FONT_SIZE - SPACE,
                                      ICO_WIDTH, FONT_SIZE))
         self.components['lbl_time_current'].set_alignment(HOR_MID, VERT_MID)
-
 
     def show(self):
         """ Displays the screen. """
@@ -170,24 +170,6 @@ class ScreenPlaying(Screen):
             self.show()
         elif tag_name == 'slide_time':
             mpd.seek(self.components['slide_time'].progress_percentage)
-
-    # FIXME: probably this will change to something else (or be deleted at all)
-    def draw_cover_art(self):
-        left_position = 79
-        hor_length = SCREEN_WIDTH - 2 * 79
-        top_position = 40
-        vert_length = SCREEN_HEIGHT - 2 * 40
-        if hor_length > vert_length:
-            cover_size = vert_length
-            top_position = 40
-            left_position = (SCREEN_WIDTH - cover_size) / 2
-        else:
-            cover_size = hor_length
-            top_position = (SCREEN_HEIGHT - cover_size) / 2
-            left_position = 79
-
-        self.add_component(Picture('pic_cover_art', self.surface, left_position, top_position, cover_size, cover_size,
-                                   mpd.get_cover_art()))
 
 
 class ScreenPlaylist(Screen):
@@ -346,16 +328,6 @@ class Playlist(ItemList):
         ItemList.__init__(self, 'list_playing', surface,
                           ICO_WIDTH + 2 * SPACE, SPACE + 2 * FONT_SPACE + 6,
                           SCREEN_WIDTH - 2 * (ICO_WIDTH + 2 * SPACE), SCREEN_HEIGHT - 2 * SPACE - 2 * FONT_SPACE - 6)
-        # TODO: Add proper handling
-        # if DISPLAY == 'raspberry7':
-        #     ItemList.__init__(self, 'list_playing', surface,
-        #         52, 46, 696, 419)
-        # elif DISPLAY == 'adafruit3.5':
-        #     ItemList.__init__(self, 'list_playing', surface,
-        #         52, 46, 216, 189)
-        # else:
-        #     ItemList.__init__(self, 'list_playing', surface,
-        #         52, 46, 216, 189)
         self.item_height = FONT_SPACE
         self.item_active_color = C_YELLOW
         self.outline_color = C_BLUE
@@ -403,7 +375,7 @@ class ScreenVolume(ScreenModal):
 
         button_top += ICO_HEIGHT + 2 * SPACE
         self.add_component(
-            Slider('slide_volume', self.surface, button_left, button_top, self.window_width - 2 * SPACE, BUTTON_HEIGHT))
+            Slider('slide_volume', self.surface, button_left, button_top, self.window_width - 2 * SPACE, SLIDER_HEIGHT))
         self.components['slide_volume'].progress_percentage_set(mpd.volume)
 
         label = _("Back")
@@ -434,4 +406,3 @@ class ScreenVolume(ScreenModal):
         else:
             self.components['btn_mute'].set_image_file(ICO_VOLUME_MUTE)
         self.components['btn_mute'].draw()
-

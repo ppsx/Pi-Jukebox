@@ -27,7 +27,7 @@ from gui_screens import *
 class KeyboardBase(ScreenModal):
     """ The base class of a keyboard, should not be instantiated.
 
-        :param screen_rect: The display's rectangle where the keyboard is drawn on.
+        :param screen: The display's rectangle where the keyboard is drawn on.
         :param caption: The title displayed at the top of the screen.
         :param text: The text that will be edited with the keyboard, default = "".
     """
@@ -37,9 +37,8 @@ class KeyboardBase(ScreenModal):
         self.text = text
         self.title_font_color = C_GREY_DARK
         # Dialog close button
-        btn = ButtonText('btn_cancel', self.surface,
-            SCREEN_WIDTH - TITLE_HEIGHT, 0, TITLE_HEIGHT, TITLE_HEIGHT, 'X')
-        self.add_component(btn)
+        self.add_component(
+                ButtonText('btn_cancel', self.surface, SCREEN_WIDTH - TITLE_HEIGHT, 0, TITLE_HEIGHT, TITLE_HEIGHT, 'X'))
         # Edit box
         edit_box = LabelText('lbl_edit_box', self.surface,
                              SPACE, BUTTON_TOP + 2 * SPACE, SCREEN_WIDTH - 2 * SPACE, TITLE_HEIGHT, text)
@@ -93,20 +92,26 @@ class KeyboardLetters(KeyboardBase):
         self.components['btn_shift'].outline_visible = True
         self.components['btn_shift'].outline_color = C_BLUE
 
-        self.add_component(ButtonIcon('btn_backspace', self.surface, ICO_BACKSPACE,
-                                      SPACE - 1 + (len(third_row) + 1) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
+        self.add_component(
+                ButtonIcon('btn_backspace', self.surface, ICO_BACKSPACE,
+                           SPACE - 1 + (len(third_row) + 1) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
-        x_button = SPACE - 1 + int(1.5 * (KEY_HEIGHT + KEY_SPACE))
-        self.add_component(ButtonText('btn_symbol_comma', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, ','))
-        x_button += KEY_HEIGHT + KEY_SPACE
-        space_width = 4 * (KEY_HEIGHT + KEY_SPACE) + KEY_HEIGHT
-        self.add_component(ButtonText('btn_symbol_space', self.surface, x_button, y_row, space_width, KEY_HEIGHT, ' '))
+        x_button = SPACE - 1 + int(1.5 * (KEY_WIDTH_STD + KEY_SPACE))
+        self.add_component(
+                ButtonText('btn_symbol_comma', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, ','))
+        x_button += KEY_WIDTH_STD + KEY_SPACE
+        space_width = 4 * (KEY_WIDTH_STD + KEY_SPACE) + KEY_WIDTH_STD
+        self.add_component(
+                ButtonText('btn_symbol_space', self.surface, x_button, y_row, space_width, KEY_HEIGHT, ' '))
         x_button += space_width + KEY_SPACE
-        self.add_component(ButtonText('btn_symbol_point', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '.'))
+        self.add_component(
+                ButtonText('btn_symbol_point', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '.'))
 
-        self.add_component(ButtonIcon('btn_enter', self.surface, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
-        self.add_component(ButtonIcon('btn_symbols', self.surface, ICO_SYMBOLS, SPACE - 1, y_row))
+        self.add_component(
+                ButtonIcon('btn_enter', self.surface, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
+        self.add_component(
+                ButtonIcon('btn_symbols', self.surface, ICO_SYMBOLS, SPACE - 1, y_row))
 
     def __letters_shift(self):
         """ Sets button values to lower- or uppercase depending on the shift state. """
@@ -174,8 +179,9 @@ class KeyboardSymbols(KeyboardBase):
         y_row += y_row_increment
         third_row = [':', ';', '.', ',', '?', '!', '\'', '*', '/']
         self.add_row_buttons(third_row, SPACE - 1, y_row)
-        self.add_component(ButtonIcon('btn_backspace', self.surface, ICO_BACKSPACE,
-                                      SPACE - 1 + len(third_row) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
+        self.add_component(
+                ButtonIcon('btn_backspace', self.surface, ICO_BACKSPACE,
+                           SPACE - 1 + len(third_row) * (KEY_WIDTH_STD + KEY_SPACE), y_row))
 
         y_row += y_row_increment
         x_button = SPACE - 1 + int(1.5 * (KEY_WIDTH_STD + KEY_SPACE))
@@ -183,12 +189,16 @@ class KeyboardSymbols(KeyboardBase):
             ButtonText('btn_symbol_ampersand', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '&'))
         x_button += KEY_WIDTH_STD + KEY_SPACE
         space_width = 4 * (KEY_WIDTH_STD + KEY_SPACE) + KEY_WIDTH_STD
-        self.add_component(ButtonText('btn_symbol_space', self.surface, x_button, y_row, space_width, KEY_HEIGHT, ' '))
+        self.add_component(
+                ButtonText('btn_symbol_space', self.surface, x_button, y_row, space_width, KEY_HEIGHT, ' '))
         x_button += space_width + KEY_SPACE
-        self.add_component(ButtonText('btn_symbol_at', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '@'))
+        self.add_component(
+                ButtonText('btn_symbol_at', self.surface, x_button, y_row, KEY_WIDTH_STD, KEY_HEIGHT, '@'))
 
-        self.add_component(ButtonIcon('btn_enter', self.surface, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
-        self.add_component(ButtonIcon('btn_symbol_letters', self.surface, ICO_LETTERS, SPACE - 1, y_row))
+        self.add_component(
+                ButtonIcon('btn_enter', self.surface, ICO_ENTER, x_button + KEY_WIDTH_STD + KEY_SPACE, y_row))
+        self.add_component(
+                ButtonIcon('btn_symbol_letters', self.surface, ICO_LETTERS, SPACE - 1, y_row))
 
     def on_click(self, x, y):
         tag_name = super(KeyboardSymbols, self).on_click(x, y)
@@ -219,11 +229,11 @@ class KeyboardSymbols(KeyboardBase):
             self.close()
 
 
-class Keyboard():
+class Keyboard(object):
     """ Called keyboard class that displays a text edit field with a
         letter or symbol keyboard.
 
-        :param screen_rect: The display's rectangle where the keyboard is drawn on.
+        :param screen: The display's rectangle where the keyboard is drawn on.
         :param caption: The title displayed at the top of the screen.
         :param text: The text that will be edited with the keyboard, default = "".
     """

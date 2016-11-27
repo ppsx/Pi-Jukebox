@@ -27,12 +27,13 @@ from pij_screen_navigation import ScreenNavigation
 from screen_settings import ScreenSettings
 from mpd_client import mpd
 from settings import *
+from gettext import gettext as _
 
 
 class LetterBrowser(ItemList):
     """ The graphical control for selecting artists/albums/songs starting with a letter.
 
-        :param screen_rect: The screen rect where the library browser is drawn on.
+        :param surface: The screen rect where the library browser is drawn on.
     """
 
     def __init__(self, surface):
@@ -52,7 +53,7 @@ class LetterBrowser(ItemList):
 class DirectoryBrowser(ItemList):
     """ The component that displays mpd directory entries.
 
-        :param screen_rect: The screen rect where the directory browser is drawn on.
+        :param surface: The screen rect where the directory browser is drawn on.
     """
 
     def __init__(self, surface):
@@ -70,12 +71,7 @@ class DirectoryBrowser(ItemList):
         return self.directory_content[self.item_selected_index]
 
     def show_directory(self, path="", first_letter=None):
-        """ Displays all songs or based on the first letter or partial string match.
-
-            :param search: Search string, default = None
-            :param only_start: Boolean indicating whether the search string only matches the first letters,
-                               default = True
-        """
+        """ Displays all songs or based on the first letter or partial string match."""
         self.list = []
         if first_letter is None:
             self.directory_current = path
@@ -207,7 +203,7 @@ class ScreenDirectory(Screen):
 class ScreenSelected(ScreenModal):
     """ Screen for selecting playback actions with an item selected from the directory.
 
-        :param screen_rect: The directory's rect where the library browser is drawn on.
+        :param screen: The directory's rect where the library browser is drawn on.
         :param directory: The directory who's content iss currently being listed.
         :param selected_type: The selected directory item ['file', 'directory'].
         :param selected_item: The name of the selected directory item.
@@ -229,7 +225,6 @@ class ScreenSelected(ScreenModal):
         button_top = TITLE_HEIGHT + SPACE
 
         if self.selected_type == 'directory':
-            # label = _("Browse directory {0}").format(self.selected_name)  # name removed because of its potential length
             label = _("Browse directory")
             self.add_component(
                 ButtonText('btn_browse', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT, label))
@@ -282,4 +277,3 @@ class ScreenSelected(ScreenModal):
                 mpd.playlist_add_file(self.selected_name, play, clear_playlist)
             self.return_object = None
         self.close()
-

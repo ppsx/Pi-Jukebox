@@ -48,7 +48,7 @@ class Widget(object):
     """ Widget is the base class of screen widgets and should not be instantiated by itself.
 
         :param tag_name: Text identifying the widget.
-        :param screen_rect: The screen's rectangle where the widget is drawn on.
+        :param surface: The screen's rectangle where the widget is drawn on.
         :param x: The horizontal starting position of the widget's rectangle.
         :param y: The vertical starting position of the widget's rectangle.
         :param width: The width of the widget's rectangle.
@@ -91,7 +91,7 @@ class Rectangle(Widget):
     """ Drawing a rectangle on screen
 
         :param tag_name: Text identifying the rectangle.
-        :param screen_rect: The screen's rectangle where the rectangle is drawn on.
+        :param surface: The screen's rectangle where the rectangle is drawn on.
         :param x: The horizontal starting position of the rectangle's rectangle.
         :param y: The vertical starting position of the rectangle's rectangle.
         :param width: The width of the rectangle's rectangle.
@@ -114,7 +114,7 @@ class Slider(Rectangle):
     """ A slider control
 
         :param tag_name: Text identifying the slider.
-        :param screen_rect: The screen's rectangle where the slider is drawn on.
+        :param surface: The screen's rectangle where the slider is drawn on.
         :param x: The horizontal starting position of the slider's rectangle.
         :param y: The vertical starting position of the slider's rectangle.
         :param width: The width of the slider's rectangle.
@@ -166,7 +166,7 @@ class Slider2(Widget):
     """ A slider control with a different lay-out.
 
         :param tag_name: Text identifying the slider.
-        :param screen_rect: The screen's rectangle where the slider is drawn on.
+        :param surface: The screen's rectangle where the slider is drawn on.
         :param x: The horizontal starting position of the slider's rectangle.
         :param y: The vertical starting position of the slider's rectangle.
         :param width: The width of the slider's rectangle.
@@ -220,7 +220,7 @@ class Picture(Widget):
     """ Picture on screen
 
         :param tag_name: Text identifying the picture.
-        :param screen_rect: The screen's rectangle where the picture is drawn on.
+        :param surface: The screen's rectangle where the picture is drawn on.
         :param x: The horizontal starting position of the picture's rectangle.
         :param y: The vertical starting position of the picture's rectangle.
         :param width: The width of the picture's rectangle.
@@ -288,7 +288,7 @@ class LabelText(Widget):
     """ LabelText is used to write text that needs to fit in a pre-defined rectangle.
 
         :param tag_name: Text identifying the label.
-        :param screen_rect: The screen's rectangle where the label is drawn on.
+        :param surface: The screen's rectangle where the label is drawn on.
         :param x: The horizontal starting position of the label's rectangle.
         :param y: The vertical starting position of the label's rectangle.
         :param width: The width of the label's rectangle.
@@ -323,6 +323,8 @@ class LabelText(Widget):
 
             :param horizontal: Horizontal alignment
             :param vertical: Vertical alignment
+            :param hor_indent: Horizontal alignment indentation
+            :param vert_indent: Vertical alignment indentation
         """
         self.alignment_horizontal = horizontal
         self.alignment_vertical = vertical
@@ -336,8 +338,6 @@ class LabelText(Widget):
 
     def draw(self):
         """ Draws the label.
-
-            :param text: default = "", set's the label's text,
 
             :return: Text that couldn't be fitted inside the label's rectangle,
         """
@@ -521,7 +521,7 @@ class ButtonText(LabelText):
     """ ButtonText class is a button with text that uses two images for button rendering.
 
         :param tag_name: Text identifying the widget,
-        :param screen_rect: The screen's rectangle where the button should be drawn,
+        :param surface: The screen's rectangle where the button should be drawn,
         :param x: The horizontal position of the button,
         :param y: The vertical position of the button,
         :param width: The label's rectangle width,
@@ -560,7 +560,7 @@ class Switch(Widget):
     """ An on/off control for settings
 
         :param tag_name: Text identifying the widget,
-        :param screen_rect: The screen's rectangle where the button should be drawn,
+        :param surface: The screen's rectangle where the button should be drawn,
         :param x: The horizontal position of the button,
         :param y: The vertical position of the button,
     """
@@ -613,7 +613,7 @@ class ItemList(Widget):
     """ List of text items that can be clicked.
 
         :param tag_name: Text identifying the list.
-        :param screen_rect: The screen's rectangle where the list is drawn on.
+        :param surface: The screen's rectangle where the list is drawn on.
         :param x: The horizontal starting position of the list's rectangle.
         :param y: The vertical starting position of the list's rectangle.
         :param width: The width of the list's rectangle.
@@ -782,10 +782,9 @@ class ItemList(Widget):
 class WidgetContainer(Widget):
     """ Basic screen used for displaying widgets. This type of screen should be used for the entire program.
 
-        :param screen_rect: The screen's rectangle where the screen is drawn on
+        :param surface: The screen's rectangle where the screen is drawn on
 
         :ivar components: Dictionary holding the screen's widgets with a tag_name as key and the widget as value
-        :ivar color: The screen's background color, default = :py:const:BLACK
     """
 
     def __init__(self, tag_name, surface, x, y, width, height):

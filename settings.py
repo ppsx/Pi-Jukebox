@@ -32,45 +32,71 @@ from config_file import config_file
 
 VERSION = (1, 1, 0)
 
-FONT_SIZE = 22
+
+#: The display dimensions, change this if you have a bigger touch screen.
+#: adafruit 2.8" -> 320x240
+#: adafruit 3.5" -> 480x320
+#: raspberry 7" -> 800x480
+DISPLAY_TYPE = config_file.setting_get('Hardware', 'display')
+DISPLAY_RES = config_file.setting_get(DISPLAY_TYPE, 'resolution')
+DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = map(int, DISPLAY_RES.split('x'))
+
+
+if DISPLAY_RES == '800x480':
+    FONT_SIZE = 28
+    SPACE = 14
+    KEY_SPACE = 4
+    KEY_HEIGHT = 42
+    KEY_WIDTH_STD = 42
+    KEY_WIDTH_BIG = 64
+    KEY_WIDTH_HUGE = 96
+    BUTTON_HEIGHT = 64
+    ICO_WIDTH = 96
+    ICO_HEIGHT = 64
+    ICO_INFO_WIDTH = 48
+    SWITCH_WIDTH = 48
+    SWITCH_HEIGHT = 48
+    LIST_WIDTH = 52
+    LIST_INDICATOR_WIDTH = 10
+    SLIDER_HEIGHT = 64
+elif DISPLAY_RES == '480x320':
+    FONT_SIZE = 22
+    SPACE = 10
+    KEY_SPACE = 4
+    KEY_HEIGHT = 42
+    KEY_WIDTH_STD = 42
+    KEY_WIDTH_BIG = 64
+    KEY_WIDTH_HUGE = 96
+    BUTTON_HEIGHT = 42
+    ICO_WIDTH = 64
+    ICO_HEIGHT = 42
+    ICO_INFO_WIDTH = 48
+    SWITCH_WIDTH = 32
+    SWITCH_HEIGHT = 32
+    LIST_WIDTH = 42
+    LIST_INDICATOR_WIDTH = 6
+    SLIDER_HEIGHT = 42
+else:   # 320x240
+    FONT_SIZE = 16
+    SPACE = 4
+    KEY_SPACE = 3
+    KEY_HEIGHT = 32
+    KEY_WIDTH_STD = 28
+    KEY_WIDTH_BIG = 48
+    KEY_WIDTH_HUGE = 64
+    BUTTON_HEIGHT = 32
+    ICO_WIDTH = 48
+    ICO_HEIGHT = 32
+    ICO_INFO_WIDTH = 48
+    SWITCH_WIDTH = 32
+    SWITCH_HEIGHT = 32
+    LIST_WIDTH = 42
+    LIST_INDICATOR_WIDTH = 6
+    SLIDER_HEIGHT = 20
 
 TITLE_HEIGHT = int(FONT_SIZE * 1.4)
 FONT_SPACE = int(FONT_SIZE * 1.2)
 BUTTON_TOP = TITLE_HEIGHT
-SPACE = 10
-
-KEY_SPACE = 4
-KEY_WIDTH_STD = 42
-KEY_WIDTH_BIG = 64
-KEY_WIDTH_HUGE = 96
-KEY_HEIGHT = 42
-
-BUTTON_HEIGHT = 42
-
-ICO_WIDTH = 64
-ICO_HEIGHT = 42
-ICO_INFO_WIDTH = 48
-
-SWITCH_WIDTH = 32
-SWITCH_HEIGHT = 32
-
-LIST_WIDTH = 42
-LIST_INDICATOR_WIDTH = 6
-
-
-#: The display dimensions, change this if you have a bigger touch screen.
-#: adafruit 2.8" -> 320x200
-#: adafruit 3.5" -> 480x320
-#: raspberry 7" -> 800x480
-DISPLAY = config_file.setting_get('Hardware', 'display')
-if DISPLAY == 'adafruit2.8':
-    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
-elif DISPLAY == 'adafruit3.5':
-    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 480, 320
-elif DISPLAY == 'raspberry7':
-    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 800, 480
-else:
-    DISPLAY_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = 320, 240
 
 #: Switches between development/debugging on your desktop/laptop versus running on your Raspberry Pi
 RUN_ON_RASPBERRY_PI = (os.name != 'nt' and os.uname()[4][:3] == 'arm')
@@ -79,7 +105,7 @@ RUN_ON_RASPBERRY_PI = (os.name != 'nt' and os.uname()[4][:3] == 'arm')
 if RUN_ON_RASPBERRY_PI:
     os.environ['SDL_VIDEODRIVER'] = 'fbcon'
     os.environ['SDL_FBDEV'] = '/dev/fb1'
-    if DISPLAY == 'raspberry7':
+    if DISPLAY_TYPE == 'raspberry7':
         os.environ['SDL_MOUSEDEV'] = '/dev/input/mouse1'
         os.environ['SDL_MOUSEDRV'] = 'FT5406'
     else:
@@ -109,68 +135,68 @@ FONT = pygame.font.Font(os.path.join(RESOURCES, 'LiberationSans-Regular.ttf'), F
 
 """ Used icons """
 # Switch icons
-ICO_SWITCH_ON = 'switch-on.png'
-ICO_SWITCH_OFF = 'switch-off.png'
+ICO_SWITCH_ON = DISPLAY_RES + '/switch-on.png'
+ICO_SWITCH_OFF = DISPLAY_RES + '/switch-off.png'
 
 # General icons
-ICO_PLAYER_FILE = 'main-playing-file.png'
-ICO_PLAYER_FILE_ACTIVE = 'main-playing-file-active.png'
-ICO_PLAYER_RADIO = 'main-playing-radio.png'
-ICO_PLAYER_RADIO_ACTIVE = 'main-playing-radio-active.png'
-ICO_PLAYLIST = 'main-playlist.png'
-ICO_PLAYLIST_ACTIVE = 'main-playlist-active.png'
-ICO_LIBRARY = 'main-library.png'
-ICO_LIBRARY_ACTIVE = 'main-library-active.png'
-ICO_DIRECTORY = 'main-directory.png'
-ICO_DIRECTORY_ACTIVE = 'main-directory-active.png'
-ICO_RADIO = 'main-radio.png'
-ICO_RADIO_ACTIVE = 'main-radio-active.png'
-ICO_SETTINGS = 'main-settings.png'
+ICO_PLAYER_FILE = DISPLAY_RES + '/main-playing-file.png'
+ICO_PLAYER_FILE_ACTIVE = DISPLAY_RES + '/main-playing-file-active.png'
+ICO_PLAYER_RADIO = DISPLAY_RES + '/main-playing-radio.png'
+ICO_PLAYER_RADIO_ACTIVE = DISPLAY_RES + '/main-playing-radio-active.png'
+ICO_PLAYLIST = DISPLAY_RES + '/main-playlist.png'
+ICO_PLAYLIST_ACTIVE = DISPLAY_RES + '/main-playlist-active.png'
+ICO_LIBRARY = DISPLAY_RES + '/main-library.png'
+ICO_LIBRARY_ACTIVE = DISPLAY_RES + '/main-library-active.png'
+ICO_DIRECTORY = DISPLAY_RES + '/main-directory.png'
+ICO_DIRECTORY_ACTIVE = DISPLAY_RES + '/main-directory-active.png'
+ICO_RADIO = DISPLAY_RES + '/main-radio.png'
+ICO_RADIO_ACTIVE = DISPLAY_RES + '/main-radio-active.png'
+ICO_SETTINGS = DISPLAY_RES + '/main-settings.png'
 
 # Player icons
-ICO_PLAY = 'controller-play.png'
-ICO_PAUSE = 'controller-pause.png'
-ICO_STOP = 'controller-stop.png'
-ICO_NEXT = 'controller-next.png'
-ICO_PREVIOUS = 'controller-previous.png'
-ICO_VOLUME = 'controller-volume.png'
+ICO_PLAY = DISPLAY_RES + '/controller-play.png'
+ICO_PAUSE = DISPLAY_RES + '/controller-pause.png'
+ICO_STOP = DISPLAY_RES + '/controller-stop.png'
+ICO_NEXT = DISPLAY_RES + '/controller-next.png'
+ICO_PREVIOUS = DISPLAY_RES + '/controller-previous.png'
+ICO_VOLUME = DISPLAY_RES + '/controller-volume.png'
 
 # Volume icons
-ICO_VOLUME_UP = 'volume-up.png'
-ICO_VOLUME_DOWN = 'volume-down.png'
-ICO_VOLUME_MUTE = 'volume-mute.png'
-ICO_VOLUME_MUTE_ACTIVE = 'volume-mute-active.png'
+ICO_VOLUME_UP = DISPLAY_RES + '/volume-up.png'
+ICO_VOLUME_DOWN = DISPLAY_RES + '/volume-down.png'
+ICO_VOLUME_MUTE = DISPLAY_RES + '/volume-mute.png'
+ICO_VOLUME_MUTE_ACTIVE = DISPLAY_RES + '/volume-mute-active.png'
 
 # Library icons
-ICO_SEARCH = 'filter-search.png'
-ICO_SEARCH_ARTIST = 'filter-artists.png'
-ICO_SEARCH_ARTIST_ACTIVE = 'filter-artists-active.png'
-ICO_SEARCH_ALBUM = 'filter-albums.png'
-ICO_SEARCH_ALBUM_ACTIVE = 'filter-albums-active.png'
-ICO_SEARCH_SONG = 'filter-songs.png'
-ICO_SEARCH_SONG_ACTIVE = 'filter-songs-active.png'
-ICO_PLAYLISTS = 'filter-playlists.png'
-ICO_PLAYLISTS_ACTIVE = 'filter-playlists-active.png'
+ICO_SEARCH = DISPLAY_RES + '/filter-search.png'
+ICO_SEARCH_ARTIST = DISPLAY_RES + '/filter-artists.png'
+ICO_SEARCH_ARTIST_ACTIVE = DISPLAY_RES + '/filter-artists-active.png'
+ICO_SEARCH_ALBUM = DISPLAY_RES + '/filter-albums.png'
+ICO_SEARCH_ALBUM_ACTIVE = DISPLAY_RES + '/filter-albums-active.png'
+ICO_SEARCH_SONG = DISPLAY_RES + '/filter-songs.png'
+ICO_SEARCH_SONG_ACTIVE = DISPLAY_RES + '/filter-songs-active.png'
+ICO_PLAYLISTS = DISPLAY_RES + '/filter-playlists.png'
+ICO_PLAYLISTS_ACTIVE = DISPLAY_RES + '/filter-playlists-active.png'
 
 # Directory icons
-ICO_FOLDER_ROOT = 'folder-root.png'
-ICO_FOLDER_UP = 'folder-up.png'
+ICO_FOLDER_ROOT = DISPLAY_RES + '/folder-root.png'
+ICO_FOLDER_UP = DISPLAY_RES + '/folder-up.png'
 
 # Standard info icons
-ICO_INFO = 'icon-info.png'
-ICO_WARNING = 'icon-warning.png'
-ICO_ERROR = 'icon-error.png'
+ICO_INFO = DISPLAY_RES + '/icon-info.png'
+ICO_WARNING = DISPLAY_RES + '/icon-warning.png'
+ICO_ERROR = DISPLAY_RES + '/icon-error.png'
 
 # Radio icons
-ICO_STATION_ADD = 'station-add.png'
+ICO_STATION_ADD = DISPLAY_RES + '/station-add.png'
 
 # default covers
-DEFAULT_COVER = 'cover-files.png'
-COVER_ART_RADIO = 'cover-radio.png'
+DEFAULT_COVER = DISPLAY_RES + '/cover-files.png'
+COVER_ART_RADIO = DISPLAY_RES + '/cover-radio.png'
 
 # Special keyboard icons
-ICO_SHIFT = 'keys-shift.png'
-ICO_BACKSPACE = 'keys-backspace.png'
-ICO_ENTER = 'keys-enter.png'
-ICO_LETTERS = 'keys-letters.png'
-ICO_SYMBOLS = 'keys-symbols.png'
+ICO_SHIFT = DISPLAY_RES + '/keys-shift.png'
+ICO_BACKSPACE = DISPLAY_RES + '/keys-backspace.png'
+ICO_ENTER = DISPLAY_RES + '/keys-enter.png'
+ICO_LETTERS = DISPLAY_RES + '/keys-letters.png'
+ICO_SYMBOLS = DISPLAY_RES + '/keys-symbols.png'

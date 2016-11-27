@@ -26,10 +26,13 @@ class ConfigFile(object):
         # MPD configuration settings
         self.settings = []
         self.radio_stations = []
-        self.settings.append({'section': 'Hardware', 'key': 'display', 'value': 'adafruit2.8', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'host', 'value': 'localhost', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'port', 'value': '6600', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'music directory', 'value': None, 'first_time': True})
+        self.settings.append({'section': 'Hardware', 'key': 'display', 'value': 'adafruit2.8', 'first_time': False})
+        self.settings.append({'section': 'adafruit2.8', 'key': 'resolution', 'value': '320x240', 'first_time': False})
+        self.settings.append({'section': 'adafruit3.5', 'key': 'resolution', 'value': '480x320', 'first_time': False})
+        self.settings.append({'section': 'raspberry7', 'key': 'resolution', 'value': '800x480', 'first_time': False})
         self.initialize()
 
     def initialize(self):
@@ -82,9 +85,9 @@ class ConfigFile(object):
     def setting_exists(self, section, key):
         return self.parser.has_option(section, key)
 
-    def radio_station_set(self, name, URL):
+    def radio_station_set(self, name, url):
         """ Edits or creates radio station entry """
-        self.setting_set('Radio stations', name, URL)
+        self.setting_set('Radio stations', name, url)
 
     def radio_stations_get(self):
         """ Get's radio stations from the configuration file and returns them in a list """
@@ -92,8 +95,8 @@ class ConfigFile(object):
         options = self.parser.options('Radio stations')
         for option in options:
             description = option
-            URL = self.setting_get('Radio stations', option)
-            self.radio_stations.append((description, URL))
+            url = self.setting_get('Radio stations', option)
+            self.radio_stations.append((description, url))
         return self.radio_stations
 
     def section_get(self, section):

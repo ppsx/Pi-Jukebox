@@ -2,6 +2,5 @@
 *.pyc
 /.idea
 pi-jukebox.conf
-cover_art.jpg
 dependencies
 locale/*.pot

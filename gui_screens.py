@@ -157,6 +157,7 @@ class Screen(object):
             self.surface = screen_or_surface.surface
             self.loop_hook = self.parent_screen.loop_hook
         self.loop_active = True
+        self.return_object = None
 
         self.components = {}  # Interface dictionary
         self.color = BLACK
@@ -173,8 +174,8 @@ class Screen(object):
         self.components[widget.tag_name] = widget
 
     def show(self):
-        self.loop_active = True
         """ Displays the screen. """
+        self.loop_active = True
         if self.parent_screen is not None:
             self.parent_screen.active = False
         self.surface.fill(self.color)
@@ -302,7 +303,6 @@ class ScreenModal(Screen):
         self.window_y = 0
         self.window_width = SCREEN_WIDTH
         self.window_height = SCREEN_HEIGHT
-        self.return_object = None
         self.title_font_color = C_GREY_DARK
         self.title_color = color
         self.outline_color = color
