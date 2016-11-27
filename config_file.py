@@ -26,10 +26,13 @@ class ConfigFile(object):
         # MPD configuration settings
         self.settings = []
         self.radio_stations = []
-        self.settings.append({'section': 'Hardware', 'key': 'display', 'value': 'adafruit2.8', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'host', 'value': 'localhost', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'port', 'value': '6600', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'music directory', 'value': None, 'first_time': True})
+        self.settings.append({'section': 'Hardware', 'key': 'display', 'value': 'adafruit2.8', 'first_time': False})
+        self.settings.append({'section': 'adafruit2.8', 'key': 'resolution', 'value': '320x240', 'first_time': False})
+        self.settings.append({'section': 'adafruit3.5', 'key': 'resolution', 'value': '480x320', 'first_time': False})
+        self.settings.append({'section': 'raspberry7', 'key': 'resolution', 'value': '800x480', 'first_time': False})
         self.initialize()
 
     def initialize(self):

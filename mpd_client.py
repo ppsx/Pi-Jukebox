@@ -431,7 +431,7 @@ class MPDController(object):
         return self.__muted
 
     def seek(self, percentage):
-        pos = float(self.now_playing.get_time_total_sec()) * percentage / 100
+        pos = int(self.now_playing.get_time_total_sec() * percentage / 100)
         self.mpd_client.seekcur(pos)
 
     def random_switch(self):

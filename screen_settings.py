@@ -190,7 +190,7 @@ class ScreenSettingsPlayback(ScreenModal):
 
         label = _("Re-scan library")
         button_left = self.window_x + SPACE
-        button_top = self.window_y + switch_top + 6 * SPACE
+        button_top = self.window_y + switch_top + 8 * SPACE
         button_width = self.window_width - 2 * SPACE
         self.add_component(ButtonText('btn_rescan', self.surface, button_left, button_top, button_width, BUTTON_HEIGHT,
                                       label))
