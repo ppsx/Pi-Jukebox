@@ -116,20 +116,11 @@ class MPDNowPlaying(object):
         else:
             return False
 
-<<<<<<< HEAD
-    def get_time_total_sec(self):
-        return self.__time_total_sec
-
-    def _get_cover_from_zip(self, cover_art):
-||||||| merged common ancestors
-    def _get_cover_from_zip(self, cover_art):
-=======
     def get_time_total_sec(self):
         return self.__time_total_sec
 
     @staticmethod
     def _get_cover_from_zip(cover_art):
->>>>>>> feature/multiple-resolutions
         with zipfile.ZipFile(RESOURCES_ZIP) as res:
             img = res.read(cover_art)
         bytes_io = io.BytesIO(img)
@@ -439,18 +430,10 @@ class MPDController(object):
     def volume_mute_get(self):
         return self.__muted
 
-<<<<<<< HEAD
-    def seek(self, percentage):
-        pos = float(self.now_playing.get_time_total_sec()) * percentage / 100
-        self.mpd_client.seekcur(pos)
-
-||||||| merged common ancestors
-=======
     def seek(self, percentage):
         pos = int(self.now_playing.get_time_total_sec() * percentage / 100)
         self.mpd_client.seekcur(pos)
 
->>>>>>> feature/multiple-resolutions
     def random_switch(self):
         """ Switches random playing on or off. """
         self.random = not self.random
