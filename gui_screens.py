@@ -27,7 +27,7 @@ from settings import *
 
 
 #: Time-out period before screen goes blank (milliseconds)
-BLANK_PERIOD = 300000
+blank_period = int(config_file.setting_get('Miscellaneous', 'blank period', 300)) * 1000
 
 
 class GestureDetector(object):
@@ -162,8 +162,8 @@ class Screen(object):
         self.components = {}  # Interface dictionary
         self.color = BLACK
         self.gesture_detect = GestureDetector()
-        self.timer = pygame.time.get_ticks
-        self.blank_screen_time = self.timer() + BLANK_PERIOD
+        self.timer = pygame.time.get_ticks if blank_period > 0 else lambda: 0
+        self.blank_screen_time = self.timer() + blank_period
 
 
     def add_component(self, widget):
@@ -198,7 +198,7 @@ class Screen(object):
     def loop(self):
         """ Loops for events """
         # Restart blank screen timer
-        self.blank_screen_time = self.timer() + BLANK_PERIOD
+        self.blank_screen_time = self.timer() + blank_period
         while self.loop_active:
             # Blackout
             if self.timer() > self.blank_screen_time:
@@ -278,7 +278,7 @@ class Screen(object):
                 if event.type == MOUSEBUTTONDOWN:
                     touched = 1
         # Restart blank screen timer
-        self.blank_screen_time = self.timer() + BLANK_PERIOD
+        self.blank_screen_time = self.timer() + blank_period
         # Restore screen
         self.surface.fill(self.color)
         for key, value in self.components.items():

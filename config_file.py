@@ -29,6 +29,7 @@ class ConfigFile(object):
         self.settings.append({'section': 'MPD Settings', 'key': 'host', 'value': 'localhost', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'port', 'value': '6600', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'music directory', 'value': None, 'first_time': True})
+        self.settings.append({'section': 'Miscellaneous', 'key': 'blank period', 'value': 300, 'first_time': False})
         self.settings.append({'section': 'Hardware', 'key': 'display', 'value': 'adafruit2.8', 'first_time': False})
         self.settings.append({'section': 'adafruit2.8', 'key': 'resolution', 'value': '320x240', 'first_time': False})
         self.settings.append({'section': 'adafruit3.5', 'key': 'resolution', 'value': '480x320', 'first_time': False})
