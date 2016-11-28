@@ -90,8 +90,6 @@ def apply_settings():
     mpd.host = config_file.setting_get('MPD Settings', 'host')
     mpd.port = int(config_file.setting_get('MPD Settings', 'port'))
     mpd.music_directory_set(config_file.setting_get('MPD Settings', 'music directory'))
-    if not config_file.section_exists('Radio stations'):
-        config_file.setting_set('Radio stations', "Radio Swiss Jazz", "http://stream.srg-ssr.ch/m/rsj/mp3_128")
 
 
 def main():

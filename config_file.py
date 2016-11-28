@@ -19,6 +19,7 @@ import ConfigParser
 
 
 class ConfigFile(object):
+
     def __init__(self):
         self.parser = ConfigParser.ConfigParser()
         self.parser.optionxform = str
@@ -28,12 +29,15 @@ class ConfigFile(object):
         self.radio_stations = []
         self.settings.append({'section': 'MPD Settings', 'key': 'host', 'value': 'localhost', 'first_time': False})
         self.settings.append({'section': 'MPD Settings', 'key': 'port', 'value': '6600', 'first_time': False})
-        self.settings.append({'section': 'MPD Settings', 'key': 'music directory', 'value': None, 'first_time': True})
-        self.settings.append({'section': 'Miscellaneous', 'key': 'blank period', 'value': 300, 'first_time': False})
+        self.settings.append({'section': 'MPD Settings', 'key': 'music directory', 'value': 'None', 'first_time': True})
+        self.settings.append({'section': 'Miscellaneous', 'key': 'blank period', 'value': '300', 'first_time': False})
         self.settings.append({'section': 'Hardware', 'key': 'display', 'value': 'adafruit2.8', 'first_time': False})
         self.settings.append({'section': 'adafruit2.8', 'key': 'resolution', 'value': '320x240', 'first_time': False})
         self.settings.append({'section': 'adafruit3.5', 'key': 'resolution', 'value': '480x320', 'first_time': False})
         self.settings.append({'section': 'raspberry7', 'key': 'resolution', 'value': '800x480', 'first_time': False})
+        self.settings.append(
+            {'section': 'Radio stations', 'key': 'Radio Swiss Jazz', 'value': 'http://stream.srg-ssr.ch/m/rsj/mp3_128',
+             'first_time': True})
         self.initialize()
 
     def initialize(self):
@@ -42,9 +46,8 @@ class ConfigFile(object):
                 setting['value'] = self.setting_get(setting['section'], setting['key'])
             elif not setting['first_time']:
                 self.setting_set(setting['section'], setting['key'], setting['value'])
-            for setting2 in self.settings:
-                if setting2['section'] == 'Radio stations':
-                    self.radio_stations.append((setting2['key'], setting2['value']))
+            if setting['section'] == 'Radio stations':
+                self.radio_stations.append((setting['key'], setting['value']))
 
     def setting_get(self, section, key, default=None):
         if self.setting_exists(section, key):
@@ -93,18 +96,10 @@ class ConfigFile(object):
     def radio_stations_get(self):
         """ Get's radio stations from the configuration file and returns them in a list """
         self.radio_stations = []
-        options = self.parser.options('Radio stations')
-        for option in options:
-            description = option
-            url = self.setting_get('Radio stations', option)
-            self.radio_stations.append((description, url))
+        stations = self.parser.options('Radio stations')
+        for name in stations:
+            url = self.setting_get('Radio stations', name)
+            self.radio_stations.append((name, url))
         return self.radio_stations
-
-    def section_get(self, section):
-        dict1 = {}
-        options = self.parser.options(section)
-        for option in options:
-            dict1[option] = self.parser.getboolean(section, option)
-        return dict1
 
 config_file = ConfigFile()

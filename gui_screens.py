@@ -27,7 +27,7 @@ from settings import *
 
 
 #: Time-out period before screen goes blank (milliseconds)
-blank_period = int(config_file.setting_get('Miscellaneous', 'blank period', 300)) * 1000
+blank_period = int(config_file.setting_get('Miscellaneous', 'blank period')) * 1000
 
 
 class GestureDetector(object):
