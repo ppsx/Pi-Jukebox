@@ -232,7 +232,7 @@ class Picture(Widget):
     def get_image(image_file):
         if not image_file:
             return None
-        if image_file.startswith(RESOURCES):
+        if image_file.startswith(RESOURCES_DIR):
             data = image_file
         else:
             with zipfile.ZipFile(RESOURCES_ZIP) as res:
