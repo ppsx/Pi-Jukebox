@@ -1,10 +1,3 @@
-"""
-======================================================================
-**gui_screens.py**: Building blocks for creating screens and dialogues
-======================================================================
-"""
-
-__author__ = 'Mark Zwart'
 # This file is part of pi-jukebox.
 #
 # pi-jukebox is free software: you can redistribute it and/or modify
@@ -21,6 +14,7 @@ __author__ = 'Mark Zwart'
 # along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
 #
 # (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
+
 
 from gui_widgets import *
 from settings import *

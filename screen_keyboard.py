@@ -14,12 +14,7 @@
 # along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
 #
 # (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
-"""
-=======================================================
-**screen_keyboard.py**: On-screen keyboard
-=======================================================
-"""
-__author__ = 'Mark Zwart'
+
 
 from gui_screens import *
 

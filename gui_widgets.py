@@ -15,13 +15,6 @@
 #
 # (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
 
-"""
-=======================================================
-**gui_widgets.py**: graphical widgets for the GUI
-=======================================================
-"""
-
-__author__ = 'Mark Zwart'
 
 import io
 import zipfile

@@ -14,13 +14,7 @@
 # along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
 #
 # (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
-"""
-=======================================================
-**screen_radio.py**: MPD radio management
-=======================================================
 
-"""
-__author__ = 'Mark Zwart'
 
 from pij_screen_navigation import *
 from screen_settings import *

@@ -14,13 +14,7 @@
 # along with pi-jukebox. If not, see < http://www.gnu.org/licenses/ >.
 #
 # (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
-"""
-=======================================================
-**screen_directory.py**: MPD Directory browsing screen
-=======================================================
 
-"""
-__author__ = 'Mark Zwart'
 
 from gui_screens import *
 from pij_screen_navigation import ScreenNavigation

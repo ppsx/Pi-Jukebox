@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # This file is part of pi-jukebox.
 #
 # pi-jukebox is free software: you can redistribute it and/or modify
@@ -17,10 +15,6 @@
 #
 # (C) 2015- by Mark Zwart, <mark.zwart@pobox.com>
 
-"""
-**pi-jukebox.py**: Main file
-"""
-__author__ = 'Mark Zwart'
 
 import sys
 import time
