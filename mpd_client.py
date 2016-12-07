@@ -18,12 +18,11 @@
 
 import io
 import sys
-import zipfile
 from collections import deque
-import mpd as mpdlib
-from tinytag import TinyTag
-from settings import *
 from gettext import gettext as _
+from dependencies import mpd as mpdlib
+from dependencies.tinytag import TinyTag
+from settings import *
 
 MPD_TYPE_ARTIST = 'artist'
 MPD_TYPE_ALBUM = 'album'

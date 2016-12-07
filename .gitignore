@@ -2,5 +2,4 @@
 *.pyc
 /.idea
 pi-jukebox.conf
-dependencies
 locale/*.pot
