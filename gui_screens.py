@@ -360,16 +360,16 @@ class ScreenMessage(ScreenModal):
         ScreenModal.__init__(self, screen_or_surface, caption)
         if message_type == 'information':
             self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE,
-                                       self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_INFO))
+                                       self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ICON_INFO))
             self.setColor(C_GREEN)
         elif message_type == 'warning':
             self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE,
                                        self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH,
-                                       ICO_WARNING))
+                                       ICO_ICON_WARNING))
             self.setColor(C_YELLOW)
         elif message_type == 'error':
             self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE,
-                                       self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ERROR))
+                                       self.window_y + TITLE_HEIGHT + SPACE, ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ICON_ERROR))
             self.setColor(C_RED)
         else:
             self.setColor(C_BLUE)
@@ -406,7 +406,7 @@ class ScreenYesNo(ScreenModal):
         self.window_height -= 2 * self.window_y
         self.outline_shown = True
         self.add_component(Picture('pic_icon', self.surface, self.window_x + SPACE, self.window_y + TITLE_HEIGHT + SPACE,
-                                   ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_WARNING))
+                                   ICO_INFO_WIDTH, ICO_INFO_WIDTH, ICO_ICON_WARNING))
 
         x = self.window_x + 2 * SPACE + ICO_INFO_WIDTH
         y = self.window_y + TITLE_HEIGHT + SPACE

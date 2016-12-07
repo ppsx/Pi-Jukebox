@@ -128,17 +128,17 @@ class MPDNowPlaying(object):
 
     def cover_art_get(self):
         if self.playing_type == 'radio':
-            return self._get_cover_from_zip(COVER_ART_RADIO)
+            return self._get_cover_from_zip(ICO_COVER_RADIO)
         if self.file == "" :
-            return self._get_cover_from_zip(DEFAULT_COVER)
+            return self._get_cover_from_zip(ICO_COVER_FILES)
         try:
             tag = TinyTag.get(os.path.join(self.music_directory, self.file), image=True)
             cover_art = tag.get_image()
         except:
-            return self._get_cover_from_zip(DEFAULT_COVER)
+            return self._get_cover_from_zip(ICO_COVER_FILES)
 
         if cover_art is None:
-            return self._get_cover_from_zip(DEFAULT_COVER)
+            return self._get_cover_from_zip(ICO_COVER_FILES)
 
         bytes_io = io.BytesIO(cover_art)
         return pygame.image.load(bytes_io)

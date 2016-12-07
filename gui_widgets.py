@@ -28,8 +28,6 @@ import zipfile
 import math
 import sys
 from settings import *
-from def_colors import *
-from def_gestures import *
 
 
 reload(sys)

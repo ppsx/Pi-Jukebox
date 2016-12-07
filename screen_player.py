@@ -40,15 +40,15 @@ class ScreenPlaying(Screen):
         # Player specific buttons
         button_top = SPACE
         button_left = SCREEN_WIDTH - ICO_WIDTH - SPACE
-        self.add_component(ButtonIcon('btn_play', self.surface, ICO_PLAY, button_left, button_top))
+        self.add_component(ButtonIcon('btn_play', self.surface, ICO_CONTROLLER_PLAY, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_stop', self.surface, ICO_STOP, button_left, button_top))
+        self.add_component(ButtonIcon('btn_stop', self.surface, ICO_CONTROLLER_STOP, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_prev', self.surface, ICO_PREVIOUS, button_left, button_top))
+        self.add_component(ButtonIcon('btn_prev', self.surface, ICO_CONTROLLER_PREVIOUS, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_next', self.surface, ICO_NEXT, button_left, button_top))
+        self.add_component(ButtonIcon('btn_next', self.surface, ICO_CONTROLLER_NEXT, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_volume', self.surface, ICO_VOLUME, button_left, button_top))
+        self.add_component(ButtonIcon('btn_volume', self.surface, ICO_CONTROLLER_VOLUME, button_left, button_top))
 
         # Player specific labels
         label_left = ICO_WIDTH + 2 * SPACE
@@ -93,9 +93,9 @@ class ScreenPlaying(Screen):
         self.components['lbl_time_current'].text_set(mpd.now_playing.time_current)
         self.components['lbl_time_total'].text_set(mpd.now_playing.time_total)
         if mpd.player_control_get() == 'play':
-            self.components['btn_play'].set_image_file(ICO_PAUSE)
+            self.components['btn_play'].set_image_file(ICO_CONTROLLER_PAUSE)
         else:
-            self.components['btn_play'].set_image_file(ICO_PLAY)
+            self.components['btn_play'].set_image_file(ICO_CONTROLLER_PLAY)
         self.components['btn_play'].draw()
         self.components['lbl_track_title'].text_set(mpd.now_playing.title)
         self.components['lbl_track_artist'].text_set(mpd.now_playing.artist)
@@ -121,10 +121,10 @@ class ScreenPlaying(Screen):
                     self.components['lbl_track_album'].text_set(playing.album)
                     self.components['lbl_time_total'].text_set(playing.time_total)
                 elif event == 'state':
-                    if self.components['btn_play'].image_file != ICO_PAUSE and mpd.player_control_get() == 'play':
-                        self.components['btn_play'].draw(ICO_PAUSE)
-                    elif self.components['btn_play'].image_file == ICO_PAUSE and mpd.player_control_get() != 'play':
-                        self.components['btn_play'].draw(ICO_PLAY)
+                    if self.components['btn_play'].image_file != ICO_CONTROLLER_PAUSE and mpd.player_control_get() == 'play':
+                        self.components['btn_play'].draw(ICO_CONTROLLER_PAUSE)
+                    elif self.components['btn_play'].image_file == ICO_CONTROLLER_PAUSE and mpd.player_control_get() != 'play':
+                        self.components['btn_play'].draw(ICO_CONTROLLER_PLAY)
             except IndexError:
                 break
 
@@ -152,13 +152,13 @@ class ScreenPlaying(Screen):
         elif tag_name == 'btn_play':
             if mpd.player_control_get() == 'play':
                 mpd.player_control_set('pause')
-                self.components['btn_play'].set_image_file(ICO_PLAY)
+                self.components['btn_play'].set_image_file(ICO_CONTROLLER_PLAY)
             else:
                 mpd.player_control_set('play')
-                self.components['btn_play'].set_image_file(ICO_PAUSE)
+                self.components['btn_play'].set_image_file(ICO_CONTROLLER_PAUSE)
             self.components['btn_play'].draw()
         elif tag_name == 'btn_stop':
-            self.components['btn_play'].set_image_file(ICO_PLAY)
+            self.components['btn_play'].set_image_file(ICO_CONTROLLER_PLAY)
             mpd.player_control_set('stop')
         elif tag_name == 'btn_prev':
             mpd.player_control_set('previous')
@@ -187,15 +187,15 @@ class ScreenPlaylist(Screen):
         # Player specific buttons
         button_top = SPACE
         button_left = SCREEN_WIDTH - ICO_WIDTH - SPACE
-        self.add_component(ButtonIcon('btn_play', self.surface, ICO_PLAY, button_left, button_top))
+        self.add_component(ButtonIcon('btn_play', self.surface, ICO_CONTROLLER_PLAY, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_stop', self.surface, ICO_STOP, button_left, button_top))
+        self.add_component(ButtonIcon('btn_stop', self.surface, ICO_CONTROLLER_STOP, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_prev', self.surface, ICO_PREVIOUS, button_left, button_top))
+        self.add_component(ButtonIcon('btn_prev', self.surface, ICO_CONTROLLER_PREVIOUS, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_next', self.surface, ICO_NEXT, button_left, button_top))
+        self.add_component(ButtonIcon('btn_next', self.surface, ICO_CONTROLLER_NEXT, button_left, button_top))
         button_top += ICO_HEIGHT + SPACE
-        self.add_component(ButtonIcon('btn_volume', self.surface, ICO_VOLUME, button_left, button_top))
+        self.add_component(ButtonIcon('btn_volume', self.surface, ICO_CONTROLLER_VOLUME, button_left, button_top))
 
         # Player specific labels
         label_left = ICO_WIDTH + 2 * SPACE
@@ -229,9 +229,9 @@ class ScreenPlaylist(Screen):
         self.components['lbl_time_current'].text_set(now_playing.time_current)
         self.components['lbl_time_total'].text_set(now_playing.time_total)
         if mpd.player_control_get() == 'play':
-            self.components['btn_play'].set_image_file(ICO_PAUSE)
+            self.components['btn_play'].set_image_file(ICO_CONTROLLER_PAUSE)
         else:
-            self.components['btn_play'].set_image_file(ICO_PLAY)
+            self.components['btn_play'].set_image_file(ICO_CONTROLLER_PLAY)
         self.components['btn_play'].draw()
         self.components['lbl_track_title'].text_set(now_playing.title)
         self.components['lbl_track_artist'].text_set(now_playing.artist)
@@ -257,10 +257,10 @@ class ScreenPlaylist(Screen):
                     self.components['lbl_track_artist'].text_set(now_playing.artist)
                 elif event == 'state':
                     state = mpd.player_control_get()
-                    if self.components['btn_play'].image_file != ICO_PAUSE and state == 'play':
-                        self.components['btn_play'].draw(ICO_PAUSE)
-                    elif self.components['btn_play'].image_file == ICO_PAUSE and state != 'play':
-                        self.components['btn_play'].draw(ICO_PLAY)
+                    if self.components['btn_play'].image_file != ICO_CONTROLLER_PAUSE and state == 'play':
+                        self.components['btn_play'].draw(ICO_CONTROLLER_PAUSE)
+                    elif self.components['btn_play'].image_file == ICO_CONTROLLER_PAUSE and state != 'play':
+                        self.components['btn_play'].draw(ICO_CONTROLLER_PLAY)
             except IndexError:
                 break
 
@@ -294,13 +294,13 @@ class ScreenPlaylist(Screen):
         elif tag_name == 'btn_play':
             if mpd.player_control_get() == 'play':
                 mpd.player_control_set('pause')
-                self.components['btn_play'].set_image_file(ICO_PLAY)
+                self.components['btn_play'].set_image_file(ICO_CONTROLLER_PLAY)
             else:
                 mpd.player_control_set('play')
-                self.components['btn_play'].set_image_file(ICO_PAUSE)
+                self.components['btn_play'].set_image_file(ICO_CONTROLLER_PAUSE)
             self.components['btn_play'].draw()
         elif tag_name == 'btn_stop':
-            self.components['btn_play'].set_image_file(ICO_PLAY)
+            self.components['btn_play'].set_image_file(ICO_CONTROLLER_PLAY)
             mpd.player_control_set('stop')
         elif tag_name == 'btn_prev':
             mpd.player_control_set('previous')

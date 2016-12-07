@@ -150,15 +150,15 @@ class ScreenLibrary(Screen):
 
         # Library buttons
         button_left = ICO_WIDTH + 2 * SPACE
-        self.add_component(ButtonIcon('btn_artists', self.surface, ICO_SEARCH_ARTIST, button_left, SPACE))
+        self.add_component(ButtonIcon('btn_artists', self.surface, ICO_FILTER_ARTISTS, button_left, SPACE))
         button_left += ICO_WIDTH + SPACE
-        self.add_component(ButtonIcon('btn_albums', self.surface, ICO_SEARCH_ALBUM, button_left, SPACE))
+        self.add_component(ButtonIcon('btn_albums', self.surface, ICO_FILTER_ALBUMS, button_left, SPACE))
         button_left += ICO_WIDTH + SPACE
-        self.add_component(ButtonIcon('btn_songs', self.surface, ICO_SEARCH_SONG, button_left, SPACE))
+        self.add_component(ButtonIcon('btn_songs', self.surface, ICO_FILTER_SONGS, button_left, SPACE))
         button_left += ICO_WIDTH + SPACE
-        self.add_component(ButtonIcon('btn_playlists', self.surface, ICO_PLAYLISTS, button_left, SPACE))
+        self.add_component(ButtonIcon('btn_playlists', self.surface, ICO_FILTER_PLAYLISTS, button_left, SPACE))
         button_left += ICO_WIDTH + SPACE
-        self.add_component(ButtonIcon('btn_search', self.surface, ICO_SEARCH, button_left, SPACE))
+        self.add_component(ButtonIcon('btn_search', self.surface, ICO_FILTER_SEARCH, button_left, SPACE))
 
         # Lists
         self.add_component(LibraryBrowser(self.surface))
@@ -185,25 +185,25 @@ class ScreenLibrary(Screen):
         """
         self.currently_showing = type_showing
         if type_showing == 'artists':
-            self.components['btn_artists'].set_image_file(ICO_SEARCH_ARTIST_ACTIVE)
-            self.components['btn_albums'].set_image_file(ICO_SEARCH_ALBUM)
-            self.components['btn_songs'].set_image_file(ICO_SEARCH_SONG)
-            self.components['btn_playlists'].set_image_file(ICO_PLAYLISTS)
+            self.components['btn_artists'].set_image_file(ICO_FILTER_ARTISTS_ACTIVE)
+            self.components['btn_albums'].set_image_file(ICO_FILTER_ALBUMS)
+            self.components['btn_songs'].set_image_file(ICO_FILTER_SONGS)
+            self.components['btn_playlists'].set_image_file(ICO_FILTER_PLAYLISTS)
         elif type_showing == 'albums':
-            self.components['btn_artists'].set_image_file(ICO_SEARCH_ARTIST)
-            self.components['btn_albums'].set_image_file(ICO_SEARCH_ALBUM_ACTIVE)
-            self.components['btn_songs'].set_image_file(ICO_SEARCH_SONG)
-            self.components['btn_playlists'].set_image_file(ICO_PLAYLISTS)
+            self.components['btn_artists'].set_image_file(ICO_FILTER_ARTISTS)
+            self.components['btn_albums'].set_image_file(ICO_FILTER_ALBUMS_ACTIVE)
+            self.components['btn_songs'].set_image_file(ICO_FILTER_SONGS)
+            self.components['btn_playlists'].set_image_file(ICO_FILTER_PLAYLISTS)
         elif type_showing == 'songs':
-            self.components['btn_artists'].set_image_file(ICO_SEARCH_ARTIST)
-            self.components['btn_albums'].set_image_file(ICO_SEARCH_ALBUM)
-            self.components['btn_songs'].set_image_file(ICO_SEARCH_SONG_ACTIVE)
-            self.components['btn_playlists'].set_image_file(ICO_PLAYLISTS)
+            self.components['btn_artists'].set_image_file(ICO_FILTER_ARTISTS)
+            self.components['btn_albums'].set_image_file(ICO_FILTER_ALBUMS)
+            self.components['btn_songs'].set_image_file(ICO_FILTER_SONGS_ACTIVE)
+            self.components['btn_playlists'].set_image_file(ICO_FILTER_PLAYLISTS)
         elif type_showing == 'playlists':
-            self.components['btn_artists'].set_image_file(ICO_SEARCH_ARTIST)
-            self.components['btn_albums'].set_image_file(ICO_SEARCH_ALBUM)
-            self.components['btn_songs'].set_image_file(ICO_SEARCH_SONG)
-            self.components['btn_playlists'].set_image_file(ICO_PLAYLISTS_ACTIVE)
+            self.components['btn_artists'].set_image_file(ICO_FILTER_ARTISTS)
+            self.components['btn_albums'].set_image_file(ICO_FILTER_ALBUMS)
+            self.components['btn_songs'].set_image_file(ICO_FILTER_SONGS)
+            self.components['btn_playlists'].set_image_file(ICO_FILTER_PLAYLISTS_ACTIVE)
 
     def letter_list_update(self):
         self.components['list_letters'].list = self.components['list_library'].first_letters_in_result_get()
