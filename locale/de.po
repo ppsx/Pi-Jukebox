@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pi-Jukebox 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-17 18:43+0100\n"
+"POT-Creation-Date: 2016-12-11 13:26+0100\n"
 "PO-Revision-Date: 2106-06-05 10:10+0200\n"
 "Last-Translator: Thomas Hooge <thomas@hoogi.de>\n"
 "Language-Team: de <thomas@hoogi.de>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mpd_client.py:79 mpd_client.py:83 mpd_client.py:91
+#: mpd_client.py:75 mpd_client.py:79 mpd_client.py:87
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: pi-jukebox.py:78
+#: pi-jukebox.py:77
 msgid "No music directory"
 msgstr "Kein Musikverzeichnis"
 
-#: pi-jukebox.py:79
+#: pi-jukebox.py:78
 msgid ""
 "If you want to display cover art, Pi-Jukebox needs to know which directory "
 "your music collection is in. The location can also be found in your mpd.conf "
@@ -35,16 +35,16 @@ msgstr ""
 "Verzeichnis sich die Musiksammlung befindet. Der Ort kann auch in der mpd."
 "conf in der Einstellung 'music directory' gefunden werden."
 
-#: pi-jukebox.py:84 screen_settings.py:305
+#: pi-jukebox.py:84 screen_settings.py:299
 msgid "Set music directory"
 msgstr "Musikverzeichnis einstellen"
 
-#: pi-jukebox.py:104
+#: pi-jukebox.py:102
 #, fuzzy, python-brace-format
 msgid "Couldn't connect to the mpd server {0} on port {1:d}! "
 msgstr "Kann nicht zum MPD-Server {0} auf Port {1:d} verbinden!"
 
-#: pi-jukebox.py:105
+#: pi-jukebox.py:103
 #, fuzzy
 msgid ""
 "Check settings in file pi-jukebox.conf or check if server is running: 'sudo "
@@ -53,277 +53,276 @@ msgstr ""
 "Einstellungen in pi-jukebox.conf pürfen oder ob der Server läuft mit 'sudo "
 "servce mpd status'."
 
-#. label = _("Browse directory {0}").format(self.selected_name)  # name removed because of its potential length
-#: screen_directory.py:233
+#: screen_directory.py:222
 #, fuzzy
 msgid "Browse directory"
 msgstr "Verzeichnis {0} durchsuchen"
 
-#: screen_directory.py:238 screen_library.py:391
+#: screen_directory.py:227 screen_library.py:384
 msgid "Add to playlist"
 msgstr "Füge zu Playlist hinzu"
 
-#: screen_directory.py:244 screen_library.py:398
+#: screen_directory.py:233 screen_library.py:391
 msgid "Add to playlist and play"
 msgstr "Füge zu Playlist hinzu und spiele ab"
 
-#: screen_directory.py:251 screen_library.py:405
+#: screen_directory.py:240 screen_library.py:398
 msgid "Replace playlist and play"
 msgstr "Ersetze Playlist und spiele ab"
 
 #. TODO: Should the Cancel button be removed?
-#: screen_directory.py:258 screen_library.py:338 screen_library.py:433
-#: screen_radio.py:192 screen_radio.py:256 screen_settings.py:271
+#: screen_directory.py:247 screen_library.py:334 screen_library.py:427
+#: screen_radio.py:176 screen_radio.py:235 screen_settings.py:267
 msgid "Cancel"
 msgstr "Abbruch"
 
-#: screen_library.py:312
+#: screen_library.py:308
 msgid "Search library for..."
 msgstr "Suche in Bibliothek nach ..."
 
-#: screen_library.py:323
+#: screen_library.py:319
 msgid "Artists"
 msgstr "Künstler"
 
-#: screen_library.py:328
+#: screen_library.py:324
 msgid "Albums"
 msgstr "Alben"
 
-#: screen_library.py:333
+#: screen_library.py:329
 msgid "Songs"
 msgstr "Lieder"
 
-#: screen_library.py:357
+#: screen_library.py:350
 msgid "Search artists"
 msgstr "Suche Künstler"
 
-#: screen_library.py:360
+#: screen_library.py:353
 msgid "Search albums"
 msgstr "Suche Alben"
 
-#: screen_library.py:363
+#: screen_library.py:356
 msgid "Search songs"
 msgstr "Suche Lieder"
 
-#: screen_library.py:413
+#: screen_library.py:406
 #, fuzzy
 msgid "Albums of ..."
 msgstr "Alben von {0}"
 
-#: screen_library.py:420 screen_library.py:426
+#: screen_library.py:414 screen_library.py:420
 #, fuzzy
 msgid "Songs of ..."
 msgstr "Lieder von {0}"
 
-#: screen_player.py:398
+#: screen_player.py:353
 msgid "Volume"
 msgstr "Lautstärke"
 
-#: screen_player.py:422 screen_settings.py:61 screen_settings.py:121
-#: screen_settings.py:202 screen_settings.py:376
+#: screen_player.py:377 screen_settings.py:57 screen_settings.py:117
+#: screen_settings.py:198 screen_settings.py:370
 msgid "Back"
 msgstr "Zurück"
 
-#: screen_radio.py:176
+#: screen_radio.py:160
 msgid "Tune in"
 msgstr "Einstellen"
 
-#: screen_radio.py:182
+#: screen_radio.py:166
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: screen_radio.py:187
+#: screen_radio.py:171
 msgid "Remove"
 msgstr "Entfernen"
 
-#: screen_radio.py:209
+#: screen_radio.py:191
 #, python-brace-format
 msgid "Remove {0}"
 msgstr "Entferne {0}"
 
-#: screen_radio.py:210
+#: screen_radio.py:192
 #, python-brace-format
 msgid "Are you sure you want to remove {0}?"
 msgstr "Bist du sicher daß Du {0} entfernen möchtest?"
 
-#: screen_radio.py:237
+#: screen_radio.py:216
 msgid "Add a radio station"
 msgstr "Radiosender hinzufügen"
 
-#: screen_radio.py:239 screen_radio.py:273 screen_radio.py:286
+#: screen_radio.py:218 screen_radio.py:252 screen_radio.py:265
 msgid "Set station name"
 msgstr "Sendernamen einstellen"
 
-#: screen_radio.py:240 screen_radio.py:277 screen_radio.py:291
+#: screen_radio.py:219 screen_radio.py:256 screen_radio.py:270
 msgid "Set station URL"
 msgstr "Sender URL einstellen"
 
-#: screen_radio.py:242
+#: screen_radio.py:221
 msgid "Edit radio station"
 msgstr "Radiosender berarbeiten"
 
-#: screen_radio.py:244 screen_radio.py:275
+#: screen_radio.py:223 screen_radio.py:254
 #, python-brace-format
 msgid "Change name {0}"
 msgstr "Ändere Namen: {0}"
 
-#: screen_radio.py:245 screen_radio.py:279
+#: screen_radio.py:224 screen_radio.py:258
 msgid "Change station URL"
 msgstr "Ändere Stations URL"
 
-#: screen_radio.py:263
+#: screen_radio.py:242
 msgid "Ok"
 msgstr ""
 
-#: screen_settings.py:37
+#: screen_settings.py:33
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: screen_settings.py:42
+#: screen_settings.py:38
 msgid "Quit Pi-Jukebox"
 msgstr "Pi-Jukebox beenden"
 
-#: screen_settings.py:46
+#: screen_settings.py:42
 msgid "Playback options"
 msgstr "Abspieloptionen"
 
-#: screen_settings.py:51
+#: screen_settings.py:47
 msgid "MPD related settings"
 msgstr "MPD Einstellungen"
 
-#: screen_settings.py:56 screen_settings.py:370
+#: screen_settings.py:52 screen_settings.py:364
 msgid "System info"
 msgstr "Systeminformationen"
 
-#: screen_settings.py:97 screen_settings.py:106
+#: screen_settings.py:93 screen_settings.py:102
 msgid "Quit"
 msgstr "Beenden"
 
-#: screen_settings.py:111
+#: screen_settings.py:107
 msgid "Shutdown Pi"
 msgstr "Pi ausschalten"
 
-#: screen_settings.py:116
+#: screen_settings.py:112
 msgid "Reboot Pi"
 msgstr "Pi neustarten"
 
-#: screen_settings.py:132
+#: screen_settings.py:128
 msgid "Thanks for using pi-jukebox!"
 msgstr ""
 
-#: screen_settings.py:133
+#: screen_settings.py:129
 msgid "Bye!"
 msgstr "Tschüß!"
 
-#: screen_settings.py:158
+#: screen_settings.py:154
 msgid "Playback settings"
 msgstr "Abspieleinstellungen"
 
-#: screen_settings.py:166
+#: screen_settings.py:162
 msgid "Shuffle"
 msgstr "Mische"
 
-#: screen_settings.py:171
+#: screen_settings.py:167
 msgid "Repeat"
 msgstr "Widerhole"
 
-#: screen_settings.py:177
+#: screen_settings.py:173
 msgid "Single"
 msgstr "Einzeln"
 
-#: screen_settings.py:183
+#: screen_settings.py:179
 msgid "Consume playlist"
 msgstr "Verbrauche Playlist"
 
-#: screen_settings.py:190
+#: screen_settings.py:186
 msgid "Re-scan library"
 msgstr "Bibliothek neu scannen"
 
-#: screen_settings.py:197
+#: screen_settings.py:193
 msgid "Update library"
 msgstr "Aktualisiere Bibliothek"
 
-#: screen_settings.py:252
+#: screen_settings.py:248
 msgid "MPD settings"
 msgstr "MPD Einstellungen"
 
-#: screen_settings.py:257 screen_settings.py:317
+#: screen_settings.py:253 screen_settings.py:311
 #, python-brace-format
 msgid "Change host: {0}"
 msgstr "Ändere Host: {0}"
 
-#: screen_settings.py:261 screen_settings.py:319
+#: screen_settings.py:257 screen_settings.py:313
 #, python-brace-format
 msgid "Change port: {0}"
 msgstr "Ändere Port: {0}"
 
-#: screen_settings.py:266
+#: screen_settings.py:262
 msgid "Change music directory"
 msgstr "Musikverzeichnis wechseln"
 
-#: screen_settings.py:279
+#: screen_settings.py:274
 msgid "Check and save"
 msgstr ""
 
-#: screen_settings.py:297
+#: screen_settings.py:291
 msgid "Set mpd host"
 msgstr "MPD-Host einstellen"
 
-#: screen_settings.py:301
+#: screen_settings.py:295
 msgid "Set mpd server port"
 msgstr "MPD-Port einstellen"
 
-#: screen_settings.py:383
+#: screen_settings.py:377
 msgid "Music database"
 msgstr "Musik Datenbank"
 
-#: screen_settings.py:392
+#: screen_settings.py:386
 #, fuzzy
 msgid "Artists:  "
 msgstr "Künstler: "
 
-#: screen_settings.py:396
+#: screen_settings.py:390
 #, fuzzy
 msgid "Albums:  "
 msgstr "Alben: "
 
-#: screen_settings.py:401
+#: screen_settings.py:395
 #, fuzzy
 msgid "Songs:  "
 msgstr "Lieder: "
 
-#: screen_settings.py:407
+#: screen_settings.py:401
 #, fuzzy
 msgid "Total time:  "
 msgstr "Gesamtzeit: "
 
-#: screen_settings.py:412
+#: screen_settings.py:406
 msgid "Server"
 msgstr ""
 
-#: screen_settings.py:418
+#: screen_settings.py:412
 #, python-brace-format
 msgid "Host name: {0}"
 msgstr "Hostname: {0}"
 
-#: screen_settings.py:423
+#: screen_settings.py:420
 #, python-brace-format
 msgid "IP address: {0}"
 msgstr "IP-Adresse: {0}"
 
-#: screen_settings.py:446
+#: screen_settings.py:441
 msgid " days "
 msgstr " Tage "
 
-#: screen_settings.py:448
+#: screen_settings.py:443
 msgid " hrs "
 msgstr " Std "
 
-#: screen_settings.py:450
+#: screen_settings.py:445
 msgid " mins "
 msgstr " Min "
 
-#: screen_settings.py:452
+#: screen_settings.py:447
 msgid " secs "
 msgstr " Sec "
 

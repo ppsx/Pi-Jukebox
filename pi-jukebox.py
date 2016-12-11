@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # This file is part of pi-jukebox.
 #
 # pi-jukebox is free software: you can redistribute it and/or modify
